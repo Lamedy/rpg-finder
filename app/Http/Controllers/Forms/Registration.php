@@ -15,7 +15,7 @@ class Registration extends Controller
 {
     public function show(): View
     {
-        return view('Forms.registration');
+        return view('Forms.Registration');
     }
 
     public function submit(Request $request): RedirectResponse
@@ -46,7 +46,7 @@ class Registration extends Controller
             return redirect()->route('registration');
         }
 
-        return view('Forms.registrationConfirm');
+        return view('Forms.RegistrationConfirm');
     }
 
     public function confirmCode(Request $request): RedirectResponse

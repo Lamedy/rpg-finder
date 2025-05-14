@@ -8,6 +8,6 @@ class FindGroup extends Controller
 {
     public function show(): View
     {
-        return view('findGroup');
+        return view('FindGroup');
     }
 }

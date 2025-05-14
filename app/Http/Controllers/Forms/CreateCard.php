@@ -9,6 +9,6 @@ class CreateCard extends Controller
 {
     public function show(): View
     {
-        return view('Forms.createCard');
+        return view('Forms.CreateCard');
     }
 }

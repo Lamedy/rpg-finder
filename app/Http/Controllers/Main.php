@@ -10,6 +10,6 @@ class Main extends Controller
     public function show(): View
     {
         $newsList = SiteNews::getNewsList();
-        return view('mainPage', ['newsList' => $newsList]);
+        return view('MainPage', ['newsList' => $newsList]);
     }
 }

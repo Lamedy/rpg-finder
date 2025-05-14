@@ -9,6 +9,6 @@ class Authorization extends Controller
 {
     public function show(): View
     {
-        return view('Forms.authorization');
+        return view('Forms.Authorization');
     }
 }
