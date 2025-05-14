@@ -2,7 +2,7 @@
 
 <html lang="ru">
 <head>
-    <link rel="stylesheet" href="{{ asset('css/head_page.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/headPage.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>НРИ-Файндер | @yield('page_name')</title>

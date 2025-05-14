@@ -1,4 +1,4 @@
-@extends('layouts.page_head')
+@extends('layouts.PageHead')
 
 @section('page_name', 'Регистрация')
 
