@@ -1,0 +1,15 @@
+@layer utilities {
+    .text-shadow {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .text-shadow-lg {
+        text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.9);
+    }
+}
+
+@layer utilities {
+    .box-shadow-lg {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.8);
+    }
+}

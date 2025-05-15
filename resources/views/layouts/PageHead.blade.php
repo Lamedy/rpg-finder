@@ -2,28 +2,26 @@
 
 <html lang="ru">
 <head>
-    <link rel="stylesheet" href="{{ asset('css/headPage.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>НРИ-Файндер | @yield('page_name')</title>
+    @vite('resources/css/app.css')
 </head>
 <body style="background-image: url('{{ asset('images/background.jpeg') }}');">
-    <header>
-            <h1>НРИ-Файндер | @yield('page_name')</h1>
-        <a href="/authorization">Вход</a>
+<header class="bg-[#2D2D2D] border-b-2 border-black box-shadow-lg">
+        <div class="container max-w-7xl mx-auto py-2 flex items-center justify-between">
+            <!-- Название сайта -->
+            <div class="relative">
+                <span class="text-white font-forum text-6xl block text-shadow">НРИ-Файндер | @yield('page_name')</span>
+            </div>
+
+            <!-- Авторизация -->
+            <nav class="hidden md:flex space-x-6">
+                <a href="/authorization" class="text-white text-4xl font-forum hover:text-gray-300 transition duration-200 text-shadow">Вход</a>
+            </nav>
+        </div>
     </header>
 
-    <h2>Навигация:</h2>
-    <div>
-        <a href="/">Главная</a>
-    </div>
-    <div>
-        <a href="/findGroup">Поиск компании</a>
-    </div>
-
-    <div class="container">
-        <H2>Основной контент страницы:</H2>
-        @yield('content')
-    </div>
+    @yield('main_content')
 </body>
 </html>

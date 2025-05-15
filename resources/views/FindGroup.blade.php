@@ -1,4 +1,4 @@
-@extends('layouts.PageHead')
+@extends('layouts.MainContentPage')
 
 @section('page_name', 'Поиск компании')
 

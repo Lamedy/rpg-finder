@@ -1,0 +1,32 @@
+@layer utilities {
+    .font-forum {
+        font-family: 'forum', sans-serif;
+    }
+    .font-alegreya_bold {
+        font-family: 'alegreya_bold', serif;
+    }
+    .font-alegreya_medium {
+        font-family: 'alegreya_medium', serif;
+    }
+}
+
+@font-face {
+    font-family: 'forum';
+    src: url('../fonts/Forum-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'alegreya_bold';
+    src: url('../fonts/AlegreyaSC/AlegreyaSC-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'alegreya_medium';
+    src: url('../fonts/AlegreyaSC/AlegreyaSC-Medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
