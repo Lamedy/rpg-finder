@@ -12,7 +12,10 @@
         <div class="container max-w-7xl mx-auto py-2 flex items-center justify-between">
             <!-- Название сайта -->
             <div class="relative">
-                <span class="text-white font-forum text-6xl block text-shadow">НРИ-Файндер | @yield('page_name')</span>
+                <span class="text-white font-forum text-6xl block text-shadow">
+                    НРИ-Файндер |
+                    <span class="text-4xl align-middle">@yield('page_name')</span>
+                </span>
             </div>
 
             <!-- Авторизация -->

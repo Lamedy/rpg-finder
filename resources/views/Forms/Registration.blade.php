@@ -2,6 +2,8 @@
 
 @section('page_name', 'Регистрация')
 
+@section('content_title', 'Форма регистрации:')
+
 @section('content')
     <form action="{{ route('registration.submit') }}" method="POST">
         @csrf
