@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47ec23193f6f851ec81e48bbea89d632",
+    "content-hash": "7fbba2f50e9c216c328ade6df357f74d",
     "packages": [
         {
             "name": "brick/math",
@@ -1099,6 +1099,65 @@
                 }
             ],
             "time": "2025-02-03T10:55:03+00:00"
+        },
+        {
+            "name": "kerigard/laravel-lang-ru",
+            "version": "v2.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Kerigard/laravel-lang-ru.git",
+                "reference": "5acc903e893cdacddca34ed5ea87f243f04346ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Kerigard/laravel-lang-ru/zipball/5acc903e893cdacddca34ed5ea87f243f04346ec",
+                "reference": "5acc903e893cdacddca34ed5ea87f243f04346ec",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^11.0|^12.0",
+                "illuminate/http": "^11.0|^12.0",
+                "illuminate/support": "^11.0|^12.0",
+                "illuminate/translation": "^11.0|^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^9.0|^10.0",
+                "phpunit/phpunit": "^10.0|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Kerigard\\LaravelLangRu\\LangRuServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kerigard\\LaravelLangRu\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vladislav Sidelnikov",
+                    "email": "kerihoros@gmail.com"
+                }
+            ],
+            "description": "Ru lang for Laravel",
+            "homepage": "https://github.com/kerigard/laravel-lang-ru",
+            "keywords": [
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/Kerigard/laravel-lang-ru/issues",
+                "source": "https://github.com/Kerigard/laravel-lang-ru/tree/v2.0.7"
+            },
+            "time": "2025-04-22T07:58:05+00:00"
         },
         {
             "name": "laravel-lang/lang",

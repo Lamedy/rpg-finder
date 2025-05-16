@@ -29,7 +29,7 @@ class Authorization extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        if ($validator->fails()) {    // todo перевести ошибки на русский язык
+        if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
@@ -55,5 +55,16 @@ class Authorization extends Controller
         Auth::login($user);
 
         return redirect()->route('main');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->back();
     }
 }

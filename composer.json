@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "caouecs/laravel-lang": "*",
+        "kerigard/laravel-lang-ru": "*",
         "laravel-lang/lang": "*",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1"
