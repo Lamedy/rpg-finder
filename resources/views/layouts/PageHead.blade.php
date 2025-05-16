@@ -20,8 +20,13 @@
 
             <!-- Авторизация -->
             <nav class="hidden md:flex space-x-6">
+                @if (Auth::check())
+                    {{--                todo аватар пользователя + выезжающее контекстное меню--}}
+                    <p class="text-white text-4xl font-forum transition duration-200 text-shadow">Привет, {{ Auth::user()->user_name }}!</p>
+                @else
                 <a href="/authorization" class="text-white text-4xl font-forum hover:text-gray-300 transition duration-200 text-shadow">Вход</a>
             </nav>
+            @endif
         </div>
     </header>
 

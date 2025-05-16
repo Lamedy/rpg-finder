@@ -20,11 +20,11 @@ class Registration extends Controller
 
     public function submit(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'login' => 'required|string|max:255',
+        $validated = $request->validate([       // todo добавить вывод ошибок, что пользователь ввёл неправилно
+            'login' => 'required|string|max:50',
             'name' => 'nullable|string|max:255',
             'password' => 'required|string|confirmed|min:6',
-            'email' => 'required|email|unique:user_authorization,email',
+            'email' => 'required|email|unique:user_authorization,email,max:255',
             'gender' => 'nullable|in:0,1',
             'birthdate' => 'nullable|date',
         ]);

@@ -1,7 +1,7 @@
 @extends('layouts.PageHead')
 
 @section('main_content')
-    <div class="min-h-screen p-4">
+    <div class=" p-4">
         <div class="max-w-7xl mx-auto rounded-md flex">
             <!-- Левая колонка: Навигация -->
             <aside class="w-1/4 bg-[#2D2D2D] text-white p-4 self-start">

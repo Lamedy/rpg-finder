@@ -14,11 +14,21 @@ Route::get('/', [Main::class, 'show'])->name('main');
 Route::get('/findGroup', [FindGroup::class, 'show'])->name('find.group');
 
 // Forms
-Route::get('/authorization', [Authorization::class, 'show'])->name('authorization');
 Route::get('/findGroup/createCard', [CreateCard::class, 'show'])->name('create.card');
+
+// Authorization forms
+Route::get('/authorization', [Authorization::class, 'show'])->name('authorization');
+Route::post('/authorization', [Authorization::class, 'submit'])->name('authorization.submit');
 
 // Registration forms
 Route::get('/registration', [Registration::class, 'show'])->name('registration');
 Route::post('/registration', [Registration::class, 'submit'])->name('registration.submit');
 Route::get('/registration/confirm', [Registration::class, 'showConfirmForm'])->name('registration.confirm');
 Route::post('/registration/confirm', [Registration::class, 'confirmCode'])->name('registration.confirm.submit');
+
+
+Route::middleware(['auth'])->group(function () {
+//    Route::get('/dashboard', function () {
+//        // Только для авторизованных пользователей
+//    });
+});

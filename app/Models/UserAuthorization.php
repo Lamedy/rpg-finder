@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @method static \App\Models\User create(array $attributes)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User where(string $column, mixed $operator = null, mixed $value = null, string $boolean = 'and')
  */
 
-class UserAuthorization extends Model
+class UserAuthorization extends model
 {
     protected $table = 'user_authorization';
     protected $primaryKey = 'user_pk';
