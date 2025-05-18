@@ -6,6 +6,7 @@ use App\Http\Controllers\FindGroup;
 use App\Http\Controllers\Forms\Authorization;
 use App\Http\Controllers\Forms\Registration;
 use App\Http\Controllers\Forms\CreateCard;
+use App\Http\Controllers\Forms\User\Settings;
 
 use Illuminate\Support\Facades\Route;
 
@@ -23,9 +24,14 @@ Route::get('/registration/confirm', [Registration::class, 'showConfirmForm'])->n
 Route::post('/registration/confirm', [Registration::class, 'confirmCode'])->name('registration.confirm.submit');
 
 // Authorization forms
-Route::get('/authorization', [Authorization::class, 'show'])->name('authorization');
-Route::post('/authorization', [Authorization::class, 'submit'])->name('authorization.submit');
+Route::get('/login', [Authorization::class, 'show'])->name('login');
+Route::post('/login', [Authorization::class, 'submit'])->name('login.submit');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/account/settings', [Settings::class, 'show'])->name('account.settings');
+    Route::post('/account/settings', [Settings::class, 'submit'])->name('account.settings.update');
+    Route::get('/logout', function () {
+        return redirect('/');
+    });
     Route::post('/logout', [Authorization::class, 'logout'])->name('logout');
 });

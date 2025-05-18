@@ -61,21 +61,26 @@
                             </div>
                         <!-- Список действий -->
                         <nav class="flex flex-col space-y-4 px-6 py-2">
+                            <a href="" class="text-lg text-white hover:text-blue-600">Уведомления</a>
+                            <a href="" class="text-lg text-white hover:text-blue-600">Мои анкеты</a>
                             <a href="" class="text-lg text-white hover:text-blue-600">Профиль</a>
+                            <a href="/account/settings" class="text-lg text-white hover:text-blue-600">Настройки</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="text-lg text-white hover:text-red-600">Выйти</button>
+                                <button type="submit" class="text-lg text-white hover:text-red-600">Выйти из аккаунта</button>
                             </form>
                         </nav>
                         </div>
                     </div>
                 @else
-                <a href="/authorization" class="text-white text-4xl p-3 font-forum hover:text-gray-300 transition duration-200 text-shadow">Вход</a>
+                <a href="/login" class="text-white text-4xl p-3 font-forum hover:text-gray-300 transition duration-200 text-shadow">Вход</a>
                 @endif
             </nav>
         </div>
     </header>
 
     @yield('main_content')
+
+    @yield('scripts')
 </body>
 </html>

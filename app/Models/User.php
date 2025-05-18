@@ -26,4 +26,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserAuthorization::class);
     }
+
+    public static function getValueShowContactsOther($user_id): bool {
+        return (bool) self::where('user_pk', $user_id)->value('show_contacts_others');
+    }
 }

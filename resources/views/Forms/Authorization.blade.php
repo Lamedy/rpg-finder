@@ -5,7 +5,7 @@
 @section('content_title', 'Форма авторизации')
 
 @section('content')
-    <form action="{{ route('authorization.submit') }}" method="POST">
+    <form action="{{ route('login.submit') }}" method="POST">
         @csrf
         <div class="max-w-2xl mx-auto rounded-md overflow-hidden shadow-lg border border-black">
             <!-- Верхняя светлая часть -->

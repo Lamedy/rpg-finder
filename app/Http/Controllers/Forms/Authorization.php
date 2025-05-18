@@ -57,7 +57,7 @@ class Authorization extends Controller
         return redirect()->route('main');
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
 
@@ -65,6 +65,6 @@ class Authorization extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->back();
+        return redirect()->route('main');
     }
 }
