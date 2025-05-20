@@ -2,7 +2,7 @@
 
 @section('page_name', 'Настройки')
 
-@section('content_title', 'Настройки аккаунта:')
+@section('content_title', 'Изменить пароль:')
 
 @section('content')
     <form id="password-form" method="POST" action="{{ route('account.settings.change_password.update') }}">

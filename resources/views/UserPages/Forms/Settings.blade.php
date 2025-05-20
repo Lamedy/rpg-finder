@@ -39,8 +39,8 @@
                                     IP: {{ $session['ip_address'] }} — {{ $session['user_agent'] }}<br>
                                     Последняя активность: {{ date('d.m.Y H:i:s', $session['last_activity']) }}
                                 </span>
-                                <button type="button" class="text-gray-600 hover:text-red-600 delete-session">
-                                    🗑️
+                                <button type="button" class="icon-trash delete-session">
+                                    <img src="{{ asset('storage/icons/trash.svg') }}" alt="trash icon" />
                                 </button>
                             </div>
                         @endforeach

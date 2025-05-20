@@ -1,0 +1,11 @@
+@layer utilities {
+    .icon-trash {
+        width: 2.25rem;
+        height: 2.25rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .icon-trash:hover {
+        filter: invert(22%) sepia(88%) saturate(6529%) hue-rotate(349deg) brightness(96%) contrast(102%);
+    }
+}

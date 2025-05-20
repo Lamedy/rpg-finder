@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import './Fonts.css';
 @import './Shadows.css';
+@import './Icons.css';
 
 @tailwind base;
 @tailwind components;
