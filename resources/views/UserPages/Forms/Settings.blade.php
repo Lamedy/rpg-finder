@@ -11,7 +11,7 @@
             <div class="p-4 space-y-4">
                 <!-- Видимость контактов -->
                 <div>
-                    <label for="visibility" class="block font-bold text-sm text-gray-800 mb-1">Кто может видеть контакты со мной:</label>
+                    <label for="visibility" class="block text-lg font-bold text-gray-800 mb-1">Кто может видеть контакты со мной:</label>
                     <select id="visibility" name="visibility"
                             class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400">
                         <option value="0" {{ $show_contacts_other == 0 ? 'selected' : '' }}>Только с моего разрешения</option>
@@ -21,17 +21,17 @@
 
                 <!-- Сброс пароля -->
                 <div class="flex justify-between items-center">
-                    <label for="reset_password" class="block font-bold text-sm text-gray-800">Пароль:</label>
-                    <button type="button"
+                    <label for="reset_password" class="block text-lg font-bold text-gray-800 mb-1">Пароль:</label>
+                    <a href="/account/settings/change_password"
                             class="bg-[#2D2D2D] text-white px-4 py-2 rounded hover:bg-[#444] transition">
                         Изменить пароль
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Сессии -->
                 <input type="hidden" name="deleted_sessions" id="deleted_sessions" value="[]">
                 <div>
-                    <label class="block font-bold text-sm text-gray-800 mb-2">Текущие сессии:</label>
+                    <label class="block text-lg font-bold text-gray-800 mb-1">Текущие сессии:</label>
                     <div id="sessions-list" class="bg-gray-100 border border-gray-400 rounded-md p-2 space-y-2">
                         @foreach($sessions_list as $session)
                             <div class="flex justify-between items-center bg-white px-3 py-1 rounded shadow session-item" data-session-id="{{ $session['id'] }}">

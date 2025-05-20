@@ -7,6 +7,7 @@ use App\Http\Controllers\Forms\Authorization;
 use App\Http\Controllers\Forms\Registration;
 use App\Http\Controllers\Forms\CreateCard;
 use App\Http\Controllers\Forms\User\Settings;
+use App\Http\Controllers\Forms\User\ChangePassword;
 
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,8 @@ Route::post('/login', [Authorization::class, 'submit'])->name('login.submit');
 Route::middleware(['auth'])->group(function () {
     Route::get('/account/settings', [Settings::class, 'show'])->name('account.settings');
     Route::post('/account/settings', [Settings::class, 'submit'])->name('account.settings.update');
+    Route::get('/account/settings/change_password', [ChangePassword::class, 'show'])->name('account.settings.change_password');
+    Route::post('/account/settings/change_password', [ChangePassword::class, 'submit'])->name('account.settings.change_password.update');
     Route::get('/logout', function () {
         return redirect('/');
     });
