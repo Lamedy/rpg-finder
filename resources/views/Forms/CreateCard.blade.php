@@ -3,7 +3,8 @@
 @section('page_name', 'Поиск компании')
 
 @section('content_title', 'Создать анкету')
-
+{{--todo придумать как исправить проблему когда форма переключается, --}}
+{{--todo скрытые поля всё ещё хранят данные и из за этого отправляются лишние данные которых быть не должно--}}
 @section('content')
     <form id="card-form" method="POST" action="{{ route('create.card.update') }}">
         @csrf
@@ -51,7 +52,54 @@
                 </div>
 
                 <!-- Игровые системы -->
+
+                <!-- Одинарный выбор системы -->
                 <div
+                    x-show="playerType === '0'"
+                    x-data="singleSelect(@js($gameSystems), 'game_system_pk', 'game_system_name')"
+                    class="relative">
+                    <label class="block text-lg font-bold text-gray-800 mb-1">Игровая система:</label>
+
+                    <input
+                        type="text"
+                        x-model="search"
+                        @focus="open = true"
+                        @keydown.escape="open = false"
+                        placeholder="Введите название системы..."
+                        class="w-full px-4 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+
+                    <!-- Список с вариантами -->
+                    <div
+                        x-show="open"
+                        @mousedown.away="open = false"
+                        class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto w-full shadow-lg"
+                    >
+                        <template x-for="item in filteredItems()" :key="item[idKey]">
+                            <div
+                                @click="choose(item)"
+                                class="cursor-pointer px-4 py-2 hover:bg-blue-200"
+                                :class="{'bg-blue-100': selected && item[idKey] === selected[idKey]}"
+                            >
+                                <span x-text="item[nameKey]"></span>
+                            </div>
+                        </template>
+                        <div x-show="filteredItems().length === 0" class="px-4 py-2 text-gray-500">Ничего не найдено</div>
+                    </div>
+
+                    <!-- Скрытое поле с ID -->
+                    <template x-if="selected">
+                        <input type="hidden" name="game_systems[]" :value="selected[idKey]">
+                    </template>
+
+                    <!-- Кнопка сброса -->
+                    <template x-if="selected">
+                        <button type="button" @click="clear" class="text-sm text-red-600 mt-1 underline">Сбросить выбор</button>
+                    </template>
+                </div>
+                <!-- Множественный выбор систем -->
+                <div
+                    x-show="playerType === '1'"
                     x-data="multiSelect(@js($gameSystems), 'game_system_pk', 'game_system_name')"
                     class="relative"
                 >
@@ -276,6 +324,32 @@
 
 @section('scripts')
     <script>
+        function singleSelect(data, idKey, nameKey) {
+            return {
+                open: false,
+                search: '',
+                selected: null,
+                items: data,
+                idKey,
+                nameKey,
+                filteredItems() {
+                    if (this.search === '') return this.items;
+                    return this.items.filter(i =>
+                        i[this.nameKey].toLowerCase().includes(this.search.toLowerCase())
+                    );
+                },
+                choose(item) {
+                    this.selected = item;
+                    this.search = item[this.nameKey];
+                    this.open = false;
+                },
+                clear() {
+                    this.selected = null;
+                    this.search = '';
+                }
+            };
+        }
+
         function multiSelect(data, idKey, nameKey) {
             return {
                 open: false,

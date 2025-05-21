@@ -21,83 +21,97 @@
 @endsection
 
 @section('content')
-    <div class=" mx-auto bg-gray-200 rounded-lg border border-gray-400 p-4 shadow-md font-serif text-sm leading-tight">
-        <div class="flex justify-between items-start mb-2">
-            <div class="text-xs font-bold space-y-1 max-w-[60%]">
-                <div><span class="font-semibold">Система:</span> DnD 5e</div>
-                <div><span class="font-semibold">Формат игры:</span> В живую</div>
-                <div><span class="font-semibold">Длительность игры:</span> Кампания</div>
-                <div><span class="font-semibold">Требуется:</span> Игроки</div>
-            </div>
-            <div class="text-xs font-bold space-y-1 text-right max-w-[38%]">
-                <div><span class="font-semibold">Тюленчик</span>
-                    <span class="inline-block align-middle ml-2 text-yellow-400">
-                    ★☆☆☆☆
-                </span>
+    @foreach($games as $game)
+        <div class=" mx-auto bg-gray-200 rounded-lg border border-gray-400 px-4 shadow-md font-serif text-sm leading-tight">
+            <div class="flex justify-between items-start py-4">
+                <div class="text-xs font-bold space-y-1 max-w-[60%]">
+                    <div><span class="font-semibold">Город:</span> {{ $game->city->city }}</div>
+                    <div>
+                        <span class="font-semibold">Системы:</span>
+                        {{ $game['gameSystems']->map(fn($s) => $s->system->game_system_name)->implode(', ') }}
+                    </div>
+                    <div><span class="font-semibold">Формат игры:</span> {{ $game['game_format']->label() }}</div>
+                    <div><span class="font-semibold">Длительность игры:</span> {{ $game['game_duration']->label() }}</div>
+                    <div><span class="font-semibold">Требуется:</span> {{ $game['player_type_needed']->label() }}</div>
                 </div>
-                <div>Опыт игры: меньше года</div>
-            </div>
-        </div>
 
-        <div class="border-t border-gray-500 pt-2 text-xs font-bold">
-            Тэги: тяжелый моральный выбор, гибель персонажа, политика, интриги.
-        </div>
+                <div class="text-xs font-bold max-w-[38%]">
+                    <!-- Информация о пользователе -->
+                    <div class="flex items-center space-x-3 justify-end">
+                        <!-- Аватар -->
+                        <img
+                            src="{{ asset('storage/' . $game['user']->avatar) }}"
+                            alt="Аватар"
+                            class="w-15 h-15 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
+                        />
 
-        <div class="border-t border-gray-500 pt-2 text-xs whitespace-pre-line" style="min-height: 6rem;">
-            <span class="font-bold">Описание:</span>
-            Начинающий мастер ищу игроков(водил около 5-6 ваншотов) хочу провести полноценную собственно сделанную кампанию, в сеттинге фэнтези по ДнД 2014-2024 5e.
-        </div>
-
-        <div class="flex justify-between items-center mt-4 text-xs font-bold">
-            <div>
-                <div>Осталось мест: <span class="text-black">4</span></div>
-                <div>Цена: <span class="text-black">Бесплатно</span></div>
-            </div>
-            <div class="space-x-2">
-                <button class="bg-gray-700 hover:bg-gray-600 text-white rounded px-4 py-1">Подробнее</button>
-                <button class="bg-gray-700 hover:bg-gray-600 text-white rounded px-4 py-1">Откликнуться</button>
-            </div>
-        </div>
-    </div>
-    <!-- Тут начало карточки 2 -->
-    <br>
-    <div class=" mx-auto bg-gray-200 rounded-lg border border-gray-400 p-4 shadow-md font-serif text-sm leading-tight">
-        <div class="flex justify-between items-start mb-2">
-            <div class="text-xs font-bold space-y-1 max-w-[60%]">
-                <div><span class="font-semibold">Система:</span> DnD 5e</div>
-                <div><span class="font-semibold">Формат игры:</span> В живую</div>
-                <div><span class="font-semibold">Длительность игры:</span> Кампания</div>
-                <div><span class="font-semibold">Требуется:</span> Игроки</div>
-            </div>
-            <div class="text-xs font-bold space-y-1 text-right max-w-[38%]">
-                <div><span class="font-semibold">Тюленчик</span>
-                    <span class="inline-block align-middle ml-2 text-yellow-400">
-                    ★☆☆☆☆
-                </span>
+                        <!-- Имя и рейтинг -->
+                        <div class="text-center px-2">
+                            <div class="font-semibold">{{ $game['user']->user_name }}</div>
+                            <div class="text-yellow-400">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= $game['user']->rating)
+                                        ★
+                                    @else
+                                        ☆
+                                    @endif
+                                @endfor
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>Опыт игры: меньше года</div>
             </div>
-        </div>
 
-        <div class="border-t border-gray-500 pt-2 text-xs font-bold">
-            Тэги: тяжелый моральный выбор, гибель персонажа, политика, интриги.
-        </div>
+            <div class="border-t border-gray-500 py-2 text-xs font-bold">
+                Тэги:
+                @if ($game['tags'] != null)
+                    {{ $game['tags']->map(fn($s) => $s->tag->game_style_tag)->implode(', ') }}
+                @else
+                    Отсутствуют
+                @endif
+            </div>
 
-        <div class="border-t border-gray-500 pt-2 text-xs whitespace-pre-line" style="min-height: 6rem;">
-            <span class="font-bold">Описание:</span>
-            Начинающий мастер ищу игроков(водил около 5-6 ваншотов) хочу провести полноценную собственно сделанную кампанию, в сеттинге фэнтези по ДнД 2014-2024 5e.
-        </div>
-        <div class="flex justify-between items-center mt-4 text-xs font-bold">
-            <div>
-                <div>Осталось мест: <span class="text-black">4</span></div>
-                <div>Цена: <span class="text-black">Бесплатно</span></div>
+            <div class="border-t border-gray-500 text-xs whitespace-pre-line">
+                <span class="font-bold">Описание:</span>
+                {{ $game->game_description }}
             </div>
-            <div class="space-x-2">
-                <button class="bg-gray-700 hover:bg-gray-600 text-white rounded px-4 py-1">Подробнее</button>
-                <button class="bg-gray-700 hover:bg-gray-600 text-white rounded px-4 py-1">Откликнуться</button>
+
+            <div class="flex justify-between items-center mt-4 py-2 text-xs font-bold">
+                <div>
+                    @if ( $game['game_place'] != null )
+                        <div>Место проведения игры: <span class="text-black">{{ $game['game_place'] }}</span></div>
+                    @endif
+                    <div class="flex justify-between items-center text-xs font-bold">
+                        @if( $game->game_date != null)
+                            <span class="mr-2">Дата: {{ \Carbon\Carbon::parse($game->game_date)->format('d.m.Y') }}</span>
+                            <span>Время: {{ \Carbon\Carbon::parse($game->game_date)->format('H:i') }}</span>
+                        @endif
+                    </div>
+                    <div>Нужно игроков: <span class="text-black">{{ $game['player_count'] }}</span></div>
+                    <div>Цена:
+                        <span class="text-black">
+                            @if ($game['price'] > 0 )
+                                {{ $game['price'] }} Рублей.
+                            @else
+                                Бесплатно
+                            @endif
+                        </span>
+                    </div>
+                </div>
+
+                <div class="space-x-2">
+                    <button class="bg-[#2D2D2D] hover:bg-gray-300 text-white rounded px-4 py-1 transition w-40">Подробнее</button>
+                    <button class="bg-[#2D2D2D] hover:bg-gray-300 text-white rounded px-4 py-1 transition w-40">Откликнуться</button>
+                    <div class="text-right text-gray-700 p-2">
+                        <span>
+                            Объявление создано: {{ \Carbon\Carbon::parse($game['created_at'])->format('d.m.Y') }}
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+        <br>
+    @endforeach
 @endsection
 
 

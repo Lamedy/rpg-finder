@@ -40,8 +40,8 @@ class CreateCard extends Controller
             'game_tags.*'   => 'integer|exists:game_style_tag,game_style_tag_pk',
             'description'   => 'nullable|string|max:1000',
             'city_id'       => 'required_unless:game_format,1|nullable|integer|exists:city,city_pk',
-            'game_place'   => 'nullable|string|max:255',
-            'date'          => 'nullable|date',
+            'game_place'    => 'nullable|string|max:255',
+            'date'          => 'nullable|date|after_or_equal:today|required_with:time',
             'time'          => 'nullable|date_format:H:i',
             'price'         => 'nullable|numeric|min:0',
             'contacts'      => 'required|string|max:1000',
@@ -53,8 +53,11 @@ class CreateCard extends Controller
             $date = $request->input('date');
             $time = $request->input('time');
             $datetime = null;
+
             if ($date && $time) {
                 $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', "$date $time");
+            } elseif ($date) {
+                $datetime = $date;
             }
 
             $gameSession = GameSession::create([
@@ -78,11 +81,13 @@ class CreateCard extends Controller
                 ]);
             }
 
-            foreach ($request->get('game_tags') as $game_tag => $game_tag_pk) {
-                SessionTagsList::create([
-                    'game_session_pk' => $gameSession->game_session_pk,
-                    'game_style_tag_pk' => $game_tag_pk,
-                ]);
+            if ($request->filled('game_tags')) {
+                foreach ($request->get('game_tags') as $game_tag_pk) {
+                    SessionTagsList::create([
+                        'game_session_pk' => $gameSession->game_session_pk,
+                        'game_style_tag_pk' => $game_tag_pk,
+                    ]);
+                }
             }
 
             DB::commit();

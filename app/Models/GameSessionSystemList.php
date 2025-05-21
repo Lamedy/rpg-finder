@@ -14,4 +14,9 @@ class GameSessionSystemList extends Model
     protected $fillable = ['game_session_pk', 'game_system_pk'];
 
     public $timestamps = false;
+
+    public function system()
+    {
+        return $this->belongsTo(GameSystems::class, 'game_system_pk', 'game_system_pk');
+    }
 }
