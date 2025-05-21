@@ -45,7 +45,7 @@
                 Назад
             </a>
             <button type="submit" form="password-form"
-                    class="bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
+                    class="bg-white text-black text-center font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
                 Изменить пароль
             </button>
         </div>

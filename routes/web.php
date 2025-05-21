@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [Main::class, 'show'])->name('main');
 Route::get('/findGroup', [FindGroup::class, 'show'])->name('find.group');
 
-// Forms
-Route::get('/findGroup/createCard', [CreateCard::class, 'show'])->name('create.card');
-
 // Registration forms
 Route::get('/registration', [Registration::class, 'show'])->name('registration');
 Route::post('/registration', [Registration::class, 'submit'])->name('registration.submit');
@@ -37,4 +34,7 @@ Route::middleware(['auth'])->group(function () {
         return redirect('/');
     });
     Route::post('/logout', [Authorization::class, 'logout'])->name('logout');
+
+    Route::get('/findGroup/createCard', [CreateCard::class, 'show'])->name('create.card');
+    Route::post('/findGroup/createCard', [CreateCard::class, 'submit'])->name('create.card.update');
 });

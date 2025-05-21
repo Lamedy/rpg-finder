@@ -10,7 +10,7 @@
 
         <div class="max-w-2xl mx-auto rounded-md overflow-hidden shadow-lg border border-black">
             <!-- Верхняя светлая часть -->
-            <div class="bg-white p-6 space-y-4">
+            <div class="bg-gray-200 p-6 space-y-4">
                 <div>
                     <label for="login" class="block font-bold text-lg text-gray-800 mb-1">Логин*:</label>
                     <input type="text" id="login" name="login" required

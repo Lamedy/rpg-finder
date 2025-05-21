@@ -15,8 +15,12 @@ use Illuminate\Support\Facades\Validator;
 
 class Authorization extends Controller
 {
-    public function show(): View
+    public function show(): View | RedirectResponse
     {
+        if(Auth::check()){
+            return redirect('/');
+        }
+
         return view('Forms.Authorization');
     }
 
