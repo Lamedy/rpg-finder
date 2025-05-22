@@ -74,6 +74,11 @@
             <div class="border-t border-gray-500 text-xs whitespace-pre-line">
                 <span class="font-bold">Описание:</span>
                 {{ $game->game_description }}
+
+                @if ($game->user->show_contacts_others)
+                    <span class="font-bold">Контакты:</span>
+                    {{ $game->contacts }}
+                @endif
             </div>
 
             <div class="flex justify-between items-center mt-4 py-2 text-xs font-bold">
@@ -104,7 +109,7 @@
                     <button class="bg-[#2D2D2D] hover:bg-gray-300 text-white rounded px-4 py-1 transition w-40">Откликнуться</button>
                     <div class="text-right text-gray-700 p-2">
                         <span>
-                            Объявление создано: {{ \Carbon\Carbon::parse($game['created_at'])->format('d.m.Y') }}
+                            Объявление создано: {{ \Carbon\Carbon::parse($game['created_at'])->format('Дата: d.m.Y Время: H.i') }}
                         </span>
                     </div>
                 </div>

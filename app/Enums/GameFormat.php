@@ -11,7 +11,7 @@ enum GameFormat: int
     public function label(): string
     {
         return match($this) {
-            self::LIVE => 'В живую',
+            self::LIVE => 'Вживую',
             self::ONLINE => 'Онлайн',
             self::ANY => 'Любой',
         };

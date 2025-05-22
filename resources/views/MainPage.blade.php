@@ -10,7 +10,7 @@
                         <div class="bg-gray-200 mb-4 rounded shadow border border-black">
                             <p class="mb-2 p-2 font-semibold">{{ $news['news_text'] }}</p>
                             <div class="bg-[#3A3A3A] text-white text-sm px-2 py-1 rounded border">
-                                Дата: <strong>{{ substr($news['date'], 0, 10) }}</strong>
+                                {{ \Carbon\Carbon::parse($news['date'])->format('Дата: d.m.Y Время: H.i') }}
                             </div>
                         </div>
                     @endforeach

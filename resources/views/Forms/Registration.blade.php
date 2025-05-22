@@ -76,9 +76,13 @@
             </div>
 
             <!-- Нижняя тёмная часть с кнопкой -->
-            <div class="bg-[#2D2D2D] p-4 flex justify-center">
+            <div class="bg-[#2D2D2D] p-4 flex justify-center space-x-4">
+                <a href="{{route('login')}}"
+                        class="bg-white text-center font-bold px-5 py-2 rounded hover:bg-[#828282] transition w-60">
+                    Назад
+                </a>
                 <button type="submit"
-                        class="bg-white font-bold px-5 py-2 rounded hover:bg-[#828282] transition w-60">
+                        class="bg-white text-center font-bold px-5 py-2 rounded hover:bg-[#828282] transition w-60">
                     Зарегистрироваться
                 </button>
             </div>
