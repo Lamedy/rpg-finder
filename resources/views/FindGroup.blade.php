@@ -117,6 +117,9 @@
         </div>
         <br>
     @endforeach
+
+    <!-- Пагинация -->
+    {{ $games->links('pagination::tailwind') }}
 @endsection
 
 
