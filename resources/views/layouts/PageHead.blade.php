@@ -62,7 +62,7 @@
                         <!-- Список действий -->
                         <nav class="flex flex-col space-y-4 px-6 py-2">
                             <a href="" class="text-lg text-white hover:text-blue-600">Уведомления</a>
-                            <a href="" class="text-lg text-white hover:text-blue-600">Мои анкеты</a>
+                            <a href="{{ route('account.my_advertisements') }}" class="text-lg text-white hover:text-blue-600">Мои анкеты</a>
                             <a href="" class="text-lg text-white hover:text-blue-600">Профиль</a>
                             <a href="/account/settings" class="text-lg text-white hover:text-blue-600">Настройки</a>
                             <form method="POST" action="{{ route('logout') }}">

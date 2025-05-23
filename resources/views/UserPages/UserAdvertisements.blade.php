@@ -1,19 +1,15 @@
 @extends('layouts.MainContentPage')
 
-@section('page_name', 'Поиск компании')
+@section('page_name', 'Мои анкеты')
 
 @section('content_title')
     <div class="flex justify-between items-center">
-        <div>Поиск компании</div>
+        <div>Мои анкеты</div>
         <a href="{{ route('create.card') }}"
            class="text-black bg-gray-200 font-bold px-2 rounded hover:bg-[#828282]">
             Создать анкету
         </a>
     </div>
-@endsection
-
-@section('additional_menu')
-    @include('Components.SearchFilters')
 @endsection
 
 @section('content')

@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Forms\User;
-
-use App\Models\Sessions;
-use App\Models\User;
+namespace App\Http\Controllers\User\Forms;
 
 use App\Http\Controllers\Controller;
+use App\Models\Sessions;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\View\View;
 

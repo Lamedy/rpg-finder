@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Forms\User;
+namespace App\Http\Controllers\User\Forms;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserAuthorization;

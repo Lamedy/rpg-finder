@@ -1,14 +1,13 @@
 <?php
 
-use App\Http\Controllers\Main;
 use App\Http\Controllers\FindGroup;
-
 use App\Http\Controllers\Forms\Authorization;
-use App\Http\Controllers\Forms\Registration;
 use App\Http\Controllers\Forms\CreateCard;
-use App\Http\Controllers\Forms\User\Settings;
-use App\Http\Controllers\Forms\User\ChangePassword;
-
+use App\Http\Controllers\Forms\Registration;
+use App\Http\Controllers\Main;
+use App\Http\Controllers\User\Forms\ChangePassword;
+use App\Http\Controllers\User\Forms\Settings;
+use App\Http\Controllers\User\UserAdvertisements;
 use Illuminate\Support\Facades\Route;
 
 // Pages
@@ -30,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/account/settings', [Settings::class, 'submit'])->name('account.settings.update');
     Route::get('/account/settings/change_password', [ChangePassword::class, 'show'])->name('account.settings.change_password');
     Route::post('/account/settings/change_password', [ChangePassword::class, 'submit'])->name('account.settings.change_password.update');
+    Route::get('/account/MyAdvertisements', [UserAdvertisements::class, 'show'])->name('account.my_advertisements');
     Route::get('/logout', function () {
         return redirect('/');
     });
