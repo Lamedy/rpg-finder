@@ -42,15 +42,16 @@
                     <!-- Имя и рейтинг -->
                     <div class="text-center text-3xl px-2">
                         <div class="font-semibold">{{ $game['user']->user_name }}</div>
-                        <div class="text-yellow-400">
-                            @for ($i = 1; $i <= 5; $i++)
-                                @if ($i <= $game['user']->rating)
-                                    ★
-                                @else
-                                    ☆
-                                @endif
-                            @endfor
-                        </div>
+{{--                        todo Вернуть когда будет реализованна система отзывов--}}
+{{--                        <div class="text-yellow-400">--}}
+{{--                            @for ($i = 1; $i <= 5; $i++)--}}
+{{--                                @if ($i <= $game['user']->rating)--}}
+{{--                                    ★--}}
+{{--                                @else--}}
+{{--                                    ☆--}}
+{{--                                @endif--}}
+{{--                            @endfor--}}
+{{--                        </div>--}}
                     </div>
                 </div>
             </div>

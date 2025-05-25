@@ -97,6 +97,7 @@
                         <button type="button" @click="clear" class="text-sm text-red-600 mt-1 underline">Сбросить выбор</button>
                     </template>
                 </div>
+
                 <!-- Множественный выбор систем -->
                 <div
                     x-show="playerType === '1'"
@@ -131,9 +132,12 @@
                     <!-- Выбранные системы -->
                     <div class="mt-2 flex flex-wrap gap-2">
                         <template x-for="item in selected" :key="item[idKey]">
-                            <div class="bg-blue-200 text-blue-800 px-3 py-1 rounded flex items-center space-x-2">
-                                <span x-text="item[nameKey]"></span>
-                                <button type="button" @click="remove(item)" class="font-bold">&times;</button>
+                            <div class="bg-[#1a1a1a] text-white py-1 rounded flex items-center space-x-2">
+                                <span class="pl-2" x-text="item[nameKey]"></span>
+                                <button type="button"
+                                        @click="remove(item)"
+                                        class="font-bold flex items-center justify-center w-5 h-5 hover:bg-[#262626]">&times;
+                                </button>
                                 <input type="hidden" :name="'game_systems[]'" :value="item[idKey]">
                             </div>
                         </template>
@@ -192,9 +196,12 @@
                     <!-- Выбранные теги -->
                     <div class="mt-2 flex flex-wrap gap-2">
                         <template x-for="item in selected" :key="item[`${idKey}`]">
-                            <div class="bg-blue-200 text-blue-800 px-3 py-1 rounded flex items-center space-x-2">
-                                <span x-text="item[`${nameKey}`]"></span>
-                                <button type="button" @click="remove(item)" class="font-bold">&times;</button>
+                            <div class="bg-[#1a1a1a] text-white py-1 rounded flex items-center space-x-2">
+                                <span class="pl-2" x-text="item[`${nameKey}`]"></span>
+                                <button type="button"
+                                        @click="remove(item)"
+                                        class="font-bold flex items-center justify-center w-5 h-5 hover:bg-[#262626]">&times;
+                                </button>
                                 <input type="hidden" :name="'game_tags[]'" :value="item[`${idKey}`]">
                             </div>
                         </template>
@@ -320,89 +327,4 @@
         </div>
     </form>
 
-@endsection
-
-@section('scripts')
-    <script>
-        function singleSelect(data, idKey, nameKey) {
-            return {
-                open: false,
-                search: '',
-                selected: null,
-                items: data,
-                idKey,
-                nameKey,
-                filteredItems() {
-                    if (this.search === '') return this.items;
-                    return this.items.filter(i =>
-                        i[this.nameKey].toLowerCase().includes(this.search.toLowerCase())
-                    );
-                },
-                choose(item) {
-                    this.selected = item;
-                    this.search = item[this.nameKey];
-                    this.open = false;
-                },
-                clear() {
-                    this.selected = null;
-                    this.search = '';
-                }
-            };
-        }
-
-        function multiSelect(data, idKey, nameKey) {
-            return {
-                open: false,
-                search: '',
-                selected: [],
-                items: data,
-                idKey: idKey,
-                nameKey: nameKey,
-                filteredItems() {
-                    if (this.search === '') return this.items;
-                    return this.items.filter(i =>
-                        i[this.nameKey].toLowerCase().includes(this.search.toLowerCase())
-                    );
-                },
-                toggle(item) {
-                    if (this.isSelected(item)) {
-                        this.selected = this.selected.filter(s => s[this.idKey] !== item[this.idKey]);
-                    } else {
-                        this.selected.push(item);
-                    }
-                },
-                isSelected(item) {
-                    return this.selected.some(s => s[this.idKey] === item[this.idKey]);
-                },
-                remove(item) {
-                    this.selected = this.selected.filter(s => s[this.idKey] !== item[this.idKey]);
-                }
-            }
-        }
-
-        function citySelect(cities) {
-            return {
-                open: false,
-                search: '',
-                selected: null,
-                cities: cities,
-                get filtered() {
-                    if (this.search === '') return [];
-                    return this.cities.filter(c =>
-                        c.city.toLowerCase().includes(this.search.toLowerCase())
-                    );
-                },
-                select(city) {
-                    this.search = city.city;
-                    this.selected = city;
-                    this.open = false;
-                },
-                updateSelection() {
-                    if (!this.selected || this.search !== this.selected.city) {
-                        this.selected = null;
-                    }
-                }
-            }
-        }
-    </script>
 @endsection

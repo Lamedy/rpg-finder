@@ -2,18 +2,87 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\GameSession;
+use App\Models\GameStyleTag;
+use App\Models\GameSystems;
 use Illuminate\View\View;
+
+use Illuminate\Http\Request;
 
 class FindGroup extends Controller
 {
-    public function show(): View
+    public function show(Request $request): View
     {
         $countCardsOnOnePage = 5;
 
-        $games = GameSession::with(['gameSystems.system', 'city', 'tags.tag', 'user'])
-            ->paginate($countCardsOnOnePage);
+        $validated = $request->validate([
+            'city_id' => 'nullable|integer|exists:city,city_pk',
+            'price_min' => 'nullable|numeric|min:0',
+            'price_max' => 'nullable|numeric|min:0',
+            'game_format' => 'nullable|array',
+            'game_format.*' => 'in:0,1',            // 0 - live, 1 - online
+            'my_game_role' => 'nullable|array',
+            'my_game_role.*' => 'in:0,1',           // 1 - player, 0 - master
+            'game_duration' => 'nullable|array',
+            'game_duration.*' => 'in:0,1',            // 0 - one game, 1 - campaign
+            'game_systems' => 'nullable|array',
+            'game_systems.*' => 'int',
+            'game_tags' => 'nullable|array',
+            'game_tags.*' => 'int',
+        ]);
 
-        return view('FindGroup')->with(['games' => $games]);
+        $query = GameSession::with(['gameSystems.system', 'city', 'tags.tag', 'user']);
+
+        // Фильтры поиска
+        if (isset($validated['city_id']) && $validated['city_id'] !== '') {
+            $query->where('city_pk', $validated['city_id']);
+        }
+
+        if (isset($validated['price_min']) && $validated['price_min'] !== '') {
+            $query->where('price', '>=', $validated['price_min']);
+        }
+
+        if (isset($validated['price_max']) && $validated['price_max'] !== '') {
+            $query->where('price', '<=', $validated['price_max']);
+        }
+
+        if (isset($validated['game_format']) && !empty($validated['game_format'])) {
+            $query->where(function ($q) use ($validated) {
+                $q->whereIn('game_format', $validated['game_format'])
+                    ->orWhere('game_format', 2); // 2 — ANY
+            });
+        }
+
+        if (isset($validated['my_game_role']) && !empty($validated['my_game_role'])) {
+            $query->whereIn('player_type_needed', $validated['my_game_role']);
+        }
+
+        if (isset($validated['game_duration']) && !empty($validated['game_duration'])) {
+            $query->where(function ($q) use ($validated) {
+                $q->whereIn('game_duration', $validated['game_duration'])
+                    ->orWhere('game_duration', 2); // 2 — ANY
+            });
+        }
+
+        if (!empty($validated['game_systems'])) {
+            $query->whereHas('gameSystems', function ($q) use ($validated) {
+                $q->whereIn('game_system_pk', $validated['game_systems']);
+            });
+        }
+
+        if (!empty($validated['game_tags'])) {
+            $query->whereHas('tags', function ($q) use ($validated) {
+                $q->whereIn('game_style_tag_pk', $validated['game_tags']);
+            });
+        }
+
+        $games = $query->paginate($countCardsOnOnePage)->appends(request()->except('page'));
+
+        $cityList = City::select('city_pk', 'city')->get();
+        $gameSystems = GameSystems::select('game_system_pk', 'game_system_name')->get();
+        $gameTags = GameStyleTag::select('game_style_tag_pk', 'game_style_tag')->get();
+
+        return view('FindGroup', compact('games', 'cityList', 'gameSystems', 'gameTags'));
     }
 }

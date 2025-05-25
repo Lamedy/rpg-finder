@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/account/settings', [Settings::class, 'submit'])->name('account.settings.update');
     Route::get('/account/settings/change_password', [ChangePassword::class, 'show'])->name('account.settings.change_password');
     Route::post('/account/settings/change_password', [ChangePassword::class, 'submit'])->name('account.settings.change_password.update');
-    Route::get('/account/MyAdvertisements', [UserAdvertisements::class, 'show'])->name('account.my_advertisements');
+    Route::get('/findGroup/MyAdvertisements', [UserAdvertisements::class, 'show'])->name('account.my_advertisements');
     Route::get('/logout', function () {
         return redirect('/');
     });
