@@ -30,11 +30,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/account/settings/change_password', [ChangePassword::class, 'show'])->name('account.settings.change_password');
     Route::post('/account/settings/change_password', [ChangePassword::class, 'submit'])->name('account.settings.change_password.update');
     Route::get('/findGroup/MyAdvertisements', [UserAdvertisements::class, 'show'])->name('account.my_advertisements');
-    Route::get('/logout', function () {
-        return redirect('/');
-    });
+
     Route::post('/logout', [Authorization::class, 'logout'])->name('logout');
 
     Route::get('/findGroup/createCard', [CreateCard::class, 'show'])->name('create.card');
     Route::post('/findGroup/createCard', [CreateCard::class, 'submit'])->name('create.card.update');
+    Route::get('/findGroup/editCard/{card}', [CreateCard::class, 'edit'])->name('card.edit');
+    Route::put('/findGroup/editCard/{card}', [CreateCard::class, 'acceptEdit'])->name('card.edit.accept');
+    Route::delete('/findGroup/deleteCard/{card}', [CreateCard::class, 'delete'])->name('card.delete');
 });

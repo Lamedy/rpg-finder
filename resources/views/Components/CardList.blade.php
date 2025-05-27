@@ -108,10 +108,26 @@
                 </div>
             </div>
             <div class="space-x-2 flex">
-                <button
-                    class="ml-auto bg-[#2D2D2D] hover:bg-gray-300 text-lg text-white rounded px-4 py-2 transition w-60">
-                    Откликнуться
-                </button>
+                @if (Auth::user() != null && Auth::user()->user_pk == $game->author)
+                    <form action="{{ route('card.delete', $game->game_session_pk) }}" method="POST" onsubmit="return confirm('Удалить эту сессию?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                           class="ml-auto bg-[#2D2D2D] hover:bg-gray-300 text-lg text-white text-center rounded px-4 py-2 transition w-60">
+                            Удалить
+                        </button>
+                    </form>
+
+                    <a href="{{ route('card.edit', $game) }}"
+                        class="ml-auto bg-[#2D2D2D] hover:bg-gray-300 text-lg text-white text-center rounded px-4 py-2 transition w-60">
+                        Редактировать
+                    </a>
+                @else
+                    <button
+                        class="ml-auto bg-[#2D2D2D] hover:bg-gray-300 text-lg text-white rounded px-4 py-2 transition w-60">
+                        Откликнуться
+                    </button>
+               @endif
             </div>
         </div>
         <div class="text-base font-bold text-right text-[#808080] px-1 py-1">

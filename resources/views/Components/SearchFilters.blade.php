@@ -164,7 +164,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Выбор систем -->
         <div
             x-data="multiSelect(@js($gameSystems), 'game_system_pk', 'game_system_name', @js(request('game_systems')))"

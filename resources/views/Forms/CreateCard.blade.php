@@ -6,10 +6,22 @@
 {{--todo придумать как исправить проблему когда форма переключается, --}}
 {{--todo скрытые поля всё ещё хранят данные и из за этого отправляются лишние данные которых быть не должно--}}
 @section('content')
-    <form id="card-form" method="POST" action="{{ route('create.card.update') }}">
+    <form id="card-form" method="POST"
+          action="{{ isset($cardInfo)
+              ? route('card.edit.accept', $cardInfo)
+              : route('create.card.update') }}"
+    >
         @csrf
+        @if(isset($cardInfo))
+            @method('PUT')
+        @endif
         <div class="max-w-2xl mx-auto rounded-md overflow-hidden shadow-lg border border-black bg-gray-200">
-            <div class="p-4 space-y-6" x-data="{ playerType: '0', gameFormat: '0' }">
+            <div class="p-4 space-y-6"
+                 x-data="{
+                     playerType: '{{ strval(old('player_type', isset($cardInfo) && $cardInfo->player_type_needed ? $cardInfo->player_type_needed->value : '0')) }}',
+                     gameFormat: '{{ strval(old('player_type', isset($cardInfo) && $cardInfo->game_format ? $cardInfo->game_format->value : '0')) }}'
+                 }"
+            >
 
                 <!-- Кого ищу -->
                 <div>
@@ -30,7 +42,8 @@
                     <label for="player_count" class="block text-lg font-bold text-gray-800 mb-1">Кол-во игроков:</label>
                     <input id="player_count" name="player_count" type="number" min="1"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                           placeholder="Введите количество игроков">
+                           placeholder="Введите количество игроков"
+                           value="{{ old('player_count', $cardInfo->player_count ?? '') }}">
                     @error('player_count')
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
@@ -56,7 +69,8 @@
                 <!-- Одинарный выбор системы -->
                 <div
                     x-show="playerType === '0'"
-                    x-data="singleSelect(@js($gameSystems), 'game_system_pk', 'game_system_name')"
+                    x-data="singleSelect(@js($gameSystems), 'game_system_pk', 'game_system_name',  {{ $selectedGameSystems[0] ?? null }})"
+                    x-init="init()"
                     class="relative">
                     <label class="block text-lg font-bold text-gray-800 mb-1">Игровая система:</label>
 
@@ -101,7 +115,8 @@
                 <!-- Множественный выбор систем -->
                 <div
                     x-show="playerType === '1'"
-                    x-data="multiSelect(@js($gameSystems), 'game_system_pk', 'game_system_name')"
+                    x-data="multiSelect(@js($gameSystems), 'game_system_pk', 'game_system_name', @js($selectedGameSystems ?? null) )"
+                    x-init="init()"
                     class="relative"
                 >
                     <label for="game_systems" class="block text-lg font-bold text-gray-800 mb-1">Игровые системы:</label>
@@ -142,21 +157,23 @@
                             </div>
                         </template>
                     </div>
-
-                    @error('game_systems')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
                 </div>
-
+                @error('game_systems')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
 
                 <!-- Длительность игры -->
                 <div>
                     <label for="game_duration" class="block text-lg font-bold text-gray-800 mb-1">Длительность игры:</label>
+                    @php
+                        $selectedDuration = old('game_duration', isset($cardInfo) ? $cardInfo->game_duration->value : null);
+                    @endphp
+
                     <select id="game_duration" name="game_duration"
                             class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        <option value="0">Ваншот (Одна игра)</option>
-                        <option value="1">Кампания (Больше одной игры)</option>
-                        <option value="2">Ваншот (Одна игра) с возможностью перейти в кампанию</option>
+                        <option value="0" {{ strval($selectedDuration) === '0' ? 'selected' : '' }}>Ваншот (Одна игра)</option>
+                        <option value="1" {{ strval($selectedDuration) === '1' ? 'selected' : '' }}>Кампания (Больше одной игры)</option>
+                        <option value="2" {{ strval($selectedDuration) === '2' ? 'selected' : '' }}>Ваншот с возможностью перейти в кампанию</option>
                     </select>
                     @error('game_duration')
                     <div class="text-red-500">{{ $message }}</div>
@@ -165,7 +182,8 @@
 
                 <!-- Теги -->
                 <div
-                    x-data="multiSelect(@js($gameTags), 'game_style_tag_pk', 'game_style_tag')"
+                    x-data="multiSelect(@js($gameTags), 'game_style_tag_pk', 'game_style_tag', @js($selectedGameTags ?? null))"
+                    x-init="init()"
                     class="relative"
                 >
                     <label for="game_tags" class="block text-lg font-bold text-gray-800 mb-1">Теги:</label>
@@ -217,14 +235,18 @@
                     <label for="description" class="block text-lg font-bold text-gray-800 mb-1">Описание:</label>
                     <textarea id="description" name="description" rows="4"
                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                              placeholder="Опишите вашу игру..."></textarea>
+                              placeholder="Опишите вашу игру...">{{ $cardInfo->game_description ?? '' }}</textarea>
                     @error('description')
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <!-- Город -->
-                <div x-show="gameFormat != '1'" x-data="citySelect(@js($cityList))" class="relative">
+                <div x-show="gameFormat != '1'"
+                     x-data="citySelect(@js($cityList), {{ $cardInfo->city_pk ?? null }} )"
+                     x-init="init()"
+                     class="relative"
+                >
                     <label for="city" class="block text-lg font-bold text-gray-800 mb-1">Город:</label>
 
                     <input id="city"
@@ -263,17 +285,22 @@
                     <label for="game_place" class="block text-lg font-bold text-gray-800 mb-1">Место проведения игры:</label>
                     <input id="game_place" name="game_place"
                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                              placeholder="Адрес или место в онлайн формате где будет проводится игра"></input>
+                              placeholder="Адрес или место в онлайн формате где будет проводится игра"
+                              value="{{ old('game_place', $cardInfo->game_place ?? '') }}"></input>
                     @error('game_place')
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <!-- Дата проведения -->
+                @php
+                    $gameDate = isset($cardInfo) ? \Carbon\Carbon::parse($cardInfo->game_date) : null;
+                @endphp
                 <div x-show="playerType === '0'">
                     <label for="date" class="block text-lg font-bold text-gray-800 mb-1">Дата проведения:</label>
                     <input id="date" name="date" type="date"
-                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           value="{{ old('date', $gameDate?->format('Y-m-d')) }}">
                     @error('date')
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
@@ -283,7 +310,8 @@
                 <div x-show="playerType === '0'">
                     <label for="time" class="block text-lg font-bold text-gray-800 mb-1">Время проведения:</label>
                     <input id="time" name="time" type="time"
-                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           value="{{ old('time', $gameDate?->format('H:i')) }}">
                     @error('time')
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
@@ -294,7 +322,8 @@
                     <label for="price" class="block text-lg font-bold text-gray-800 mb-1">Цена (₽):</label>
                     <input id="price" name="price" type="number" min="0" step="0.01"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                           placeholder="Введите цену">
+                           placeholder="Введите цену"
+                           value="{{ old('price', $cardInfo->price ?? '') }}">
                     @error('price')
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
@@ -305,7 +334,7 @@
                     <label for="contacts" class="block text-lg font-bold text-gray-800 mb-1">Контакты:</label>
                     <textarea id="contacts" name="contacts" rows="3"
                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                              placeholder="Телефон, email, Telegram и т.д."></textarea>
+                              placeholder="Телефон, email, Telegram и т.д.">{{ old('contacts', $cardInfo->contacts ?? '') }}</textarea>
                     @error('contacts')
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
@@ -315,13 +344,13 @@
 
             <!-- Нижняя кнопка -->
             <div class="bg-[#2D2D2D] px-6 py-4 flex justify-center space-x-4">
-                <a href="/findGroup"
+                <a href="{{ url()->previous() }}"
                         class="text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
                     Назад
                 </a>
                 <button type="submit"
                         class="text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
-                    Сохранить изменения
+                    {{ isset($cardInfo) ? 'Обновить' : 'Создать' }}
                 </button>
             </div>
         </div>

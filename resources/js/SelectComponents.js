@@ -1,4 +1,4 @@
-function singleSelect(data, idKey, nameKey) {
+function singleSelect(data, idKey, nameKey, selectedId = null) {
     return {
         open: false,
         search: '',
@@ -20,6 +20,14 @@ function singleSelect(data, idKey, nameKey) {
         clear() {
             this.selected = null;
             this.search = '';
+        },
+        init() {
+            if (selectedId !== null) {
+                this.selected = this.items.find(i => i[this.idKey] === selectedId) || null;
+                if (this.selected) {
+                    this.search = this.selected[this.nameKey];
+                }
+            }
         }
     };
 }

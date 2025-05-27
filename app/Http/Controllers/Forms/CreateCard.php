@@ -100,4 +100,103 @@ class CreateCard extends Controller
         return redirect()->route('find.group');
     }
 
+    public function edit(GameSession $card): View
+    {
+        return view('Forms.CreateCard')->with([
+            'cardInfo' => $card,
+            'gameSystems' => GameSystems::select('game_system_pk', 'game_system_name')->get(),
+            'gameTags' => GameStyleTag::select('game_style_tag_pk', 'game_style_tag')->get(),
+            'cityList' => City::select('city_pk', 'city')->get(),
+            'selectedGameSystems' => GameSessionSystemList::query()
+                ->where('game_session_pk', $card->game_session_pk)
+                ->pluck('game_system_pk'),
+            'selectedGameTags' => SessionTagsList::query()
+                ->where('game_session_pk', $card->game_session_pk)
+                ->pluck('game_style_tag_pk')
+        ]);
+    }
+
+    public function delete(GameSession $card): RedirectResponse
+    {
+        $card->delete();
+
+        return redirect()->back();
+    }
+
+    public function acceptEdit(Request $request, GameSession $card): RedirectResponse
+    {
+        //dd($request->all());
+        $validated = $request->validate([
+            'player_type'   => 'required|in:0,1',
+            'player_count'  => 'required_if:player_type,0|nullable|integer|min:1',
+            'game_format'   => 'required|in:0,1,2',
+            'game_systems'  => 'required|array|min:1',
+            'game_systems.*'=> 'integer|exists:game_system,game_system_pk',
+            'game_duration' => 'required|in:0,1,2',
+            'game_tags'     => 'nullable|array',
+            'game_tags.*'   => 'integer|exists:game_style_tag,game_style_tag_pk',
+            'description'   => 'nullable|string|max:1000',
+            'city_id'       => 'required_unless:game_format,1|nullable|integer|exists:city,city_pk',
+            'game_place'    => 'nullable|string|max:255',
+            'date'          => 'nullable|date|after_or_equal:today|required_with:time',
+            'time'          => 'nullable|date_format:H:i',
+            'price'         => 'nullable|numeric|min:0',
+            'contacts'      => 'required|string|max:1000',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $date = $request->input('date');
+            $time = $request->input('time');
+            $datetime = null;
+
+            if ($date && $time) {
+                $datetime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', "$date $time");
+            } elseif ($date) {
+                $datetime = $date;
+            }
+
+            // Обновляем основную таблицу
+            $card->update([
+                'player_type_needed' => $validated['player_type'],
+                'player_count' => $validated['player_count'] ?? null,
+                'game_format' => $validated['game_format'],
+                'game_duration' => $validated['game_duration'],
+                'game_description' => $validated['description'],
+                'game_place' => $validated['game_place'],
+                'game_date' => $datetime,
+                'city_pk' => $validated['city_id'],
+                'price' => $validated['price'],
+                'contacts' => $validated['contacts'],
+            ]);
+
+            // Очищаем старые связи
+            GameSessionSystemList::where('game_session_pk', $card->game_session_pk)->delete();
+            SessionTagsList::where('game_session_pk', $card->game_session_pk)->delete();
+
+            // Заносим новые
+            foreach ($validated['game_systems'] as $game_system_pk) {
+                GameSessionSystemList::create([
+                    'game_session_pk' => $card->game_session_pk,
+                    'game_system_pk' => $game_system_pk,
+                ]);
+            }
+
+            if (!empty($validated['game_tags'])) {
+                foreach ($validated['game_tags'] as $game_tag_pk) {
+                    SessionTagsList::create([
+                        'game_session_pk' => $card->game_session_pk,
+                        'game_style_tag_pk' => $game_tag_pk,
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('find.group')->with('success', 'Карточка успешно обновлена.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
 }
