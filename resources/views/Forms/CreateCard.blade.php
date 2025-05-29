@@ -2,9 +2,13 @@
 
 @section('page_name', 'Поиск компании')
 
-@section('content_title', 'Создать анкету')
-{{--todo придумать как исправить проблему когда форма переключается, --}}
-{{--todo скрытые поля всё ещё хранят данные и из за этого отправляются лишние данные которых быть не должно--}}
+@section('content_title')
+    @if (isset($cardInfo))
+        Редактировать анкету
+    @else
+        Создать анкету
+    @endif
+@endsection
 @section('content')
     <form id="card-form" method="POST"
           action="{{ isset($cardInfo)
@@ -67,101 +71,101 @@
                 <!-- Игровые системы -->
 
                 <!-- Одинарный выбор системы -->
-                <div
-                    x-show="playerType === '0'"
-                    x-data="singleSelect(@js($gameSystems), 'game_system_pk', 'game_system_name',  {{ $selectedGameSystems[0] ?? null }})"
-                    x-init="init()"
-                    class="relative">
-                    <label class="block text-lg font-bold text-gray-800 mb-1">Игровая система:</label>
-
-                    <input
-                        type="text"
-                        x-model="search"
-                        @focus="open = true"
-                        @keydown.escape="open = false"
-                        placeholder="Введите название системы..."
-                        class="w-full px-4 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    >
-
-                    <!-- Список с вариантами -->
+                <template x-if="playerType === '0'">
                     <div
-                        x-show="open"
-                        @mousedown.away="open = false"
-                        class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto w-full shadow-lg"
-                    >
-                        <template x-for="item in filteredItems()" :key="item[idKey]">
-                            <div
-                                @click="choose(item)"
-                                class="cursor-pointer px-4 py-2 hover:bg-blue-200"
-                                :class="{'bg-blue-100': selected && item[idKey] === selected[idKey]}"
-                            >
-                                <span x-text="item[nameKey]"></span>
-                            </div>
+                        x-data="singleSelect(@js($gameSystems), 'game_system_pk', 'game_system_name',  {{ $selectedGameSystems[0] ?? null }})"
+                        x-init="init()"
+                        class="relative">
+                        <label class="block text-lg font-bold text-gray-800 mb-1">Игровая система:</label>
+
+                        <input
+                            type="text"
+                            x-model="search"
+                            @focus="open = true"
+                            @keydown.escape="open = false"
+                            placeholder="Введите название системы..."
+                            class="w-full px-4 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        >
+
+                        <!-- Список с вариантами -->
+                        <div
+                            x-show="open"
+                            @mousedown.away="open = false"
+                            class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto w-full shadow-lg"
+                        >
+                            <template x-for="item in filteredItems()" :key="item[idKey]">
+                                <div
+                                    @click="choose(item)"
+                                    class="cursor-pointer px-4 py-2 hover:bg-blue-200"
+                                    :class="{'bg-blue-100': selected && item[idKey] === selected[idKey]}"
+                                >
+                                    <span x-text="item[nameKey]"></span>
+                                </div>
+                            </template>
+                            <div x-show="filteredItems().length === 0" class="px-4 py-2 text-gray-500">Ничего не найдено</div>
+                        </div>
+
+                        <!-- Скрытое поле с ID -->
+                        <template x-if="selected">
+                            <input type="hidden" name="game_systems[]" :value="selected[idKey]">
                         </template>
-                        <div x-show="filteredItems().length === 0" class="px-4 py-2 text-gray-500">Ничего не найдено</div>
+
+                        <!-- Кнопка сброса -->
+                        <template x-if="selected">
+                            <button type="button" @click="clear" class="text-sm text-red-600 mt-1 underline">Сбросить выбор</button>
+                        </template>
                     </div>
-
-                    <!-- Скрытое поле с ID -->
-                    <template x-if="selected">
-                        <input type="hidden" name="game_systems[]" :value="selected[idKey]">
-                    </template>
-
-                    <!-- Кнопка сброса -->
-                    <template x-if="selected">
-                        <button type="button" @click="clear" class="text-sm text-red-600 mt-1 underline">Сбросить выбор</button>
-                    </template>
-                </div>
-
+                </template>
                 <!-- Множественный выбор систем -->
-                <div
-                    x-show="playerType === '1'"
-                    x-data="multiSelect(@js($gameSystems), 'game_system_pk', 'game_system_name', @js($selectedGameSystems ?? null) )"
-                    x-init="init()"
-                    class="relative"
-                >
-                    <label for="game_systems" class="block text-lg font-bold text-gray-800 mb-1">Игровые системы:</label>
-
-                    <input type="text"
-                           x-model="search"
-                           @focus="open = true"
-                           @keydown.escape="open = false"
-                           placeholder="Начните вводить название системы..."
-                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
-
-                    <div x-show="open"
-                         @mousedown.away="open = false"
-                         class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto w-full shadow-lg"
-                         style="min-width: 100%;"
+                <template x-if="playerType === '1'">
+                    <div
+                        x-data="multiSelect(@js($gameSystems), 'game_system_pk', 'game_system_name', @js($selectedGameSystems ?? null) )"
+                        x-init="init()"
+                        class="relative"
                     >
-                        <template x-for="item in filteredItems()" :key="item[idKey]">
-                            <div @click="toggle(item)"
-                                 :class="{'bg-blue-100': isSelected(item)}"
-                                 class="cursor-pointer px-4 py-2 hover:bg-blue-200">
-                                <span x-text="item[nameKey]"></span>
-                            </div>
-                        </template>
-                        <div x-show="filteredItems().length === 0" class="px-4 py-2 text-gray-500">Системы не найдены</div>
-                    </div>
+                        <label for="game_systems" class="block text-lg font-bold text-gray-800 mb-1">Игровые системы:</label>
 
-                    <!-- Выбранные системы -->
-                    <div class="mt-2 flex flex-wrap gap-2">
-                        <template x-for="item in selected" :key="item[idKey]">
-                            <div class="bg-[#1a1a1a] text-white py-1 rounded flex items-center space-x-2">
-                                <span class="pl-2" x-text="item[nameKey]"></span>
-                                <button type="button"
-                                        @click="remove(item)"
-                                        class="font-bold flex items-center justify-center w-5 h-5 hover:bg-[#262626]">&times;
-                                </button>
-                                <input type="hidden" :name="'game_systems[]'" :value="item[idKey]">
-                            </div>
-                        </template>
+                        <input type="text"
+                               x-model="search"
+                               @focus="open = true"
+                               @keydown.escape="open = false"
+                               placeholder="Начните вводить название системы..."
+                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+
+                        <div x-show="open"
+                             @mousedown.away="open = false"
+                             class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto w-full shadow-lg"
+                             style="min-width: 100%;"
+                        >
+                            <template x-for="item in filteredItems()" :key="item[idKey]">
+                                <div @click="toggle(item)"
+                                     :class="{'bg-blue-100': isSelected(item)}"
+                                     class="cursor-pointer px-4 py-2 hover:bg-blue-200">
+                                    <span x-text="item[nameKey]"></span>
+                                </div>
+                            </template>
+                            <div x-show="filteredItems().length === 0" class="px-4 py-2 text-gray-500">Системы не найдены</div>
+                        </div>
+
+                        <!-- Выбранные системы -->
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            <template x-for="item in selected" :key="item[idKey]">
+                                <div class="bg-[#1a1a1a] text-white py-1 rounded flex items-center space-x-2">
+                                    <span class="pl-2" x-text="item[nameKey]"></span>
+                                    <button type="button"
+                                            @click="remove(item)"
+                                            class="font-bold flex items-center justify-center w-5 h-5 hover:bg-[#262626]">&times;
+                                    </button>
+                                    <input type="hidden" :name="'game_systems[]'" :value="item[idKey]">
+                                </div>
+                            </template>
+                        </div>
                     </div>
-                </div>
+                </template>
                 @error('game_systems')
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
-
                 <!-- Длительность игры -->
                 <div>
                     <label for="game_duration" class="block text-lg font-bold text-gray-800 mb-1">Длительность игры:</label>

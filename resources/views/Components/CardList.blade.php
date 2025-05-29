@@ -10,7 +10,13 @@
                     </div>
                 @endif
                 <div>
-                    <span class="font-semibold">Системы:</span>
+                    <span class="font-semibold">
+                        @if (count($game['gameSystems']) > 1)
+                            Системы:
+                        @else
+                            Система:
+                        @endif
+                    </span>
                     <span class="text-sm">
                             {{ $game['gameSystems']->map(fn($s) => $s->system->game_system_name)->implode(', ') }}
                         </span>
