@@ -35,43 +35,47 @@
                 </div>
             </div>
 
-            <div class="text-base font-bold max-w-[38%]">
+            <div class="font-bold max-w-[38%]">
                 <!-- Информация о пользователе -->
-                <div class="flex items-center space-x-3 justify-end">
-                    <!-- Аватар -->
-                    <img
-                        src="{{ asset('storage/' . $game['user']->avatar) }}"
-                        alt="Аватар"
-                        class="w-25 h-25 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
-                    />
+                <a href="{{ route('profile', $game['user']) }}">
+                    <div class="flex items-center space-x-3 justify-end">
+                        <!-- Аватар -->
+                        <img
+                            src="{{ asset('storage/' . $game['user']->avatar) }}"
+                            alt="Аватар"
+                            class="w-25 h-25 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
+                        />
 
-                    <!-- Имя и рейтинг -->
-                    <div class="text-center text-3xl px-2">
-                        <div class="font-semibold">{{ $game['user']->user_name }}</div>
-{{--                        todo Вернуть когда будет реализованна система отзывов--}}
-{{--                        <div class="text-yellow-400">--}}
-{{--                            @for ($i = 1; $i <= 5; $i++)--}}
-{{--                                @if ($i <= $game['user']->rating)--}}
-{{--                                    ★--}}
-{{--                                @else--}}
-{{--                                    ☆--}}
-{{--                                @endif--}}
-{{--                            @endfor--}}
-{{--                        </div>--}}
+                        <!-- Имя и рейтинг -->
+                        <div class="text-center text-3xl px-2">
+                            <div>
+                                {{ $game['user']->user_name }}
+                            </div>
+    {{--                        todo Вернуть когда будет реализованна система отзывов--}}
+    {{--                        <div class="text-yellow-400">--}}
+    {{--                            @for ($i = 1; $i <= 5; $i++)--}}
+    {{--                                @if ($i <= $game['user']->rating)--}}
+    {{--                                    ★--}}
+    {{--                                @else--}}
+    {{--                                    ☆--}}
+    {{--                                @endif--}}
+    {{--                            @endfor--}}
+    {{--                        </div>--}}
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
 
         <div class="border-t border-black py-2 font-bold">
-            <span class="text-base font-bold">Тэги:</span>
+            <span class="text-base font-bold">Теги:</span>
             <span>
-                    @if ($game['tags'] != null)
+                @if ($game['tags'] && $game['tags']->count() > 0)
                     {{ $game['tags']->map(fn($s) => $s->tag->game_style_tag)->implode(', ') }}
                 @else
                     Отсутствуют
                 @endif
-                </span>
+            </span>
         </div>
 
         <div class="border-t border-gray-500 text-base py-2">

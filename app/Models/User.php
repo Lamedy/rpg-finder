@@ -30,4 +30,18 @@ class User extends Authenticatable
     public static function getValueShowContactsOther($user_id): bool {
         return (bool) self::where('user_pk', $user_id)->value('show_contacts_others');
     }
+
+    public function gameSystemsList()
+    {
+        return $this->hasMany(GameSystemList::class, 'user_pk', 'user_pk');
+    }
+
+    public function userTagsList()
+    {
+        return $this->hasMany(UserTagList::class, 'user_pk', 'user_pk');
+    }
+    public function userContactsList()
+    {
+        return $this->hasMany(UserContactsList::class, 'user_pk', 'user_pk');
+    }
 }

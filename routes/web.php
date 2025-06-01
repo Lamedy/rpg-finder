@@ -7,6 +7,7 @@ use App\Http\Controllers\Forms\Registration;
 use App\Http\Controllers\Main;
 use App\Http\Controllers\User\Forms\ChangePassword;
 use App\Http\Controllers\User\Forms\Settings;
+use App\Http\Controllers\User\Profile;
 use App\Http\Controllers\User\UserAdvertisements;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,8 @@ Route::post('/registration/confirm', [Registration::class, 'confirmCode'])->name
 Route::get('/login', [Authorization::class, 'show'])->name('login');
 Route::post('/login', [Authorization::class, 'submit'])->name('login.submit');
 
+Route::get('/profile/{user}', [Profile::class, 'show'])->name('profile');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/account/settings', [Settings::class, 'show'])->name('account.settings');
     Route::post('/account/settings', [Settings::class, 'submit'])->name('account.settings.update');
@@ -38,4 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/findGroup/editCard/{card}', [CreateCard::class, 'edit'])->name('card.edit');
     Route::put('/findGroup/editCard/{card}', [CreateCard::class, 'acceptEdit'])->name('card.edit.accept');
     Route::delete('/findGroup/deleteCard/{card}', [CreateCard::class, 'delete'])->name('card.delete');
+
+    Route::get('/profile/{user}/Edit', [Profile::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/{user}/Edit', [Profile::class, 'submit'])->name('profile.edit.submit');
 });
