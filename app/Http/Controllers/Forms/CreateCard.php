@@ -19,11 +19,36 @@ class CreateCard extends Controller
 {
     public function show(): View
     {
+        $user = Auth::user();
+        $user->load(['gameSystemsList.system', 'userTagsList.tags', 'userContactsList.contacts']);
+
+        $gameSystems = $user->gameSystemsList->pluck('game_system_pk')->all();
+        $userTags = $user->userTagsList->pluck('user_game_style_tag_pk')->all();
+
+        switch ($user->game_role){
+            case 0:
+                $find_role = 1;
+                break;
+            case 1:
+                $find_role = 0;
+                break;
+            default:
+                $find_role = null;
+        }
+
+        $session = new GameSession([
+            'city_pk' => $user->city_pk,
+            'player_type_needed' => $find_role ,
+        ]);
+
         return view('Forms.CreateCard')
             ->with([
                 'gameSystems' => GameSystems::select('game_system_pk', 'game_system_name')->get(),
                 'gameTags' => GameStyleTag::select('game_style_tag_pk', 'game_style_tag')->get(),
                 'cityList' => City::select('city_pk', 'city')->get(),
+                'selectedGameSystems' => $gameSystems,
+                'selectedGameTags' => $userTags,
+                'cardInfo' => $session,
             ]);
     }
 

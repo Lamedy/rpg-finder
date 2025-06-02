@@ -11,7 +11,7 @@
         <h2 class="text-2xl font-alegreya_medium mb-2 border-b border-white pb-2 text-shadow">Фильтры поиска:</h2>
 
         <!-- Город -->
-        <div x-data="citySelect(@js($cityList), {{ request('city_id') ?? 'null' }})" x-init="init()" class="relative">
+        <div x-data="citySelect(@js($cityList), {{ $city_id ?? 'null' }})" x-init="init()" class="relative">
             <label for="city" class="block py-1">Город:</label>
 
             <input id="city"
@@ -31,8 +31,8 @@
                  class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto shadow-lg w-full text-black">
                 <template x-for="city in filtered" :key="city.city_pk">
                     <div @click="select(city)"
-                         class="cursor-pointer px-4 py-2 hover:bg-blue-200"
-                         :class="{ 'bg-blue-100': city.city === search }">
+                         class="cursor-pointer px-4 py-2 hover:bg-gray-200"
+                         :class="{ 'bg-gray-300': city.city === search }">
                         <span x-text="city.city"></span>
                     </div>
                 </template>
@@ -187,8 +187,8 @@
             >
                 <template x-for="item in filteredItems()" :key="item[idKey]">
                     <div @click="toggle(item)"
-                         :class="{'bg-blue-100': isSelected(item)}"
-                         class="cursor-pointer px-4 py-2 hover:bg-blue-200 text-black">
+                         :class="{'bg-gray-300': isSelected(item)}"
+                         class="cursor-pointer px-4 py-2 hover:bg-gray-200 text-black">
                         <span x-text="item[nameKey]"></span>
                     </div>
                 </template>
@@ -233,8 +233,8 @@
             >
                 <template x-for="item in filteredItems()" :key="item[`${idKey}`]">
                     <div @click="toggle(item)"
-                         :class="{'bg-blue-100': isSelected(item)}"
-                         class="cursor-pointer px-4 py-2 hover:bg-blue-200 text-black">
+                         :class="{'bg-gray-300': isSelected(item)}"
+                         class="cursor-pointer px-4 py-2 hover:bg-gray-200 text-black">
                         <span x-text="item[`${nameKey}`]"></span>
                     </div>
                 </template>
@@ -257,12 +257,12 @@
         </div>
 
         <br>
-        <a href="{{ route('find.group') }}"
-           class="block w-full text-center bg-white text-[#a30d0d] font-bold px-5 py-2 rounded hover:bg-gray-300 mb-2">
+        <a href="{{ route('find.group', ['city_id' => '']) }}"
+           class="block w-full text-center bg-white text-[#a30d0d] font-bold px-5 py-2 rounded hover:bg-[#ababab] mb-2">
             Сбросить фильтры
         </a>
         <button type="submit"
-                class="block w-full text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300">
+                class="block w-full text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-[#ababab] cursor-pointer">
             Применить фильтры
         </button>
     </div>

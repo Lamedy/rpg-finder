@@ -11,15 +11,15 @@
 @endsection
 @section('content')
     <form id="card-form" method="POST"
-          action="{{ isset($cardInfo)
-              ? route('card.edit.accept', $cardInfo)
-              : route('create.card.update') }}"
+          action="{{ Route::currentRouteName() === 'card.edit'
+          ? route('card.edit.accept', $cardInfo)
+          : route('create.card.update') }}"
     >
         @csrf
         @if(isset($cardInfo))
             @method('PUT')
         @endif
-        <div class="max-w-2xl mx-auto rounded-md overflow-hidden shadow-lg border border-black bg-gray-200 font-alegreya_medium">
+        <div class="mx-auto rounded-md overflow-hidden shadow-lg border border-black bg-gray-200 font-alegreya_medium">
             <div class="p-4 space-y-6"
                  x-data="{
                      playerType: '{{ strval(old('player_type', isset($cardInfo) && $cardInfo->player_type_needed ? $cardInfo->player_type_needed->value : '0')) }}',
@@ -170,7 +170,7 @@
                 <div>
                     <label for="game_duration" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Длительность игры:</label>
                     @php
-                        $selectedDuration = old('game_duration', isset($cardInfo) ? $cardInfo->game_duration->value : null);
+                        $selectedDuration = old('game_duration', isset($cardInfo) ? $cardInfo->game_duration?->value : null);
                     @endphp
 
                     <select id="game_duration" name="game_duration"
@@ -298,7 +298,7 @@
 
                 <!-- Дата проведения -->
                 @php
-                    $gameDate = isset($cardInfo) ? \Carbon\Carbon::parse($cardInfo->game_date) : null;
+                    $gameDate = isset($cardInfo->game_date) ? \Carbon\Carbon::parse($cardInfo->game_date) : null;
                 @endphp
                 <div x-show="playerType === '0'">
                     <label for="date" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Дата проведения:</label>

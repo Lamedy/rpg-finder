@@ -6,13 +6,16 @@ use App\Models\City;
 use App\Models\GameSession;
 use App\Models\GameStyleTag;
 use App\Models\GameSystems;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 use Illuminate\Http\Request;
 
 class FindGroup extends Controller
 {
-    public function show(Request $request): View
+    public function show(Request $request): View | RedirectResponse
     {
         $countCardsOnOnePage = 5;
 
@@ -82,7 +85,11 @@ class FindGroup extends Controller
         $cityList = City::select('city_pk', 'city')->get();
         $gameSystems = GameSystems::select('game_system_pk', 'game_system_name')->get();
         $gameTags = GameStyleTag::select('game_style_tag_pk', 'game_style_tag')->get();
+        $city_id = $validated['city_id'] ?? null;
+        if (!$request->has('city_id')) {
+            $city_id = Auth::user()->city_pk ?? null;
+        }
 
-        return view('FindGroup', compact('games', 'cityList', 'gameSystems', 'gameTags'));
+        return view('FindGroup', compact('games', 'cityList', 'gameSystems', 'gameTags', 'city_id'));
     }
 }

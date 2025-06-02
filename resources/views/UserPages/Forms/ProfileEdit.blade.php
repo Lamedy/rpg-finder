@@ -14,16 +14,24 @@
                     <!-- Левая часть: аватар и имя -->
                     <div class="flex items-center space-x-3">
                         <input type="file" name="avatar" class="hidden" id="avatar">
-                        <label for="avatar">
+                        <label for="avatar" class="relative inline-block">
                             <img
                                 src="{{ asset('storage/' . ($user->avatar ?? 'default-avatar.png')) }}"
                                 alt="Аватар"
                                 class="w-32 h-32 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
                             />
+                            <div class="absolute bottom-0 right-0 shadow-sm">
+                                <img src="{{ asset('storage/icons/pencil2.svg') }}" class="w-7 h-7 cursor-pointer" />
+                            </div>
                         </label>
-                        <input type="text" name="user_name" placeholder="Введите имя"
-                               class="max-w-[70%] text-5xl px-2 font-alegreya_medium bg-transparent border-b border-black focus:outline-none"
-                                value="{{ old('user_name', $user->user_name) ?? '' }}">
+                        <div class="relative w-full max-w-[70%]">
+                            <input type="text" name="user_name" placeholder="Введите имя"
+                                   class="w-full text-5xl px-2 font-alegreya_medium bg-transparent border-b border-black focus:outline-none pr-10"
+                                   value="{{ old('user_name', $user->user_name) ?? '' }}">
+                            <div class="absolute right-2 top-[60%] -translate-y-1/2 text-gray-600 pointer-events-none">
+                                <img src="{{ asset('storage/icons/pencil.svg') }}" class="w-7 h-7" />
+                            </div>
+                        </div>
 
                     </div>
                     <!-- Правая часть: список -->
@@ -31,7 +39,7 @@
                         <!-- Пол -->
                         <div class="flex items-center space-x-2">
                             <span class="text-lg whitespace-nowrap">Пол: </span>
-                            <select name="gender" class="w-full px-2 py-1 rounded-md border border-black bg-white">
+                            <select name="gender" class="w-full px-2 py-1 rounded-md border border-black bg-white hover:bg-gray-100">
                                 <option value="0" {{ old('gender', $user->user_gender) == 0 ? 'selected' : '' }}>Женский</option>
                                 <option value="1" {{ old('gender', $user->user_gender) == 1 ? 'selected' : '' }}>Мужской</option>
                             </select>
@@ -40,7 +48,7 @@
                         <div class="flex items-center space-x-2">
                             <span class="text-lg whitespace-nowrap">Дата рождения:</span>
                             <input type="date" name="birthdate"
-                                   class="w-full px-2 py-1 rounded-md border border-[#1a1a1a] bg-white"
+                                   class="w-full px-2 py-1 rounded-md border border-[#1a1a1a] bg-white hover:bg-gray-100"
                                    value="{{ old('birthdate', $user->birthdate) }}">
                         </div>
                         <!-- Город -->
@@ -68,8 +76,8 @@
                                  class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto shadow-lg w-full top-full">
                                 <template x-for="city in filtered" :key="city.city_pk">
                                     <div @click="select(city)"
-                                         class="cursor-pointer px-4 py-2 hover:bg-blue-200"
-                                         :class="{ 'bg-blue-100': city.city === search }">
+                                         class="cursor-pointer px-4 py-2 hover:bg-gray-200"
+                                         :class="{ 'bg-gray-100': city.city === search }">
                                         <span x-text="city.city"></span>
                                     </div>
                                 </template>
@@ -98,10 +106,10 @@
                 <!-- Роль -->
                 <div class="flex items-center space-x-2 font-alegreya_bold text-2xl">
                     <span class="mb-1">Предпочитаю роль:</span>
-                    <select name="role" class="max-w-[20%] px-2 rounded-md border border-black bg-white">
-                        <option value="0">Игрока</option>
-                        <option value="1">Мастера</option>
-                        <option value="2">Любую</option>
+                    <select name="role" class="max-w-[20%] px-2 rounded-md border border-black bg-white hover:bg-gray-100">
+                        <option value="0" {{ old('role', $user->game_role) == 0 ? 'selected' : '' }} >Игрока</option>
+                        <option value="1" {{ old('role', $user->game_role) == 1 ? 'selected' : '' }}>Мастера</option>
+                        <option value="2" {{ old('role', $user->game_role) == 2 ? 'selected' : '' }}>Любую</option>
                     </select>
                 </div>
                 @error('role')
@@ -207,13 +215,20 @@
                 >
                     <label for="game_tags" class="text-2xl block mb-2 font-alegreya_bold mt-4 mb-1">Теги моих интересов:</label>
 
-                    <input type="text"
-                           x-model="search"
-                           @focus="open = true"
-                           @keydown.escape="open = false"
-                           placeholder="Начните вводить название тега..."
-                           class="w-full px-2 py-2 rounded-md border border-[#1a1a1a] bg-white font-alegreya_bold"
-                    />
+                    <div class="relative w-full">
+                        <input type="text"
+                               x-model="search"
+                               @focus="open = true"
+                               @keydown.escape="open = false"
+                               placeholder="Начните вводить название тега..."
+                               class="w-full px-4 py-2 rounded-md border border-[#1a1a1a] bg-white font-alegreya_bold"
+                        />
+
+                        <!-- Иконка внутри input -->
+                        <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 pointer-events-none">
+                            <img src="{{ asset('storage/icons/search.svg') }}" class="w-5 h-5" />
+                        </div>
+                    </div>
 
                     <div x-show="open"
                          @mousedown.away="open = false"
@@ -222,8 +237,8 @@
                     >
                         <template x-for="item in filteredItems()" :key="item[`${idKey}`]">
                             <div @click="toggle(item)"
-                                 :class="{'bg-blue-100': isSelected(item)}"
-                                 class="cursor-pointer px-4 py-2 hover:bg-blue-200">
+                                 :class="{'bg-gray-300': isSelected(item)}"
+                                 class="cursor-pointer px-4 py-2 hover:bg-gray-200">
                                 <span x-text="item[`${nameKey}`]"></span>
                             </div>
                         </template>
@@ -330,13 +345,13 @@
 
             </div>
             <!-- Кнопки -->
-            <div class="bg-[#2D2D2D] px-6 py-4 flex justify-center space-x-4">
+            <div class="bg-[#2D2D2D] px-6 py-4 flex justify-center space-x-4 font-alegreya_bold">
                 <a href="{{ route('profile', $user) }}"
-                   class="text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
+                   class="text-center text-xl bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-60">
                     Назад
                 </a>
                 <button type="submit"
-                        class="text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
+                        class="text-center text-xl bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-60">
                     Сохранить
                 </button>
             </div>

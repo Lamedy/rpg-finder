@@ -13,7 +13,7 @@
                         <img
                             src="{{ asset('storage/' . $user->avatar) }}"
                             alt="Аватар"
-                            class="w-32 h-32 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
+                            class="w-32 h-32 rounded-full object-cover border-2 border-black shadow-md"
                         />
                         <label for="player_type" class="text-5xl px-2 font-alegreya_medium">{{ $user->user_name }}</label>
                     </div>
@@ -120,14 +120,14 @@
             </div>
 
             <!-- Нижняя кнопка -->
-            <div class="bg-[#2D2D2D] px-6 py-4 flex justify-center space-x-4">
+            <div class="bg-[#2D2D2D] px-6 py-4 flex justify-center space-x-4 font-alegreya_bold">
                 <a href="{{ url()->previous() }}"
-                   class="text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
+                   class="text-center bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-60">
                     Назад
                 </a>
-                @if (Auth::user()->user_pk == $user->user_pk )
+                @if (Auth::user() && Auth::user()->user_pk == $user->user_pk )
                 <a href="{{ route('profile.edit', $user) }}"
-                        class="text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
+                        class="text-center bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-60">
                     Редактировать
                 </a>
                 @endif

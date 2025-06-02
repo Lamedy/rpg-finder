@@ -48,7 +48,7 @@
                             x-transition:leave="transition ease-in-out duration-300"
                             x-transition:leave-start="translate-x-0"
                             x-transition:leave-end="translate-x-full"
-                            class="fixed top-0 right-0 h-full w-1/5 bg-[#262626] shadow-lg z-50 flex flex-col"
+                            class="fixed top-0 right-0 h-full w-1/5 min-w-65 bg-[#262626] shadow-lg z-50 flex flex-col"
                             @click.away="open = false"
                             style="display: none"
                         >
@@ -76,7 +76,7 @@
                             <a href="/account/settings" class="p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Настройки</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="w-full text-left p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Выйти из аккаунта</button>
+                                <button type="submit" class="w-full text-left p-2 rounded text-lg text-white hover:bg-[#1a1a1a] cursor-pointer">Выйти из аккаунта</button>
                             </form>
                         </nav>
                         </div>

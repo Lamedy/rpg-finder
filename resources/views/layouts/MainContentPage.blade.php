@@ -1,10 +1,10 @@
 @extends('layouts.PageHead')
 
 @section('main_content')
-    <div class=" p-4 px-20">
+    <div class=" p-4 sm:px-4 md:px-7 lg:px-20">
         <div class=" mx-auto rounded-md flex">
             <!-- Левая колонка: Навигация + доп меню -->
-            <aside class="w-1/6 text-white self-start">
+            <aside class="w-73 min-w-73 text-white self-start">
                 <!-- Навигация -->
                 <div class="bg-[#2D2D2D] p-4 font-alegreya_medium">
                     <h2 class="text-shadow text-2xl mb-4 border-b border-white pb-2">Навигация:</h2>
