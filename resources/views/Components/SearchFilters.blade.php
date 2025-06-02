@@ -1,5 +1,5 @@
 <form method="GET" action="{{ route('find.group') }}">
-    <div class="bg-[#2D2D2D] p-4"
+    <div class="bg-[#2D2D2D] p-4 font-alegreya_medium"
          x-data="{
              format: @json(request()->has('format') ? (bool)request()->get('format') : false),
              role: @json(request()->has('role') ? (bool)request()->get('role') : false),
@@ -8,11 +8,11 @@
              tags: @json(request()->has('tags') ? (bool)request()->get('tags') : false)
          }"
     >
-        <h2 class="text-2xl font-alegreya_medium mb-2 border-b border-white pb-2">Фильтры поиска:</h2>
+        <h2 class="text-2xl font-alegreya_medium mb-2 border-b border-white pb-2 text-shadow">Фильтры поиска:</h2>
 
         <!-- Город -->
         <div x-data="citySelect(@js($cityList), {{ request('city_id') ?? 'null' }})" x-init="init()" class="relative">
-            <label for="city" class="block font-semibold py-1">Город:</label>
+            <label for="city" class="block py-1">Город:</label>
 
             <input id="city"
                    x-model="search"
@@ -44,7 +44,7 @@
 
         {{-- Цена --}}
         <div class="mb-2">
-            <label class="block font-semibold py-1">Цена:</label>
+            <label class="block  py-1">Цена:</label>
             <div class="flex space-x-2">
                 <input
                     type="number"
@@ -68,7 +68,7 @@
             <input type="hidden" name="format" :value="format ? '1' : '0'">
             <button type="button"
                     @click="format = !format"
-                    class="flex items-center font-semibold w-full p-1 rounded text-white bg-[#262626] hover:bg-[#1a1a1a] transition"
+                    class="flex items-center  w-full p-1 rounded text-white bg-[#262626] hover:bg-[#1a1a1a] transition"
             >
                 <span x-text="format ? '▲' : '▼'"></span>
                 <span class="ml-2">Формат игры</span>
@@ -102,7 +102,7 @@
             <input type="hidden" name="role" :value="role ? '1' : '0'">
             <button type="button"
                     @click="role = !role"
-                    class="flex items-center font-semibold w-full p-1 rounded text-white bg-[#262626] hover:bg-[#1a1a1a] transition"
+                    class="flex items-center  w-full p-1 rounded text-white bg-[#262626] hover:bg-[#1a1a1a] transition"
             >
                 <span x-text="role ? '▲' : '▼'"></span>
                 <span class="ml-2">Моя роль в игре</span>
@@ -136,7 +136,7 @@
             <input type="hidden" name="duration" :value="duration ? '1' : '0'">
             <button type="button"
                     @click="duration = !duration"
-                    class="flex items-center font-semibold w-full p-1 rounded text-white bg-[#262626] hover:bg-[#1a1a1a] transition"
+                    class="flex items-center  w-full p-1 rounded text-white bg-[#262626] hover:bg-[#1a1a1a] transition"
             >
                 <span x-text="duration ? '▲' : '▼'"></span>
                 <span class="ml-2">Длительность игры</span>
@@ -168,9 +168,9 @@
         <div
             x-data="multiSelect(@js($gameSystems), 'game_system_pk', 'game_system_name', @js(request('game_systems')))"
             x-init="init()"
-            class="relative"
+            class="relative mt-2"
         >
-            <label for="game_systems" class="block font-semibold py-1">Игровые системы:</label>
+            <label for="game_systems" class="block  py-1">Игровые системы:</label>
 
             <input type="text"
                    x-model="search"
@@ -216,7 +216,7 @@
             x-init="init()"
             class="relative"
         >
-            <label for="game_tags" class="block font-semibold py-1">Теги:</label>
+            <label for="game_tags" class="block  py-1">Теги:</label>
 
             <input type="text"
                    x-model="search"

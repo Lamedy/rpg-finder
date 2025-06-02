@@ -7,7 +7,16 @@
     <title>НРИ-Файндер | @yield('page_name')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body x-data="{ open: false }" :class="{ 'overflow-hidden': open }" style="background-image: url('{{ asset('images/background.jpeg') }}') ;">
+<body x-data="{ open: false }"
+      :class="{ 'overflow-hidden': open }"
+      style="
+          background-image: url('{{ asset('images/background.jpeg') }}');
+          background-attachment: fixed;
+          background-size: cover;
+          background-position: center top;
+          background-repeat: no-repeat;
+      ">
+
 <header class="relative bg-[#2D2D2D] border-b-2 border-black box-shadow-lg">
         <div class=" mx-auto p-2 px-4 flex items-center justify-between">
             <!-- Название сайта -->
@@ -51,7 +60,7 @@
                                     alt="Аватар"
                                     class="w-15 h-15 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
                                 />
-                                <a class="text-white font-forum text-3xl p-2 text-shadow text-left">
+                                <a class="text-white font-alegreya_medium text-3xl p-2 text-shadow text-left">
                                     {{ Auth::user()->user_name }}
                                 </a>
                                 <button @click="open = false" class="ml-auto p-4 text-xl font-bold text-white hover:text-red-600 transition-colors duration-200">&times;</button>
@@ -60,14 +69,14 @@
                                 <div class="border-b border-white"></div>
                             </div>
                         <!-- Список действий -->
-                        <nav class="flex flex-col space-y-4 px-6 py-2">
-                            <a href="" class="text-lg text-white hover:text-blue-600">Уведомления</a>
-                            <a href="{{ route('account.my_advertisements') }}" class="text-lg text-white hover:text-blue-600">Мои анкеты</a>
-                            <a href="{{ route('profile', Auth::user()) }}" class="text-lg text-white hover:text-blue-600">Профиль</a>
-                            <a href="/account/settings" class="text-lg text-white hover:text-blue-600">Настройки</a>
+                        <nav class="flex flex-col space-y-1 px-2 py-1 font-alegreya_medium">
+                            <a href="" class="p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Уведомления</a>
+                            <a href="{{ route('account.my_advertisements') }}" class="p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Мои анкеты</a>
+                            <a href="{{ route('profile', Auth::user()) }}" class="p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Профиль</a>
+                            <a href="/account/settings" class="p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Настройки</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="text-lg text-white hover:text-red-600">Выйти из аккаунта</button>
+                                <button type="submit" class="w-full text-left p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Выйти из аккаунта</button>
                             </form>
                         </nav>
                         </div>

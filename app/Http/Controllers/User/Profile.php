@@ -14,6 +14,7 @@ use App\Models\UserContactsList;
 use App\Models\UserTagList;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
@@ -52,8 +53,12 @@ class Profile extends Controller
         ]);
     }
 
-    public function edit(User $user): View
+    public function edit(User $user): View | RedirectResponse
     {
+        if ($user->user_pk !== Auth::user()->user_pk) {
+            return redirect()->back();
+        }
+
 
         $role = '';
         switch ($user->game_role) {

@@ -19,7 +19,7 @@
         @if(isset($cardInfo))
             @method('PUT')
         @endif
-        <div class="max-w-2xl mx-auto rounded-md overflow-hidden shadow-lg border border-black bg-gray-200">
+        <div class="max-w-2xl mx-auto rounded-md overflow-hidden shadow-lg border border-black bg-gray-200 font-alegreya_medium">
             <div class="p-4 space-y-6"
                  x-data="{
                      playerType: '{{ strval(old('player_type', isset($cardInfo) && $cardInfo->player_type_needed ? $cardInfo->player_type_needed->value : '0')) }}',
@@ -29,7 +29,7 @@
 
                 <!-- Кого ищу -->
                 <div>
-                    <label for="player_type" class="block text-lg font-bold text-gray-800 mb-1">Ищу:</label>
+                    <label for="player_type" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Ищу:</label>
                     <select id="player_type" name="player_type"
                             x-model="playerType"
                             class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400">
@@ -43,7 +43,7 @@
 
                 <!-- Кол-во игроков -->
                 <div x-show="playerType === '0'">
-                    <label for="player_count" class="block text-lg font-bold text-gray-800 mb-1">Кол-во игроков:</label>
+                    <label for="player_count" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Кол-во игроков:</label>
                     <input id="player_count" name="player_count" type="number" min="1"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
                            placeholder="Введите количество игроков"
@@ -55,7 +55,7 @@
 
                 <!-- Формат игры -->
                 <div>
-                    <label for="game_format" class="block text-lg font-bold text-gray-800 mb-1">Формат игры:</label>
+                    <label for="game_format" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Формат игры:</label>
                     <select id="game_format" name="game_format"
                             x-model="gameFormat"
                             class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400">
@@ -76,7 +76,7 @@
                         x-data="singleSelect(@js($gameSystems), 'game_system_pk', 'game_system_name',  {{ $selectedGameSystems[0] ?? null }})"
                         x-init="init()"
                         class="relative">
-                        <label class="block text-lg font-bold text-gray-800 mb-1">Игровая система:</label>
+                        <label class="block text-lg font-alegreya_bold text-gray-800 mb-1">Игровая система:</label>
 
                         <input
                             type="text"
@@ -123,7 +123,7 @@
                         x-init="init()"
                         class="relative"
                     >
-                        <label for="game_systems" class="block text-lg font-bold text-gray-800 mb-1">Игровые системы:</label>
+                        <label for="game_systems" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Игровые системы:</label>
 
                         <input type="text"
                                x-model="search"
@@ -155,7 +155,7 @@
                                     <span class="pl-2" x-text="item[nameKey]"></span>
                                     <button type="button"
                                             @click="remove(item)"
-                                            class="font-bold flex items-center justify-center w-5 h-5 hover:bg-[#262626]">&times;
+                                            class="font-alegreya_bold flex items-center justify-center w-5 h-5 hover:bg-[#262626]">&times;
                                     </button>
                                     <input type="hidden" :name="'game_systems[]'" :value="item[idKey]">
                                 </div>
@@ -168,7 +168,7 @@
                 @enderror
                 <!-- Длительность игры -->
                 <div>
-                    <label for="game_duration" class="block text-lg font-bold text-gray-800 mb-1">Длительность игры:</label>
+                    <label for="game_duration" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Длительность игры:</label>
                     @php
                         $selectedDuration = old('game_duration', isset($cardInfo) ? $cardInfo->game_duration->value : null);
                     @endphp
@@ -190,7 +190,7 @@
                     x-init="init()"
                     class="relative"
                 >
-                    <label for="game_tags" class="block text-lg font-bold text-gray-800 mb-1">Теги:</label>
+                    <label for="game_tags" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Теги:</label>
 
                     <input type="text"
                            x-model="search"
@@ -222,7 +222,7 @@
                                 <span class="pl-2" x-text="item[`${nameKey}`]"></span>
                                 <button type="button"
                                         @click="remove(item)"
-                                        class="font-bold flex items-center justify-center w-5 h-5 hover:bg-[#262626]">&times;
+                                        class="font-alegreya_bold flex items-center justify-center w-5 h-5 hover:bg-[#262626]">&times;
                                 </button>
                                 <input type="hidden" :name="'game_tags[]'" :value="item[`${idKey}`]">
                             </div>
@@ -236,7 +236,7 @@
 
                 <!-- Описание -->
                 <div>
-                    <label for="description" class="block text-lg font-bold text-gray-800 mb-1">Описание:</label>
+                    <label for="description" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Описание:</label>
                     <textarea id="description" name="description" rows="4"
                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
                               placeholder="Опишите вашу игру...">{{ $cardInfo->game_description ?? '' }}</textarea>
@@ -251,7 +251,7 @@
                      x-init="init()"
                      class="relative"
                 >
-                    <label for="city" class="block text-lg font-bold text-gray-800 mb-1">Город:</label>
+                    <label for="city" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Город:</label>
 
                     <input id="city"
                            x-model="search"
@@ -286,7 +286,7 @@
 
                 <!-- Место проведения игры -->
                 <div>
-                    <label for="game_place" class="block text-lg font-bold text-gray-800 mb-1">Место проведения игры:</label>
+                    <label for="game_place" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Место проведения игры:</label>
                     <input id="game_place" name="game_place"
                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
                               placeholder="Адрес или место в онлайн формате где будет проводится игра"
@@ -301,7 +301,7 @@
                     $gameDate = isset($cardInfo) ? \Carbon\Carbon::parse($cardInfo->game_date) : null;
                 @endphp
                 <div x-show="playerType === '0'">
-                    <label for="date" class="block text-lg font-bold text-gray-800 mb-1">Дата проведения:</label>
+                    <label for="date" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Дата проведения:</label>
                     <input id="date" name="date" type="date"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
                            value="{{ old('date', $gameDate?->format('Y-m-d')) }}">
@@ -312,7 +312,7 @@
 
                 <!-- Время проведения -->
                 <div x-show="playerType === '0'">
-                    <label for="time" class="block text-lg font-bold text-gray-800 mb-1">Время проведения:</label>
+                    <label for="time" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Время проведения:</label>
                     <input id="time" name="time" type="time"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
                            value="{{ old('time', $gameDate?->format('H:i')) }}">
@@ -323,7 +323,7 @@
 
                 <!-- Цена -->
                 <div x-show="playerType === '0'">
-                    <label for="price" class="block text-lg font-bold text-gray-800 mb-1">Цена (₽):</label>
+                    <label for="price" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Цена (₽):</label>
                     <input id="price" name="price" type="number" min="0" step="0.01"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
                            placeholder="Введите цену"
@@ -335,7 +335,7 @@
 
                 <!-- Список контактов -->
                 <div>
-                    <label for="contacts" class="block text-lg font-bold text-gray-800 mb-1">Контакты:</label>
+                    <label for="contacts" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Контакты:</label>
                     <textarea id="contacts" name="contacts" rows="3"
                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
                               placeholder="Телефон, email, Telegram и т.д.">{{ old('contacts', $cardInfo->contacts ?? '') }}</textarea>
@@ -349,11 +349,11 @@
             <!-- Нижняя кнопка -->
             <div class="bg-[#2D2D2D] px-6 py-4 flex justify-center space-x-4">
                 <a href="{{ url()->previous() }}"
-                        class="text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
+                        class="text-center bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
                     Назад
                 </a>
                 <button type="submit"
-                        class="text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
+                        class="text-center bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
                     {{ isset($cardInfo) ? 'Обновить' : 'Создать' }}
                 </button>
             </div>

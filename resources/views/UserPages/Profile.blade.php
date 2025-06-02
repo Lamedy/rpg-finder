@@ -125,10 +125,12 @@
                    class="text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
                     Назад
                 </a>
+                @if (Auth::user()->user_pk == $user->user_pk )
                 <a href="{{ route('profile.edit', $user) }}"
                         class="text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
                     Редактировать
                 </a>
+                @endif
             </div>
         </div>
 @endsection

@@ -6,9 +6,9 @@
             <!-- Левая колонка: Навигация + доп меню -->
             <aside class="w-1/6 text-white self-start">
                 <!-- Навигация -->
-                <div class="bg-[#2D2D2D] p-4">
-                    <h2 class="text-2xl font-alegreya_medium mb-4 border-b border-white pb-2">Навигация:</h2>
-                    <ul class="space-y-2">
+                <div class="bg-[#2D2D2D] p-4 font-alegreya_medium">
+                    <h2 class="text-shadow text-2xl mb-4 border-b border-white pb-2">Навигация:</h2>
+                    <ul class="space-y-2 text-xl">
                         <li><a href="/" class="block px-3 py-2 rounded hover:bg-[#1a1a1a]">Главная</a></li>
                         <li><a href="/findGroup" class="block px-3 py-2 rounded hover:bg-[#1a1a1a]">Поиск компании</a></li>
                     </ul>
@@ -19,7 +19,7 @@
             </aside>
             <!-- Правая колонка: Контент -->
             <main class="w-4/6 p-4 ml-4 bg-[#3A3A3A]" >
-                <h2 class="text-white text-2xl font-alegreya_medium mb-4 border-b border-white pb-2">@yield('content_title')</h2>
+                <h2 class="text-shadow text-white text-2xl font-alegreya_medium mb-4 border-b border-white pb-2">@yield('content_title')</h2>
                 @yield('content')
             </main>
         </div>

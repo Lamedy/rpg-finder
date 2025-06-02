@@ -1,41 +1,41 @@
 @forelse ($games as $game)
     <div
-        class=" mx-auto bg-gray-200 rounded-lg border border-gray-400 px-4 shadow-md font-serif text-sm leading-tight">
+        class=" mx-auto bg-gray-200 rounded-lg border border-gray-400 px-4 shadow-md font-serif text-xl leading-tight font-alegreya_medium">
         <div class="flex justify-between items-start py-4">
-            <div class="text-base font-bold space-y-1 max-w-[60%]">
+            <div class="text-2xl space-y-1 max-w-[60%]">
                 @if ($game->city != null)
                     <div>
-                        <span class="font-semibold">Город:</span>
-                        <span class="text-sm">{{ $game->city->city }}</span>
+                        <span class="font-alegreya_bold">Город:</span>
+                        <span class="text-xl">{{ $game->city->city }}</span>
                     </div>
                 @endif
                 <div>
-                    <span class="font-semibold">
+                    <span class="font-alegreya_bold">
                         @if (count($game['gameSystems']) > 1)
                             Системы:
                         @else
                             Система:
                         @endif
                     </span>
-                    <span class="text-sm">
+                    <span class="text-xl">
                             {{ $game['gameSystems']->map(fn($s) => $s->system->game_system_name)->implode(', ') }}
                         </span>
                 </div>
                 <div>
-                    <span class="font-semibold">Формат игры:</span>
-                    <span class="text-sm"> {{ $game['game_format']->label() }} </span>
+                    <span class="font-alegreya_bold">Формат игры:</span>
+                    <span class="text-xl"> {{ $game['game_format']->label() }} </span>
                 </div>
                 <div>
-                    <span class="font-semibold">Длительность игры:</span>
-                    <span class="text-sm"> {{ $game['game_duration']->label() }} </span>
+                    <span class="font-alegreya_bold">Длительность игры:</span>
+                    <span class="text-xl"> {{ $game['game_duration']->label() }} </span>
                 </div>
                 <div>
-                    <span class="font-semibold">Требуется:</span>
-                    <span class="text-sm"> {{ $game['player_type_needed']->label() }} </span>
+                    <span class="font-alegreya_bold">Требуется:</span>
+                    <span class="text-xl"> {{ $game['player_type_needed']->label() }} </span>
                 </div>
             </div>
 
-            <div class="font-bold max-w-[38%]">
+            <div class=" max-w-[38%]">
                 <!-- Информация о пользователе -->
                 <a href="{{ route('profile', $game['user']) }}">
                     <div class="flex items-center space-x-3 justify-end">
@@ -47,7 +47,7 @@
                         />
 
                         <!-- Имя и рейтинг -->
-                        <div class="text-center text-3xl px-2">
+                        <div class="text-center font-alegreya_medium text-4xl px-2">
                             <div>
                                 {{ $game['user']->user_name }}
                             </div>
@@ -67,8 +67,8 @@
             </div>
         </div>
 
-        <div class="border-t border-black py-2 font-bold">
-            <span class="text-base font-bold">Теги:</span>
+        <div class="border-t border-black py-2 ">
+            <span class="text-xl font-alegreya_bold">Теги:</span>
             <span>
                 @if ($game['tags'] && $game['tags']->count() > 0)
                     {{ $game['tags']->map(fn($s) => $s->tag->game_style_tag)->implode(', ') }}
@@ -78,24 +78,24 @@
             </span>
         </div>
 
-        <div class="border-t border-gray-500 text-base py-2">
-            <span class="font-bold">Описание:</span> <br>
+        <div class="border-t border-gray-500 text-xl py-2">
+            <span class="font-alegreya_bold">Описание:</span> <br>
             <span> {{ $game->game_description }} </span>
         </div>
 
         <div>
             @if ($game->user->show_contacts_others)
-                <span class="text-base py-1 font-bold">Контакты:</span> <br>
+                <span class="text-xl py-1 font-alegreya_bold">Контакты:</span> <br>
                 <span> {{ $game->contacts }} </span>
             @endif
         </div>
-        <div class="text-base font-bold py-2">
+        <div class="text-xl  py-2">
             @if ( $game['game_place'] != null )
-                <div>Место проведения игры: <span class="text-black">{{ $game['game_place'] }}</span></div>
+                <div class="font-alegreya_bold">Место проведения игры: <span class="text-black">{{ $game['game_place'] }}</span></div>
             @endif
             <div class="flex justify-between items-center">
                 @if( $game->game_date != null)
-                    <span class="mr-2">
+                    <span class="mr-2 font-alegreya_bold">
                                 Дата: {{ \Carbon\Carbon::parse($game->game_date)->format('d.m.Y') }}
                         @if (\Carbon\Carbon::parse($game->game_date)->format('H:i') != '00:00')
                             Время: {{ \Carbon\Carbon::parse($game->game_date)->format('H:i') }}
@@ -104,10 +104,10 @@
                 @endif
             </div>
         </div>
-        <div class="flex justify-between items-center text-base font-bold">
+        <div class="flex justify-between items-center text-xl ">
             <div>
-                <div>Нужно игроков: <span class="text-black">{{ $game['player_count'] }}</span></div>
-                <div>Цена:
+                <div class="font-alegreya_bold">Нужно игроков: <span class="text-black">{{ $game['player_count'] }}</span></div>
+                <div class="font-alegreya_bold">Цена:
                     <span class="text-black">
                             @if ($game['price'] > 0 )
                             {{ $game['price'] }} Рублей.
@@ -140,7 +140,7 @@
                @endif
             </div>
         </div>
-        <div class="text-base font-bold text-right text-[#808080] px-1 py-1">
+        <div class="text-xl  text-right text-[#808080] px-1 py-1">
                         <span>
                             Объявление создано: {{ \Carbon\Carbon::parse($game['created_at'])->format('Дата: d.m.Y Время: H.i') }}
                         </span>
