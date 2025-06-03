@@ -35,12 +35,12 @@
                     <div id="sessions-list" class="bg-gray-100 border border-gray-400 rounded-md p-2 space-y-2">
                         @foreach($sessions_list as $session)
                             <div class="flex justify-between items-center bg-white px-3 py-1 rounded shadow session-item" data-session-id="{{ $session['id'] }}">
-                                <span class="font-semibold text-sm">
+                                <span class="font-semibold text-xs lg:text-sm">
                                     IP: {{ $session['ip_address'] }} — {{ $session['user_agent'] }}<br>
                                     Последняя активность: {{ date('d.m.Y H:i:s', $session['last_activity']) }}
                                 </span>
-                                <button type="button" class="icon-trash delete-session">
-                                    <img src="{{ asset('storage/icons/trash.svg') }}" alt="trash icon" />
+                                <button type="button" class="icon-trash delete-session flex-shrink-0">
+                                    <img src="{{ asset('storage/icons/trash.svg') }}" alt="trash icon" class="w-6 h-6" />
                                 </button>
                             </div>
                         @endforeach

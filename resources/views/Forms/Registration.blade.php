@@ -53,7 +53,7 @@
                     @enderror
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 max-w-125 mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-125 w-full mx-auto">
                     <div>
                         <label for="gender" class="block font-alegreya_bold text-lg text-gray-800 mb-1">Пол:</label>
                         <select id="gender" name="gender"
@@ -73,16 +73,17 @@
                         @enderror
                     </div>
                 </div>
+
             </div>
 
             <!-- Нижняя тёмная часть с кнопкой -->
-            <div class="bg-[#2D2D2D] p-4 flex justify-center space-x-4">
-                <a href="{{route('login')}}"
-                        class="bg-white text-center font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-60">
+            <div class="bg-[#2D2D2D] p-4 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="{{ route('login') }}"
+                   class="bg-white text-center font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-full sm:w-60">
                     Назад
                 </a>
                 <button type="submit"
-                        class="bg-white text-center font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-60">
+                        class="bg-white text-center font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-full sm:w-60">
                     Зарегистрироваться
                 </button>
             </div>

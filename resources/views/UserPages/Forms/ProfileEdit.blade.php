@@ -9,12 +9,13 @@
         @csrf
         @method('PUT')
         <div class="mx-auto rounded-md overflow-hidden shadow-lg border border-black bg-gray-200">
-            <div class="p-4">
-                <div class="flex justify-between items-start space-x-6 space-y-6">
+            <div class="p-2 lg:p-4">
+                <div class="flex flex-wrap justify-between items-center space-y-6">
+
                     <!-- Левая часть: аватар и имя -->
-                    <div class="flex items-center space-x-3">
-                        <input type="file" name="avatar" class="hidden" id="avatar">
-                        <label for="avatar" class="relative inline-block">
+                    <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start min-w-0 max-w-full 2xl:max-w-[65%]">
+                        <input type="file" name="avatar" class="hidden" id="avatar" />
+                        <label for="avatar" class="relative inline-block shrink-0">
                             <img
                                 src="{{ asset('storage/' . ($user->avatar ?? 'default-avatar.png')) }}"
                                 alt="Аватар"
@@ -24,68 +25,84 @@
                                 <img src="{{ asset('storage/icons/pencil2.svg') }}" class="w-7 h-7 cursor-pointer" />
                             </div>
                         </label>
-                        <div class="relative w-full max-w-[70%]">
-                            <input type="text" name="user_name" placeholder="Введите имя"
-                                   class="w-full text-5xl px-2 font-alegreya_medium bg-transparent border-b border-black focus:outline-none pr-10"
-                                   value="{{ old('user_name', $user->user_name) ?? '' }}">
+                        <div class="relative w-full min-w-0">
+                            <input
+                                type="text"
+                                name="user_name"
+                                placeholder="Введите имя"
+                                class="w-full text-center sm:text-left text-5xl px-2 font-alegreya_medium bg-transparent border-b border-blackfocus:outline-none truncate"
+                                value="{{ old('user_name', $user->user_name) ?? '' }}"
+                            />
                             <div class="absolute right-2 top-[60%] -translate-y-1/2 text-gray-600 pointer-events-none">
                                 <img src="{{ asset('storage/icons/pencil.svg') }}" class="w-7 h-7" />
                             </div>
                         </div>
-
                     </div>
+
                     <!-- Правая часть: список -->
-                    <div class="flex flex-col basis-1/3 space-y-2 font-alegreya_bold text-lg">
+                    <div class="flex flex-col space-y-2 font-alegreya_bold text-lg w-full max-w-full md:max-w-[50%] 2xl:max-w-[30%]">
                         <!-- Пол -->
                         <div class="flex items-center space-x-2">
                             <span class="text-lg whitespace-nowrap">Пол: </span>
-                            <select name="gender" class="w-full px-2 py-1 rounded-md border border-black bg-white hover:bg-gray-100">
+                            <select
+                                name="gender"
+                                class="w-full px-2 py-1 rounded-md border border-black bg-white hover:bg-gray-100"
+                            >
                                 <option value="0" {{ old('gender', $user->user_gender) == 0 ? 'selected' : '' }}>Женский</option>
                                 <option value="1" {{ old('gender', $user->user_gender) == 1 ? 'selected' : '' }}>Мужской</option>
                             </select>
                         </div>
+
                         <!-- Дата рождения -->
                         <div class="flex items-center space-x-2">
                             <span class="text-lg whitespace-nowrap">Дата рождения:</span>
-                            <input type="date" name="birthdate"
-                                   class="w-full px-2 py-1 rounded-md border border-[#1a1a1a] bg-white hover:bg-gray-100"
-                                   value="{{ old('birthdate', $user->birthdate) }}">
+                            <input
+                                type="date"
+                                name="birthdate"
+                                class="w-full max-w-full min-w-0 px-2 py-1 rounded-md border border-[#1a1a1a] bg-white hover:bg-gray-100"
+                                value="{{ old('birthdate', $user->birthdate) }}"
+                            />
                         </div>
+
                         <!-- Город -->
                         <div
-                             x-data="citySelect(@js($cityList), {{ $user->city_pk ?? null }} )"
-                             x-init="init()"
-                             class="flex items-center relative"
+                            x-data="citySelect(@js($cityList), {{ $user->city_pk ?? 'null' }})"
+                            x-init="init()"
+                            class="flex items-center relative"
                         >
-                            <span for="city" class="block mr-2 text-lg mb-1">Город:</span>
+                            <span for="city" class="block mr-2 text-lg mb-1 whitespace-nowrap">Город:</span>
 
-                            <input id="city"
-                                   x-model="search"
-                                   @focus="open = true"
-                                   @keydown.escape="open = false"
-                                   @input="updateSelection"
-                                   type="text"
-                                   placeholder="Начните ввод..."
-                                   class="w-full px-2 py-1 rounded-md border border-[#1a1a1a] bg-white"
-                                   autocomplete="off"
+                            <input
+                                id="city"
+                                x-model="search"
+                                @focus="open = true"
+                                @keydown.escape="open = false"
+                                @input="updateSelection"
+                                type="text"
+                                placeholder="Начните ввод..."
+                                class="w-full px-2 py-1 rounded-md border border-[#1a1a1a] bg-white"
+                                autocomplete="off"
                             />
 
-                            <!-- Выпадающий список -->
-                            <div x-show="open && filtered.length > 0"
-                                 @mousedown.away="open = false"
-                                 class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto shadow-lg w-full top-full">
+                            <div
+                                x-show="open && filtered.length > 0"
+                                @mousedown.away="open = false"
+                                class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto shadow-lg w-full top-full"
+                            >
                                 <template x-for="city in filtered" :key="city.city_pk">
-                                    <div @click="select(city)"
-                                         class="cursor-pointer px-4 py-2 hover:bg-gray-200"
-                                         :class="{ 'bg-gray-100': city.city === search }">
+                                    <div
+                                        @click="select(city)"
+                                        class="cursor-pointer px-4 py-2 hover:bg-gray-200"
+                                        :class="{ 'bg-gray-100': city.city === search }"
+                                    >
                                         <span x-text="city.city"></span>
                                     </div>
                                 </template>
                             </div>
 
-                            <!-- Скрытое поле с ID выбранного города -->
-                            <input type="hidden" name="city_id" :value="selected?.city_pk ?? ''">
+                            <input type="hidden" name="city_id" :value="selected?.city_pk ?? ''" />
                         </div>
+
                         @error('gender')
                         <div class="text-red-500">{{ $message }}</div>
                         @enderror
@@ -97,6 +114,7 @@
                         @enderror
                     </div>
                 </div>
+
                 @error('user_name')
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
@@ -104,9 +122,9 @@
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
                 <!-- Роль -->
-                <div class="flex items-center space-x-2 font-alegreya_bold text-2xl">
+                <div class="flex items-center space-x-2 mt-2 font-alegreya_bold text-lg 2xl:text-2xl">
                     <span class="mb-1">Предпочитаю роль:</span>
-                    <select name="role" class="max-w-[20%] px-2 rounded-md border border-black bg-white hover:bg-gray-100">
+                    <select name="role" class=" px-2 rounded-md border border-black bg-white hover:bg-gray-100">
                         <option value="0" {{ old('role', $user->game_role) == 0 ? 'selected' : '' }} >Игрока</option>
                         <option value="1" {{ old('role', $user->game_role) == 1 ? 'selected' : '' }}>Мастера</option>
                         <option value="2" {{ old('role', $user->game_role) == 2 ? 'selected' : '' }}>Любую</option>
@@ -118,29 +136,29 @@
 
                 <!-- Игровые системы -->
                 <div x-data="gameSystemsComponent(@js($systems), @js($experiences), @js($user->gameSystemsList))">
-                    <h2 class="text-2xl font-alegreya_bold mb-2">Знакомые мне игровые системы:</h2>
+                    <h2 class="text-lg lg:text-2xl font-alegreya_bold mb-2">Знакомые мне игровые системы:</h2>
 
                     <div class="divide-y divide-[#1a1a1a] border border-[#1a1a1a] rounded-md overflow-visible bg-[#2D2D2D]">
 
                         <!-- Заголовки -->
-                        <div class="grid grid-cols-[1fr_1fr_auto] bg-[#2D2D2D] font-alegreya_bold text-white text-lg">
-                            <div class="px-4 py-2 border-r border-[#1a1a1a]">Игровая система</div>
-                            <div class="px-4 py-2 border-r border-[#1a1a1a]">Игровой опыт</div>
+                        <div class="grid grid-cols-[1fr_1fr_auto] bg-[#2D2D2D] font-alegreya_bold text-white text-xs lg:text-lg">
+                            <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a]">Игровая система</div>
+                            <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a]">Игровой опыт</div>
                             <!-- Кнопка добавить -->
-                            <div class="p-2">
+                            <div class="p-1 lg:p-2">
                                 <button
                                     type="button"
                                     @click="addRow()"
-                                    class="bg-white w-[2.25rem] h-[2.25rem] text-4xl text-black hover:bg-gray-300 flex items-center justify-center rounded leading-none">
+                                    class="bg-white w-[1.55rem] h-[1.55rem] lg:w-[2.25rem] lg:h-[2.25rem] text-2xl lg:text-4xl text-black hover:bg-gray-300 flex items-center justify-center rounded leading-none">
                                     +
                                 </button>
                             </div>
                         </div>
                         <!-- Строки -->
                         <template x-for="(row, index) in rows" :key="row.id">
-                            <div class="grid grid-cols-[1fr_1fr_auto] bg-white font-alegreya_bold text-lg items-center">
+                            <div class="grid grid-cols-[1fr_1fr_auto] bg-white font-alegreya_bold text-xs lg:text-lg items-center">
                                 <!-- Игровая система -->
-                                <div class="px-4 py-2 border-r border-[#1a1a1a] relative overflow-visible"
+                                <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a] relative overflow-visible"
                                      x-data="singleSelect(@js($systems), 'game_system_pk', 'game_system_name', row.system)"
                                      x-init="init(selectedValue = row.system)">
                                     <input type="text"
@@ -164,7 +182,7 @@
                                 </div>
 
                                 <!-- Игровой опыт -->
-                                <div class="px-4 py-2 relative overflow-visible border-r border-[#1a1a1a]"
+                                <div class="px-2 lg:px-4 py-2 relative overflow-visible border-r border-[#1a1a1a]"
                                      x-data="singleSelect(@js($experiences), 'game_experience_pk', 'game_experience_description', row.experience)"
                                      x-init="init(selectedValue = row.experience)">
                                     <input type="text"
@@ -187,7 +205,7 @@
                                 </div>
 
                                 <!-- Кнопка удалить -->
-                                <div class="p-2">
+                                <div class=" lg:p-2 w-[2.05rem] h-[2.05rem] lg:w-[3.25rem] lg:h-[3.25rem]">
                                     <button
                                         type="button"
                                         @click="removeRow(index)"
@@ -213,7 +231,7 @@
                     x-init="init()"
                     class="relative"
                 >
-                    <label for="game_tags" class="text-2xl block mb-2 font-alegreya_bold mt-4 mb-1">Теги моих интересов:</label>
+                    <label for="game_tags" class="text-lg lg:text-2xl block mb-2 font-alegreya_bold mt-4 mb-1">Теги моих интересов:</label>
 
                     <div class="relative w-full">
                         <input type="text"
@@ -249,7 +267,7 @@
                     <div class="mt-2 flex flex-wrap gap-2">
                         <template x-for="item in selected" :key="item[`${idKey}`]">
                             <div class="bg-[#1a1a1a] text-white py-1 rounded flex items-center space-x-2">
-                                <span class="pl-2 font-alegreya_bold" x-text="item[`${nameKey}`]"></span>
+                                <span class="pl-2 text-sm lg:text-base font-alegreya_bold" x-text="item[`${nameKey}`]"></span>
                                 <button type="button"
                                         @click="remove(item)"
                                         class="font-alegreya_bold flex items-center justify-center w-5 h-5 hover:bg-[#262626]">&times;
@@ -266,20 +284,20 @@
 
                 <!-- Контактная информация -->
                 <div x-data="contactMethodsComponent(@js($contactTypes), @js($user->userContactsList))" x-init="init()">
-                    <h2 class="text-2xl font-alegreya_bold mt-4 mb-2">Контактная информация:</h2>
+                    <h2 class="text-lg lg:text-2xl font-alegreya_bold mt-4 mb-2">Контактная информация:</h2>
 
                     <div class="divide-y divide-[#1a1a1a] border border-[#1a1a1a] rounded-md overflow-visible bg-[#2D2D2D]">
 
                         <!-- Заголовки -->
-                        <div class="grid grid-cols-[1fr_1fr_auto] bg-[#2D2D2D] font-alegreya_bold text-white text-lg">
-                            <div class="px-4 py-2 border-r border-[#1a1a1a]">Тип контакта:</div>
-                            <div class="px-4 py-2 border-r border-[#1a1a1a]">Контактные данные:</div>
+                        <div class="grid grid-cols-[1fr_1fr_auto] bg-[#2D2D2D] font-alegreya_bold text-white text-xs lg:text-lg">
+                            <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a]">Тип контакта:</div>
+                            <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a]">Контактные данные:</div>
                             <!-- Кнопка добавить -->
-                            <div class="p-2">
+                            <div class="p-1 lg:p-2">
                                 <button
                                     type="button"
                                     @click="addRow()"
-                                    class="bg-white w-[2.25rem] h-[2.25rem] text-4xl text-black hover:bg-gray-300 flex items-center justify-center rounded leading-none">
+                                    class="bg-white  w-[1.55rem] h-[1.55rem] lg:w-[2.25rem] lg:h-[2.25rem] text-2xl lg:text-4xl text-black hover:bg-gray-300 flex items-center justify-center rounded leading-none">
                                     +
                                 </button>
                             </div>
@@ -287,10 +305,10 @@
 
                         <!-- Строки -->
                         <template x-for="(row, index) in rows" :key="row.id">
-                            <div class="grid grid-cols-[1fr_1fr_auto] bg-white font-alegreya_bold text-lg items-center">
+                            <div class="grid grid-cols-[1fr_1fr_auto] bg-white font-alegreya_bold text-xs lg:text-lg items-center">
 
                                 <!-- Тип контакта -->
-                                <div class="px-4 py-2 border-r border-[#1a1a1a] relative overflow-visible"
+                                <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a] relative overflow-visible"
                                      x-data="singleSelect(@js($contactTypes), 'contact_methods_pk', 'contact_method', row.type)"
                                      x-init="init(selectedValue = row.type)">
                                     <input type="text"
@@ -312,7 +330,7 @@
                                 </div>
 
                                 <!-- Значение контакта -->
-                                <div class="px-4 py-2 border-r border-[#1a1a1a]">
+                                <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a]">
                                     <input type="text"
                                            class="w-full px-2 py-1 border border-black rounded"
                                            placeholder="Введите данные"
@@ -322,7 +340,7 @@
                                 </div>
 
                                 <!-- Кнопка удалить -->
-                                <div class="p-2">
+                                <div class="lg:p-2 lg:p-2 w-[2.05rem] h-[2.05rem] lg:w-[3.25rem] lg:h-[3.25rem]">
                                     <button
                                         type="button"
                                         @click="removeRow(index)"
@@ -345,13 +363,13 @@
 
             </div>
             <!-- Кнопки -->
-            <div class="bg-[#2D2D2D] px-6 py-4 flex justify-center space-x-4 font-alegreya_bold">
+            <div class="bg-[#2D2D2D] px-6 py-4 flex flex-col sm:flex-row justify-center sm:space-x-4 space-y-4 sm:space-y-0 font-alegreya_bold">
                 <a href="{{ route('profile', $user) }}"
-                   class="text-center text-xl bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-60">
+                   class="text-center text-xl bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-full sm:w-60">
                     Назад
                 </a>
                 <button type="submit"
-                        class="text-center text-xl bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-60">
+                        class="text-center text-xl bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-full sm:w-60">
                     Сохранить
                 </button>
             </div>

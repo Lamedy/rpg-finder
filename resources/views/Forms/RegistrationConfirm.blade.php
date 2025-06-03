@@ -19,16 +19,17 @@
             </div>
 
             <!-- Нижняя тёмная часть с кнопкой -->
-            <div class="bg-[#2D2D2D] p-4 flex justify-center space-x-4">
+            <div class="bg-[#2D2D2D] p-4 flex flex-col sm:flex-row justify-center sm:space-x-4 space-y-4 sm:space-y-0">
                 <a href="{{route('registration')}}"
-                   class="bg-white text-center font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-60">
+                   class="bg-white text-center font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-full sm:w-60">
                     Назад
                 </a>
                 <button type="submit"
-                        class="bg-white text-center font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-60">
+                        class="bg-white text-center font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-full sm:w-60">
                     Подтвердить
                 </button>
             </div>
+
         </div>
     </form>
 @endsection

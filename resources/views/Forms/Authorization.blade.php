@@ -7,7 +7,7 @@
 @section('content')
     <form action="{{ route('login.submit') }}" method="POST">
         @csrf
-        <div class=" mx-auto rounded-md overflow-hidden shadow-lg border border-black">
+        <div class="mx-auto rounded-md overflow-hidden shadow-lg border border-black">
             <!-- Верхняя светлая часть -->
             <div class="bg-gray-200 p-4 space-y-4 ">
                 <div class="max-w-125 mx-auto">
@@ -34,14 +34,17 @@
             </div>
 
             <!-- Нижняя тёмная часть с кнопками -->
-            <div class="bg-[#2D2D2D] p-4 flex justify-center space-x-4">
-                <a href="/registration" class="block text-center bg-white font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-60">
+            <div class="bg-[#2D2D2D] p-4 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="/registration"
+                   class="block text-center bg-white font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-full sm:w-60">
                     Зарегистрироваться
                 </a>
-                <button class="bg-white font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-60 cursor-pointer">
+                <button
+                    class="bg-white font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-full sm:w-60 cursor-pointer">
                     Войти
                 </button>
             </div>
+
         </div>
     </form>
 @endsection

@@ -8,7 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body x-data="{ open: false }"
-      :class="{ 'overflow-hidden': open }"
+      :class="{ 'overflow-hidden': $store.ui.anyPanelOpen }"
       style="
           background-image: url('{{ asset('images/background.jpeg') }}');
           background-attachment: fixed;
@@ -18,38 +18,41 @@
       ">
 
 <header class="relative bg-[#2D2D2D] border-b-2 border-black box-shadow-lg">
-        <div class=" mx-auto p-2 px-4 flex items-center justify-between">
+        <div class="mx-auto p-2 px-4 flex items-center justify-between">
             <!-- Название сайта -->
             <div class="relative">
-                <span class="text-white font-forum text-6xl block text-shadow">
-                    НРИ-Файндер |
-                    <span class="text-4xl align-middle">@yield('page_name')</span>
+                <span class="text-white font-forum text-2xl sm:text-2xl md:text-2xl lg:text-6xl block text-shadow">
+                    НРИ-Файндер
+                    <span class="hidden sm:inline">
+                        | <span class="text-2xl sm:text-2xl md:text-2xl lg:text-4xl align-middle">@yield('page_name')</span>
+                    </span>
                 </span>
             </div>
 
+            <button @click="$store.ui.openMenu = !$store.ui.openMenu" class="absolute top-2 right-2 flex lg:hidden text-3xl text-white text-shadow">☰</button>
             <!-- Авторизация -->
-            <nav class="absolute top-2 right-2 flex space-x-6">
-                @if (Auth::check())
-                    <div >
+            <nav class="absolute top-2 right-2 flex space-x-6 lg:static lg:block hidden">
+            @if (Auth::check())
+                    <div>
                         <!-- Аватар-кнопка для открытия меню -->
                         <img
                             src="{{ asset('storage/' . Auth::user()->avatar) }}"
                             alt="Аватар"
                             class="w-15 h-15 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
-                            @click="open = true"
+                            @click="$store.ui.openMenu = true"
                         />
 
                         <!-- Меню, выезжающее справа -->
                         <div
-                            x-show="open"
+                            x-show="$store.ui.openMenu"
                             x-transition:enter="transition ease-in-out duration-300"
                             x-transition:enter-start="translate-x-full"
                             x-transition:enter-end="translate-x-0"
                             x-transition:leave="transition ease-in-out duration-300"
                             x-transition:leave-start="translate-x-0"
                             x-transition:leave-end="translate-x-full"
-                            class="fixed top-0 right-0 h-full w-1/5 min-w-65 bg-[#262626] shadow-lg z-50 flex flex-col"
-                            @click.away="open = false"
+                            class="fixed top-0 right-0 h-full w-1/5 min-w-80 bg-[#262626] shadow-lg z-50 flex flex-col"
+                            @click.away="$store.ui.openMenu = false"
                             style="display: none"
                         >
 
@@ -60,10 +63,10 @@
                                     alt="Аватар"
                                     class="w-15 h-15 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
                                 />
-                                <a class="text-white font-alegreya_medium text-3xl p-2 text-shadow text-left">
+                                <a class="text-white font-alegreya_medium text-3xl p-2 text-shadow text-left truncate">
                                     {{ Auth::user()->user_name }}
                                 </a>
-                                <button @click="open = false" class="ml-auto p-4 text-xl font-bold text-white hover:text-red-600 transition-colors duration-200">&times;</button>
+                                <button @click="$store.ui.openMenu = false" class="ml-auto p-4 text-xl font-bold text-white hover:text-red-600 transition-colors duration-200">&times;</button>
                             </div>
                             <div class="w-full px-2">
                                 <div class="border-b border-white"></div>
@@ -82,14 +85,28 @@
                         </div>
                     </div>
                 @else
-                <a href="/login" class="text-white text-4xl p-3 font-forum hover:text-gray-300 transition duration-200 text-shadow">Вход</a>
+                <a href="/login" class="text-white sm:text-lg md:text-lg lg:text-4xl p-3 font-forum hover:text-gray-300 transition duration-200 text-shadow">
+                    Вход
+                </a>
                 @endif
             </nav>
+            @include('layouts.MobileBurgerNavigationMenu')
         </div>
     </header>
 
     @yield('main_content')
 
     @yield('scripts')
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('ui', {
+                openFilters: false,
+                openMenu: false,
+                get anyPanelOpen() {
+                    return this.openFilters || this.openMenu;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

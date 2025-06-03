@@ -1,5 +1,5 @@
 <form method="GET" action="{{ route('find.group') }}">
-    <div class="bg-[#2D2D2D] p-4 font-alegreya_medium"
+    <div class="lg:bg-[#2D2D2D] p-4 font-alegreya_medium"
          x-data="{
              format: @json(request()->has('format') ? (bool)request()->get('format') : false),
              role: @json(request()->has('role') ? (bool)request()->get('role') : false),
@@ -8,7 +8,7 @@
              tags: @json(request()->has('tags') ? (bool)request()->get('tags') : false)
          }"
     >
-        <h2 class="text-2xl font-alegreya_medium mb-2 border-b border-white pb-2 text-shadow">Фильтры поиска:</h2>
+        <h2 class="text-2xl font-alegreya_medium mb-2 border-b border-white pb-2 text-shadow lg:static lg:block hidden">Фильтры поиска:</h2>
 
         <!-- Город -->
         <div x-data="citySelect(@js($cityList), {{ $city_id ?? 'null' }})" x-init="init()" class="relative">

@@ -7,19 +7,22 @@
 @section('content')
         <div class="mx-auto rounded-md overflow-hidden shadow-lg border border-black bg-gray-200">
             <div class="p-4 space-y-6">
-                <div class="flex justify-between items-start space-x-6">
+                <div class="flex flex-wrap justify-center sm:justify-between items-start gap-4">
                     <!-- Левая часть: аватар и имя -->
-                    <div class="flex items-center space-x-3">
+                    <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start min-w-0 max-w-full 2xl:max-w-[65%] gap-3">
                         <img
                             src="{{ asset('storage/' . $user->avatar) }}"
                             alt="Аватар"
-                            class="w-32 h-32 rounded-full object-cover border-2 border-black shadow-md"
+                            class="w-32 h-32 rounded-full object-cover border-2 border-black shadow-md shrink-0"
                         />
-                        <label for="player_type" class="text-5xl px-2 font-alegreya_medium">{{ $user->user_name }}</label>
+                        <label for="player_type"
+                               class="text-5xl px-2 font-alegreya_medium min-w-0 max-w-full lg:max-w-[75%] truncate overflow-hidden whitespace-nowrap text-center sm:text-left">
+                            {{ $user->user_name }}
+                        </label>
                     </div>
 
                     <!-- Правая часть: список -->
-                    <div class="flex flex-col basis-1/3 space-y-2 font-alegreya_bold text-lg">
+                    <div class="flex flex-col basis-full sm:basis-1/2 2xl:basis-1/3 space-y-2 font-alegreya_bold text-lg">
                         <!-- Пол -->
                         <div class="flex items-center space-x-2">
                             <span class="text-lg whitespace-nowrap">Пол: </span>
@@ -51,23 +54,23 @@
                 </div>
 
                 <!-- Роль -->
-                <h2 class="text-2xl font-alegreya_bold mb-1">Предпочитаю роль: {{ $role }}</h2>
+                <h2 class="text-xl lg:text-2xl font-alegreya_bold mb-1">Предпочитаю роль: {{ $role }}</h2>
 
                 <!-- Игровые системы -->
                 @if ($user->gameSystemsList && $user->gameSystemsList->count() > 0)
                     <div>
-                        <h2 class="text-2xl font-alegreya_bold mb-1">Знакомые мне игровые системы:</h2>
+                        <h2 class="text-xl lg:text-2xl font-alegreya_bold mb-1">Знакомые мне игровые системы:</h2>
 
                         <div class="divide-y divide-[#1a1a1a] border [#1a1a1a] rounded-md overflow-hidden">
                             <!-- Заголовки -->
-                            <div class="grid grid-cols-2 bg-[#2D2D2D] font-alegreya_bold text-white text-lg">
+                            <div class="grid grid-cols-2 bg-[#2D2D2D] font-alegreya_bold text-white text-base lg:text-lg">
                                 <div class="px-4 py-2 border-r border-[#1a1a1a]">Игровая система</div>
                                 <div class="px-4 py-2">Игровой опыт</div>
                             </div>
 
                             <!-- Пример строки -->
                             @foreach($user->gameSystemsList as $index)
-                            <div class="grid grid-cols-2 bg-white font-alegreya_bold text-lg">
+                            <div class="grid grid-cols-2 bg-white font-alegreya_bold text-base lg:text-lg">
                                 <div class="px-4 py-2 border-r border-[#1a1a1a]">{{ $index->system->game_system_name }}</div>
                                 <div class="px-4 py-2">{{ $index->experience->game_experience_description }}</div>
                             </div>
@@ -82,7 +85,7 @@
                 @endphp
                 @if ($user->userTagsList->isNotEmpty())
                     <div class="border-b border-black font-alegreya_bold mb-1">
-                        <span class="text-2xl block mb-2">Теги моих интересов:</span>
+                        <span class="text-xl lg:text-2xl block mb-2">Теги моих интересов:</span>
                         <div class="flex flex-wrap gap-2 border-t py-2">
                             @foreach ($user->userTagsList as $tagList)
                                 @if ($tagList->tags)
@@ -98,18 +101,18 @@
                 <!-- Контактные данные -->
                 @if ($user->userContactsList && $user->userContactsList->count() > 0)
                     <div>
-                        <h2 class="text-2xl font-alegreya_bold mt-4 mb-1">Контакты со мной:</h2>
+                        <h2 class="text-xl lg:text-2xl font-alegreya_bold mt-4 mb-1">Контакты со мной:</h2>
 
                         <div class="divide-y divide-[#1a1a1a] border [#1a1a1a] rounded-md overflow-hidden">
                             <!-- Заголовки -->
-                            <div class="grid grid-cols-2 bg-[#2D2D2D] font-alegreya_bold text-white text-lg">
+                            <div class="grid grid-cols-2 bg-[#2D2D2D] font-alegreya_bold text-white text-base lg:text-lg">
                                 <div class="px-4 py-2 border-r border-[#1a1a1a]">Тип контакта:</div>
                                 <div class="px-4 py-2">Контактные данные:</div>
                             </div>
 
                             <!-- Пример строки -->
                             @foreach($user->userContactsList as $index)
-                                <div class="grid grid-cols-2 bg-white font-alegreya_bold text-lg">
+                                <div class="grid grid-cols-2 bg-white font-alegreya_bold text-base lg:text-lg">
                                     <div class="px-4 py-2 border-r border-[#1a1a1a]">{{ $index->contacts->contact_method }}</div>
                                     <div class="px-4 py-2">{{ $index->contact_value }}</div>
                                 </div>
@@ -120,16 +123,16 @@
             </div>
 
             <!-- Нижняя кнопка -->
-            <div class="bg-[#2D2D2D] px-6 py-4 flex justify-center space-x-4 font-alegreya_bold">
+            <div class="bg-[#2D2D2D] px-6 py-4 flex flex-col sm:flex-row justify-center sm:space-x-4 space-y-4 sm:space-y-0 font-alegreya_bold">
                 <a href="{{ url()->previous() }}"
-                   class="text-center bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-60">
+                   class="text-center bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-full sm:w-60">
                     Назад
                 </a>
-                @if (Auth::user() && Auth::user()->user_pk == $user->user_pk )
-                <a href="{{ route('profile.edit', $user) }}"
-                        class="text-center bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-60">
-                    Редактировать
-                </a>
+                @if (Auth::user() && Auth::user()->user_pk == $user->user_pk)
+                    <a href="{{ route('profile.edit', $user) }}"
+                       class="text-center bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-full sm:w-60">
+                        Редактировать
+                    </a>
                 @endif
             </div>
         </div>

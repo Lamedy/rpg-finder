@@ -16,7 +16,7 @@
           : route('create.card.update') }}"
     >
         @csrf
-        @if(isset($cardInfo))
+        @if(Route::currentRouteName() === 'card.edit')
             @method('PUT')
         @endif
         <div class="mx-auto rounded-md overflow-hidden shadow-lg border border-black bg-gray-200 font-alegreya_medium">
@@ -354,7 +354,7 @@
                 </a>
                 <button type="submit"
                         class="text-center bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
-                    {{ isset($cardInfo) ? 'Обновить' : 'Создать' }}
+                    {{ Route::currentRouteName() === 'card.edit' ? 'Обновить' : 'Создать' }}
                 </button>
             </div>
         </div>
