@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Forms;
 
+use App\Email\CodeConfirm;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserAuthorization;
@@ -9,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
@@ -30,8 +32,9 @@ class Registration extends Controller
             'birthdate' => 'nullable|date',
         ]);
 
-        $code = 123456;
-        //$code = rand(100000, 999999);       // todo отправлять код на почту
+        $code = rand(100000, 999999);
+
+        Mail::to($validator['email'])->send(new CodeConfirm($code));
 
         // Сохраняем данные и код во временную сессию
         Session::put('pending_registration', $validator);
@@ -62,7 +65,7 @@ class Registration extends Controller
             try {
 
                 $user = User::create([
-                    'user_name' => $data['name'],
+                    'user_name' => $data['name'] ?? $data['login'],
                     'user_gender' => $data['gender'],
                     'birthdate' => $data['birthdate'],
                 ]);

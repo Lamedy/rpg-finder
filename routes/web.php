@@ -3,6 +3,7 @@
 use App\Http\Controllers\FindGroup;
 use App\Http\Controllers\Forms\Authorization;
 use App\Http\Controllers\Forms\CreateCard;
+use App\Http\Controllers\Forms\ForgotPassword;
 use App\Http\Controllers\Forms\Registration;
 use App\Http\Controllers\Main;
 use App\Http\Controllers\User\Forms\ChangePassword;
@@ -20,6 +21,10 @@ Route::get('/registration', [Registration::class, 'show'])->name('registration')
 Route::post('/registration', [Registration::class, 'submit'])->name('registration.submit');
 Route::get('/registration/confirm', [Registration::class, 'showConfirmForm'])->name('registration.confirm');
 Route::post('/registration/confirm', [Registration::class, 'confirmCode'])->name('registration.confirm.submit');
+Route::get('/forgotPassword', [ForgotPassword::class, 'show'])->name('forgot_password');
+Route::post('/forgotPassword', [ForgotPassword::class, 'confirm'])->name('forgot_password.confirm');
+Route::get('/reset-password/{token}', [ForgotPassword::class, 'showResetForm'])->name('password.reset');
+Route::put('/reset-password', [ForgotPassword::class, 'reset'])->name('password.reset.update');
 
 // Authorization forms
 Route::get('/login', [Authorization::class, 'show'])->name('login');
