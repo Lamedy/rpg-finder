@@ -369,90 +369,11 @@
                     Назад
                 </a>
                 <button type="submit"
-                        class="text-center text-xl bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-full sm:w-60">
+                        class="text-center text-xl bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-full sm:w-60 cursor-pointer">
                     Сохранить
                 </button>
             </div>
         </div>
     </form>
-@endsection
-
-@section('scripts')
-    <script>
-        function gameSystemsComponent(systemsData, experiencesData, initialData) {
-            return {
-                systems: systemsData,
-                experiences: experiencesData,
-                rows: [],
-
-                init() {
-                    this.rows = initialData.length
-                        ? initialData.map(item => ({
-                            id: Date.now() + Math.random(),
-                            system: item.system.game_system_pk,
-                            experience: item.experience.game_experience_pk,
-                        }))
-                        : [{
-                            id: Date.now(),
-                            system: '',
-                            experience: ''
-                        }];
-                },
-
-                addRow() {
-                    this.rows.push({
-                        id: Date.now() + Math.random(),
-                        system: '',
-                        experience: ''
-                    });
-                },
-
-                removeRow(index) {
-                    if (this.rows.length > 1) {
-                        this.rows.splice(index, 1);
-                    } else {
-                        this.rows[0] = { id: Date.now(), system: '', experience: '' };
-                    }
-                },
-            }
-        }
-
-        function contactMethodsComponent(contactTypes, initialData) {
-            return {
-                types: contactTypes,
-                rows: [],
-
-                init() {
-                    this.rows = initialData.length
-                        ? initialData.map(item => ({
-                            id: Date.now() + Math.random(),
-                            type: item.contact_methods_pk,
-                            value: item.contact_value
-                        }))
-                        : [{
-                            id: Date.now(),
-                            type: '',
-                            value: ''
-                        }];
-                },
-
-                addRow() {
-                    this.rows.push({
-                        id: Date.now() + Math.random(),
-                        type: '',
-                        value: ''
-                    });
-                },
-
-                removeRow(index) {
-                    if (this.rows.length > 1) {
-                        this.rows.splice(index, 1);
-                    } else {
-                        this.rows[0] = { id: Date.now(), type: '', value: '' };
-                    }
-                },
-            }
-        }
-    </script>
 @endsection
 

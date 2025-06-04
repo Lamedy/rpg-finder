@@ -75,8 +75,25 @@
         @endif
         <div>
             @if ($game->user->show_contacts_others)
-                <span class="text-xl py-1 font-alegreya_bold">Контакты:</span> <br>
-                <span> {{ $game->contacts }} </span>
+                <div>
+                    <h2 class="text-xl lg:text-xl font-alegreya_bold mt-4 mb-1">Контакты со мной:</h2>
+
+                    <div class="divide-y divide-[#1a1a1a] border [#1a1a1a] rounded-md overflow-hidden">
+                        <!-- Заголовки -->
+                        <div class="grid grid-cols-2 bg-[#2D2D2D] font-alegreya_bold text-white text-base lg:text-lg">
+                            <div class="px-4 py-2 border-r border-[#1a1a1a]">Тип контакта:</div>
+                            <div class="px-4 py-2">Контактные данные:</div>
+                        </div>
+
+                        <!-- Пример строки -->
+                        @foreach($game->contacts as $index)
+                            <div class="grid grid-cols-2 bg-white font-alegreya_bold text-base lg:text-lg">
+                                <div class="px-4 py-2 border-r border-[#1a1a1a]">{{ $index->contacts->contact_method }}</div>
+                                <div class="px-4 py-2">{{ $index->contact_value }}</div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             @endif
         </div>
         @if ($game['game_place'] != null || $game->game_date != null)
@@ -100,18 +117,20 @@
         @endif
         <div class="flex flex-wrap justify-between items-start gap-4 text-lg lg:text-xl mt-2">
             <!-- Левая часть: Игроки и Цена -->
-            <div class="font-alegreya_bold flex-1 min-w-[200px]">
-                <div>Нужно игроков: <span class="text-black">{{ $game['player_count'] }}</span></div>
-                <div>Цена:
-                    <span class="text-black">
-                        @if ($game['price'] > 0)
-                            {{ $game['price'] }} Рублей.
-                        @else
-                            Бесплатно
-                        @endif
-                    </span>
+            @if ($game['player_type_needed']->value == 0)
+                <div class="font-alegreya_bold flex-1 min-w-[200px]">
+                    <div>Нужно игроков: <span class="text-black">{{ $game['player_count'] }}</span></div>
+                    <div>Цена:
+                        <span class="text-black">
+                            @if ($game['price'] > 0)
+                                {{ $game['price'] }} Рублей.
+                            @else
+                                Бесплатно
+                            @endif
+                        </span>
+                    </div>
                 </div>
-            </div>
+            @endif
 
             <!-- Правая часть: Кнопки -->
             <div class="flex flex-wrap justify-end gap-2 flex-1 min-w-[200px] ">

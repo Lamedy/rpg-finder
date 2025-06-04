@@ -83,7 +83,7 @@
                     Назад
                 </a>
                 <button type="submit"
-                        class="bg-white text-center font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-full sm:w-60">
+                        class="bg-white text-center font-alegreya_bold px-5 py-2 rounded hover:bg-[#828282] transition w-full sm:w-60 cursor-pointer">
                     Зарегистрироваться
                 </button>
             </div>

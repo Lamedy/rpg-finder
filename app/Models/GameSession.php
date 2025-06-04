@@ -44,4 +44,9 @@ class GameSession extends Model
     {
         return $this->belongsTo(User::class, 'author', 'user_pk');
     }
+
+    public function contacts()
+    {
+        return $this->hasMany(SessionContactsList::class, 'game_session_pk');
+    }
 }

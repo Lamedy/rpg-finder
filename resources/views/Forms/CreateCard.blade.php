@@ -3,7 +3,7 @@
 @section('page_name', 'Поиск компании')
 
 @section('content_title')
-    @if (isset($cardInfo))
+    @if (Route::currentRouteName() === 'card.edit')
         Редактировать анкету
     @else
         Создать анкету
@@ -20,7 +20,7 @@
             @method('PUT')
         @endif
         <div class="mx-auto rounded-md overflow-hidden shadow-lg border border-black bg-gray-200 font-alegreya_medium">
-            <div class="p-4 space-y-6"
+            <div class="p-4 space-y-6 md:max-w-[60%] mx-auto"
                  x-data="{
                      playerType: '{{ strval(old('player_type', isset($cardInfo) && $cardInfo->player_type_needed ? $cardInfo->player_type_needed->value : '0')) }}',
                      gameFormat: '{{ strval(old('player_type', isset($cardInfo) && $cardInfo->game_format ? $cardInfo->game_format->value : '0')) }}'
@@ -32,7 +32,7 @@
                     <label for="player_type" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Ищу:</label>
                     <select id="player_type" name="player_type"
                             x-model="playerType"
-                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
                         <option value="0">Игроков</option>
                         <option value="1">Мастера</option>
                     </select>
@@ -45,7 +45,7 @@
                 <div x-show="playerType === '0'">
                     <label for="player_count" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Кол-во игроков:</label>
                     <input id="player_count" name="player_count" type="number" min="1"
-                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                            placeholder="Введите количество игроков"
                            value="{{ old('player_count', $cardInfo->player_count ?? '') }}">
                     @error('player_count')
@@ -58,7 +58,7 @@
                     <label for="game_format" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Формат игры:</label>
                     <select id="game_format" name="game_format"
                             x-model="gameFormat"
-                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
                         <option value="0">Вживую</option>
                         <option value="1">Онлайн</option>
                         <option value="2">Любой</option>
@@ -84,7 +84,7 @@
                             @focus="open = true"
                             @keydown.escape="open = false"
                             placeholder="Введите название системы..."
-                            class="w-full px-4 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            class="w-full px-4 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                         >
 
                         <!-- Список с вариантами -->
@@ -96,8 +96,8 @@
                             <template x-for="item in filteredItems()" :key="item[idKey]">
                                 <div
                                     @click="choose(item)"
-                                    class="cursor-pointer px-4 py-2 hover:bg-blue-200"
-                                    :class="{'bg-blue-100': selected && item[idKey] === selected[idKey]}"
+                                    class="cursor-pointer px-4 py-2 hover:bg-gray-200"
+                                    :class="{'bg-gray-300': selected && item[idKey] === selected[idKey]}"
                                 >
                                     <span x-text="item[nameKey]"></span>
                                 </div>
@@ -130,8 +130,9 @@
                                @focus="open = true"
                                @keydown.escape="open = false"
                                placeholder="Начните вводить название системы..."
-                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                         />
+
 
                         <div x-show="open"
                              @mousedown.away="open = false"
@@ -140,8 +141,8 @@
                         >
                             <template x-for="item in filteredItems()" :key="item[idKey]">
                                 <div @click="toggle(item)"
-                                     :class="{'bg-blue-100': isSelected(item)}"
-                                     class="cursor-pointer px-4 py-2 hover:bg-blue-200">
+                                     :class="{'bg-gray-300': isSelected(item)}"
+                                     class="cursor-pointer px-4 py-2 hover:bg-gray-200">
                                     <span x-text="item[nameKey]"></span>
                                 </div>
                             </template>
@@ -174,7 +175,7 @@
                     @endphp
 
                     <select id="game_duration" name="game_duration"
-                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
                         <option value="0" {{ strval($selectedDuration) === '0' ? 'selected' : '' }}>Ваншот (Одна игра)</option>
                         <option value="1" {{ strval($selectedDuration) === '1' ? 'selected' : '' }}>Кампания (Больше одной игры)</option>
                         <option value="2" {{ strval($selectedDuration) === '2' ? 'selected' : '' }}>Ваншот с возможностью перейти в кампанию</option>
@@ -197,7 +198,7 @@
                            @focus="open = true"
                            @keydown.escape="open = false"
                            placeholder="Начните вводить название тега..."
-                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                     />
 
                     <div x-show="open"
@@ -207,8 +208,8 @@
                     >
                         <template x-for="item in filteredItems()" :key="item[`${idKey}`]">
                             <div @click="toggle(item)"
-                                 :class="{'bg-blue-100': isSelected(item)}"
-                                 class="cursor-pointer px-4 py-2 hover:bg-blue-200">
+                                 :class="{'bg-gray-300': isSelected(item)}"
+                                 class="cursor-pointer px-4 py-2 hover:bg-gray-200">
                                 <span x-text="item[`${nameKey}`]"></span>
                             </div>
                         </template>
@@ -238,7 +239,7 @@
                 <div>
                     <label for="description" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Описание:</label>
                     <textarea id="description" name="description" rows="4"
-                              class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                              class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                               placeholder="Опишите вашу игру...">{{ $cardInfo->game_description ?? '' }}</textarea>
                     @error('description')
                     <div class="text-red-500">{{ $message }}</div>
@@ -260,7 +261,7 @@
                            @input="updateSelection"
                            type="text"
                            placeholder="Введите город проведения (Выберете 'Другой' если города нет в списке)"
-                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                            autocomplete="off"
                     />
 
@@ -270,8 +271,8 @@
                          class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto shadow-lg w-full">
                         <template x-for="city in filtered" :key="city.city_pk">
                             <div @click="select(city)"
-                                 class="cursor-pointer px-4 py-2 hover:bg-blue-200"
-                                 :class="{ 'bg-blue-100': city.city === search }">
+                                 class="cursor-pointer px-4 py-2 hover:bg-gray-200"
+                                 :class="{ 'bg-gray-300': city.city === search }">
                                 <span x-text="city.city"></span>
                             </div>
                         </template>
@@ -288,7 +289,7 @@
                 <div>
                     <label for="game_place" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Место проведения игры:</label>
                     <input id="game_place" name="game_place"
-                              class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                              class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                               placeholder="Адрес или место в онлайн формате где будет проводится игра"
                               value="{{ old('game_place', $cardInfo->game_place ?? '') }}"></input>
                     @error('game_place')
@@ -303,7 +304,7 @@
                 <div x-show="playerType === '0'">
                     <label for="date" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Дата проведения:</label>
                     <input id="date" name="date" type="date"
-                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                            value="{{ old('date', $gameDate?->format('Y-m-d')) }}">
                     @error('date')
                     <div class="text-red-500">{{ $message }}</div>
@@ -314,7 +315,7 @@
                 <div x-show="playerType === '0'">
                     <label for="time" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Время проведения:</label>
                     <input id="time" name="time" type="time"
-                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                            value="{{ old('time', $gameDate?->format('H:i')) }}">
                     @error('time')
                     <div class="text-red-500">{{ $message }}</div>
@@ -325,7 +326,7 @@
                 <div x-show="playerType === '0'">
                     <label for="price" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Цена (₽):</label>
                     <input id="price" name="price" type="number" min="0" step="0.01"
-                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                            placeholder="Введите цену"
                            value="{{ old('price', $cardInfo->price ?? '') }}">
                     @error('price')
@@ -333,30 +334,97 @@
                     @enderror
                 </div>
 
-                <!-- Список контактов -->
-                <div>
-                    <label for="contacts" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Контакты:</label>
-                    <textarea id="contacts" name="contacts" rows="3"
-                              class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                              placeholder="Телефон, email, Telegram и т.д.">{{ old('contacts', $cardInfo->contacts ?? '') }}</textarea>
-                    @error('contacts')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+                <!-- Контактная информация -->
+                <div x-data="contactMethodsComponent(@js($contactTypes), @js($knownContacts))" x-init="init()">
+                    <h2 class="text-lg font-alegreya_bold mt-4 mb-2">Контактная информация:</h2>
+
+                    <div class="divide-y divide-[#1a1a1a] border border-[#1a1a1a] rounded-md overflow-visible bg-[#2D2D2D]">
+
+                        <!-- Заголовки -->
+                        <div class="grid grid-cols-[1fr_1fr_auto] bg-[#2D2D2D] font-alegreya_bold text-white text-xs lg:text-lg">
+                            <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a]">Тип контакта:</div>
+                            <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a]">Контактные данные:</div>
+                            <!-- Кнопка добавить -->
+                            <div class="p-1 lg:p-2">
+                                <button
+                                    type="button"
+                                    @click="addRow()"
+                                    class="bg-white  w-[1.55rem] h-[1.55rem] lg:w-[2.25rem] lg:h-[2.25rem] text-2xl lg:text-4xl text-black hover:bg-gray-300 flex items-center justify-center rounded leading-none">
+                                    +
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Строки -->
+                        <template x-for="(row, index) in rows" :key="row.id">
+                            <div class="grid grid-cols-[1fr_1fr_auto] bg-white font-alegreya_bold text-xs lg:text-lg items-center">
+
+                                <!-- Тип контакта -->
+                                <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a] relative overflow-visible"
+                                     x-data="singleSelect(@js($contactTypes), 'contact_methods_pk', 'contact_method', row.type)"
+                                     x-init="init(selectedValue = row.type)">
+                                    <input type="text"
+                                           x-model="search"
+                                           @click="open = true"
+                                           @input="open = true"
+                                           class="w-full px-2 py-1 border border-black rounded"
+                                           placeholder="Выберите тип">
+                                    <ul x-show="open" @click.outside="open = false"
+                                        class="absolute z-50 w-full bg-white border border-black rounded mt-1 max-h-40 overflow-y-auto"
+                                        style="top: 100%; left: 0;">
+                                        <template x-for="item in filteredItems()" :key="item.contact_methods_pk">
+                                            <li @click="choose(item)"
+                                                class="px-2 py-1 hover:bg-gray-200 cursor-pointer"
+                                                x-text="item.contact_method"></li>
+                                        </template>
+                                    </ul>
+                                    <input type="hidden" :name="'contacts[]'" :value="selected ? selected.contact_methods_pk : ''" x-model="row.type">
+                                </div>
+
+                                <!-- Значение контакта -->
+                                <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a]">
+                                    <input type="text"
+                                           class="w-full px-2 py-1 border border-black rounded"
+                                           placeholder="Введите данные"
+                                           :name="'contact_values[]'"
+                                           x-model="row.value"
+                                    >
+                                </div>
+
+                                <!-- Кнопка удалить -->
+                                <div class="lg:p-2 lg:p-2 w-[2.05rem] h-[2.05rem] lg:w-[3.25rem] lg:h-[3.25rem]">
+                                    <button
+                                        type="button"
+                                        @click="removeRow(index)"
+                                        class="w-7 h-7 icon-trash flex items-center justify-center rounded">
+                                        <img src="{{ asset('storage/icons/trash.svg') }}" alt="trash icon" class="w-5 h-5" />
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
+                @error('contacts')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
+                @error('contact_values')
+                <div class="text-red-500">{{ $message }}</div>
+                @enderror
 
             </div>
 
-            <!-- Нижняя кнопка -->
-            <div class="bg-[#2D2D2D] px-6 py-4 flex justify-center space-x-4">
+            <!-- Нижние кнопки -->
+            <div class="bg-[#2D2D2D] p-4 flex flex-col sm:flex-row justify-center items-center gap-4">
                 <a href="{{ url()->previous() }}"
-                        class="text-center bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
+                   class="text-center text-xl bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-full sm:w-60">
                     Назад
                 </a>
                 <button type="submit"
-                        class="text-center bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-gray-300 transition w-60">
+                        class="text-center text-xl bg-white text-black font-alegreya_bold px-5 py-2 rounded hover:bg-[#ababab] transition w-full sm:w-60 cursor-pointer">
                     {{ Route::currentRouteName() === 'card.edit' ? 'Обновить' : 'Создать' }}
                 </button>
             </div>
+
         </div>
     </form>
 @endsection

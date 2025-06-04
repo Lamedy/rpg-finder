@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Models\GameSession;
 use App\Models\GameStyleTag;
 use App\Models\GameSystems;
+use App\Models\SessionContactsList;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,7 @@ class FindGroup extends Controller
             'game_tags.*' => 'int',
         ]);
 
-        $query = GameSession::with(['gameSystems.system', 'city', 'tags.tag', 'user']);
+        $query = GameSession::with(['gameSystems.system', 'city', 'tags.tag', 'user', 'contacts']);
 
         // Фильтры поиска
         if (isset($validated['city_id']) && $validated['city_id'] !== '') {
@@ -81,7 +82,6 @@ class FindGroup extends Controller
         }
 
         $games = $query->paginate($countCardsOnOnePage)->appends(request()->except('page'));
-
         $cityList = City::select('city_pk', 'city')->get();
         $gameSystems = GameSystems::select('game_system_pk', 'game_system_name')->get();
         $gameTags = GameStyleTag::select('game_style_tag_pk', 'game_style_tag')->get();
