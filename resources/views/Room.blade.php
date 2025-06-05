@@ -1,54 +1,60 @@
-@forelse ($games as $game)
+@extends('layouts.MainContentPage')
+
+@section('page_name', 'Поиск компании')
+
+@section('content_title', 'Комната')
+
+@section('content')
     <div
         class="mx-auto bg-gray-200 rounded-lg border border-gray-400 px-4 shadow-md font-serif text-xl leading-tight font-alegreya_medium">
         <div class="flex flex-wrap justify-center sm:justify-between items-start gap-4 mt-2">
             <!-- Левая часть: информация о пользователе -->
             <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start mt-4 gap-3 min-w-0 max-w-full 2xl:max-w-[48%]">
-                <a href="{{ route('profile', $game['user']) }}" class="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-3 min-w-0 max-w-full w-full">
+                <a href="{{ route('profile', $room['user']) }}" class="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-3 min-w-0 max-w-full w-full">
                     <!-- Аватар -->
                     <img
-                        src="{{ asset('storage/' . $game['user']->avatar) }}"
+                        src="{{ asset('storage/' . $room['user']->avatar) }}"
                         alt="Аватар"
                         class="w-24 h-24 rounded-full object-cover border-2 border-black shadow-md cursor-pointer shrink-0"
                     />
 
                     <!-- Имя и рейтинг -->
                     <div class="text-center font-alegreya_medium text-4xl break-words sm:text-left w-full max-w-full truncate">
-                        {{ $game['user']->user_name }}
+                        {{ $room['user']->user_name }}
                     </div>
                 </a>
             </div>
 
             <div class="flex flex-col space-y-1 font-alegreya_bold text-xl lg:text-2xl w-full sm:w-auto sm:max-w-[50%]">
-                @if ($game->city != null)
+                @if ($room->city != null)
                     <div>
                         <span class="font-alegreya_bold">Город:</span>
-                        <span class="text-base lg:text-xl">{{ $game->city->city }}</span>
+                        <span class="text-base lg:text-xl">{{ $room->city->city }}</span>
                     </div>
                 @endif
                 <div>
                     <span class="font-alegreya_bold">Формат игры:</span>
-                    <span class="text-base lg:text-xl"> {{ $game['game_format']->label() }} </span>
+                    <span class="text-base lg:text-xl"> {{ $room['game_format']->label() }} </span>
                 </div>
                 <div>
                     <span class="font-alegreya_bold">Длительность игры:</span>
-                    <span class="text-base lg:text-xl"> {{ $game['game_duration']->label() }} </span>
+                    <span class="text-base lg:text-xl"> {{ $room['game_duration']->label() }} </span>
                 </div>
                 <div>
                     <span class="font-alegreya_bold">Требуется:</span>
-                    <span class="text-base lg:text-xl"> {{ $game['player_type_needed']->label() }} </span>
+                    <span class="text-base lg:text-xl"> {{ $room['player_type_needed']->label() }} </span>
                 </div>
             </div>
         </div>
         <div class="mb-2 flex items-center gap-2 flex-wrap">
             <span class="font-alegreya_bold whitespace-nowrap">
-                @if (count($game['gameSystems']) > 1)
+                @if (count($room['gameSystems']) > 1)
                     Игровые системы:
                 @else
                     Игровая система:
                 @endif
             </span>
-            @foreach ($game['gameSystems'] as $system)
+            @foreach ($room['gameSystems'] as $system)
                 <div class="bg-[#1a1a1a] text-white py-1 px-3 rounded text-base lg:text-xl">
                     {{ $system->system->game_system_name }}
                 </div>
@@ -58,23 +64,23 @@
         <div class="border-t border-b border-black py-2 mt-4">
             <span class="text-base lg:text-xl font-alegreya_bold">Теги:</span>
             <span>
-                @if ($game['tags'] && $game['tags']->count() > 0)
-                    {{ $game['tags']->map(fn($s) => $s->tag->game_style_tag)->implode(', ') }}
+                @if ($room['tags'] && $room['tags']->count() > 0)
+                    {{ $room['tags']->map(fn($s) => $s->tag->game_style_tag)->implode(', ') }}
                 @else
                     Отсутствуют
                 @endif
             </span>
         </div>
-        @if ($game->game_description != null)
+        @if ($room->game_description != null)
             <div class="font-alegreya_bold mt-4">
                 Описание:
             </div>
             <div class="border border-black p-2 mt-1 text-base lg:text-xl bg-[#ced0d4] rounded">
-                    <span> {{ $game->game_description }} </span>
+                <span> {{ $room->game_description }} </span>
             </div>
         @endif
         <div>
-            @if ($game->user->show_contacts_others)
+            @if ($room->user->show_contacts_others)
                 <div>
                     <h2 class="text-xl lg:text-xl font-alegreya_bold mt-4 mb-1">Контакты со мной:</h2>
 
@@ -86,7 +92,7 @@
                         </div>
 
                         <!-- Пример строки -->
-                        @foreach($game->contacts as $index)
+                        @foreach($room->contacts as $index)
                             <div class="grid grid-cols-2 bg-white font-alegreya_bold text-base lg:text-lg">
                                 <div class="px-4 py-2 border-r border-[#1a1a1a]">{{ $index->contacts->contact_method }}</div>
                                 <div class="px-4 py-2">{{ $index->contact_value }}</div>
@@ -96,19 +102,19 @@
                 </div>
             @endif
         </div>
-        @if ($game['game_place'] != null || $game->game_date != null)
+        @if ($room['game_place'] != null || $room->game_date != null)
             <div class="text-lg lg:text-xl font-alegreya_bold w-full py-1 mt-2">
-                @if ( $game['game_place'] != null )
+                @if ( $room['game_place'] != null )
                     <div class="font-alegreya_bold">Место проведения игры:
-                        <span class="text-black">{{ $game['game_place'] }}</span>
+                        <span class="text-black">{{ $room['game_place'] }}</span>
                     </div>
                 @endif
                 <div class="flex justify-between items-center">
-                    @if($game->game_date != null)
+                    @if($room->game_date != null)
                         <span class="mr-2 font-alegreya_bold">
-                            Дата: {{ \Carbon\Carbon::parse($game->game_date)->format('d.m.Y') }}
-                            @if (\Carbon\Carbon::parse($game->game_date)->format('H:i') != '00:00')
-                                Время: {{ \Carbon\Carbon::parse($game->game_date)->format('H:i') }}
+                            Дата: {{ \Carbon\Carbon::parse($room->game_date)->format('d.m.Y') }}
+                            @if (\Carbon\Carbon::parse($room->game_date)->format('H:i') != '00:00')
+                                Время: {{ \Carbon\Carbon::parse($room->game_date)->format('H:i') }}
                             @endif
                         </span>
                     @endif
@@ -117,26 +123,25 @@
         @endif
         <div class="flex flex-wrap justify-between items-start gap-4 text-lg lg:text-xl mt-2">
             <!-- Левая часть: Игроки и Цена -->
-            @if ($game['player_type_needed']->value == 0)
-                <div class="font-alegreya_bold flex-1 min-w-[200px] w-full sm:max-w-[30%]">
-                    <div>Нужно игроков: <span class="text-black">{{ $game['player_count'] }}</span></div>
+            @if ($room['player_type_needed']->value == 0)
+                <div class="font-alegreya_bold flex-1 min-w-[200px]">
+                    <div>Нужно игроков: <span class="text-black">{{ $room['player_count'] }}</span></div>
                     <div>Цена:
                         <span class="text-black">
-                            @if ($game['price'] > 0)
-                                {{ $game['price'] }} Рублей.
+                            @if ($room['price'] > 0)
+                                {{ $room['price'] }} Рублей.
                             @else
                                 Бесплатно
                             @endif
                         </span>
                     </div>
-
                 </div>
             @endif
 
             <!-- Правая часть: Кнопки -->
-            <div class="flex flex-wrap justify-end gap-2 flex-1 min-w-[200px] mt-2">
-                @if (Auth::user() != null && Auth::user()->user_pk == $game->author)
-                    <form class="w-full sm:w-auto text-right" action="{{ route('card.delete', $game->game_session_pk) }}" method="POST" onsubmit="return confirm('Удалить эту сессию?')">
+            <div class="flex flex-wrap justify-end gap-2 flex-1 min-w-[200px] ">
+                @if (Auth::user() != null && Auth::user()->user_pk == $room->author)
+                    <form class="w-full sm:w-auto text-right" action="{{ route('card.delete', $room->game_session_pk) }}" method="POST" onsubmit="return confirm('Удалить эту сессию?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit"
@@ -145,7 +150,7 @@
                         </button>
                     </form>
 
-                    <a href="{{ route('card.edit', $game) }}"
+                    <a href="{{ route('card.edit', $room) }}"
                        class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-60">
                         Редактировать
                     </a>
@@ -154,11 +159,11 @@
                        class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-60">
                         Откликнутся
                     </a>
-                @elseif($game->playerInviteForCurrentUser != null)
-                    <a class="sm:w-auto text-center w-full font-alegreya_bold mt-2">Статус приглашения:
-                        @if ($game->playerInviteForCurrentUser->invite_status == 0 )
+                @elseif($room->playerInviteForCurrentUser != null)
+                    <a class="sm:w-auto text-center w-full font-alegreya_bold">Статус приглашения:
+                        @if ($room->playerInviteForCurrentUser->invite_status == 0 )
                             Расматривается
-                        @elseif($game->playerInviteForCurrentUser->invite_status == 1)
+                        @elseif($room->playerInviteForCurrentUser->invite_status == 1)
                             Ваш запрос принят
                         @else
                             Ваш запрос отклонён
@@ -169,7 +174,7 @@
                         x-data="{
                             successMessage: '',
                             submitForm() {
-                                fetch('{{ route('room.join', $game) }}', {
+                                fetch('{{ route('room.join', $room) }}', {
                                     method: 'POST',
                                     headers: {
                                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -204,27 +209,20 @@
                         </template>
                     </div>
                 @endif
-                    <a href="{{ route('room', $game) }}"
-                       class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white w-full sm:w-60 text-center rounded px-4 py-2 transition text-base sm:text-lg">
-                        Подробнее
-                    </a>
             </div>
         </div>
 
-        <div class="flex flex-wrap items-center justify-between gap-2 py-1">
-            <div class="text-base lg:text-xl text-[#808080] text-right">
-                <span class="inline">Объявление создано:</span>
-                <span class="inline whitespace-nowrap ml-1">
-            Дата: {{ \Carbon\Carbon::parse($game['created_at'])->format('d.m.Y') }}
-            Время: {{ \Carbon\Carbon::parse($game['created_at'])->format('H:i') }}
-        </span>
+        <div class="text-base lg:text-xl text-left sm:text-right text-[#808080] py-1">
+            <div class="inline">
+                Объявление создано:
+            </div>
+            <div class="inline whitespace-normal whitespace-nowrap">
+                Дата: {{ \Carbon\Carbon::parse($room['created_at'])->format('d.m.Y') }}
+                Время: {{ \Carbon\Carbon::parse($room['created_at'])->format('H:i') }}
             </div>
         </div>
 
+
     </div>
-    <br>
-@empty
-    <div class="bg-gray-200 text-4xl py-4 font-alegreya_bold text-center rounded-lg border border-gray-400 shadow-md">
-        Похоже, объявлений не найдено :(
-    </div>
-@endforelse
+@endsection
+

@@ -25,8 +25,28 @@
 
             <nav class="flex flex-col space-y-1 py-1 font-alegreya_medium max-w-100 mx-auto">
                 @if (Auth::check())
-                <a href="" class="p-2 rounded text-lg text-white bg-[#1a1a1a] text-center">Уведомления</a>
-                <a href="{{ route('account.my_advertisements') }}" class="p-2 rounded text-lg text-white bg-[#1a1a1a] text-center">Мои анкеты</a>
+                    <a href="{{ route('account.notifications') }}"
+                       class="group relative inline-flex items-center justify-center gap-2 p-2 rounded text-lg text-white bg-[#1a1a1a] w-full h-full">
+
+                        <span class="leading-none">Уведомления</span>
+
+                        <div class="relative flex items-center">
+                            <svg class="w-6 h-6 text-white transition-colors duration-200"
+                                 fill="none" stroke="currentColor" stroke-width="2"
+                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                            </svg>
+
+                            @if($unreadNoticesCount > 0)
+                                <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                                    {{ $unreadNoticesCount }}
+                                </span>
+                            @endif
+                        </div>
+                    </a>
+
+                    <a href="{{ route('account.my_advertisements') }}" class="p-2 rounded text-lg text-white bg-[#1a1a1a] text-center">Мои анкеты</a>
                 <a href="{{ route('profile', Auth::user()) }}" class="p-2 rounded text-lg text-white bg-[#1a1a1a] text-center">Профиль</a>
                 <a href="/account/settings" class="p-2 rounded text-lg text-white bg-[#1a1a1a] text-center">Настройки</a>
                 <form method="POST" action="{{ route('logout') }}">

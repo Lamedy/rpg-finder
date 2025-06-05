@@ -16,8 +16,12 @@ class NoticeList extends Model
         return $this->belongsTo(User::class, 'from_user', 'user_pk');
     }
 
-    public function playerSession()
+    public function playerSessionAuthor()
     {
-        return $this->hasOne(PlayerListOfGameSession::class, 'notice_list_pk', 'notice_list_pk');
+        return $this->hasOne(PlayerListOfGameSession::class, 'notice_for_author', 'notice_list_pk');
+    }
+    public function playerSessionUser()
+    {
+        return $this->hasOne(PlayerListOfGameSession::class, 'notice_for_user', 'notice_list_pk');
     }
 }

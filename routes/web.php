@@ -34,6 +34,8 @@ Route::post('/login', [Authorization::class, 'submit'])->name('login.submit');
 
 Route::get('/profile/{user}', [Profile::class, 'show'])->name('profile');
 
+Route::get('/room/{room}', [RoomController::class, 'show'])->name('room');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/account/settings', [Settings::class, 'show'])->name('account.settings');
     Route::post('/account/settings', [Settings::class, 'submit'])->name('account.settings.update');

@@ -5,14 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\GameSession;
 use App\Models\NoticeList;
 use App\Models\PlayerListOfGameSession;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 
 class RoomController extends Controller
 {
+    public function show(GameSession $room): View
+    {
+        if (Auth::check()) {
+            $userId = Auth::user()->user_pk;
+            $room->playerInviteForCurrentUser = $room->playerInviteForUser($userId)->first();
+
+        }
+        return view('Room', compact('room'));
+    }
     public function join(GameSession $room): JsonResponse
     {
         $userListInRoom = PlayerListOfGameSession::select('user_pk')->where('game_session_pk', $room->game_session_pk)->get();
@@ -37,7 +46,7 @@ class RoomController extends Controller
             PlayerListOfGameSession::create([
                 'user_pk' => Auth::user()->user_pk,
                 'game_session_pk' => $room->game_session_pk,
-                'notice_list_pk' => $notice->notice_list_pk,
+                'notice_for_author' => $notice->notice_list_pk,
             ]);
 
             DB::commit();
@@ -57,9 +66,9 @@ class RoomController extends Controller
         DB::beginTransaction();
 
         try {
-            $playerListOfGameSession = PlayerListOfGameSession::where('notice_list_pk', $notice->notice_list_pk)->first();
+            $playerListOfGameSession = PlayerListOfGameSession::where('notice_for_author', $notice->notice_list_pk)->first();
 
-            NoticeList::create([
+            $noticeAnswer = NoticeList::create([
                 'from_user' => $room->author ,
                 'for_user' => $notice->from_user,
                 'notice_type' => 1, // 1 - Ответ на запрос на вступление в комнату
@@ -70,6 +79,7 @@ class RoomController extends Controller
 
             $playerListOfGameSession->update([
                 'invite_status' => 2,
+                'notice_for_user' => $noticeAnswer->notice_list_pk
             ]);
 
             DB::commit();
@@ -85,9 +95,9 @@ class RoomController extends Controller
         DB::beginTransaction();
 
         try {
-            $playerListOfGameSession = PlayerListOfGameSession::where('notice_list_pk', $notice->notice_list_pk)->first();
+            $playerListOfGameSession = PlayerListOfGameSession::where('notice_for_author', $notice->notice_list_pk)->first();
 
-            NoticeList::create([
+            $noticeAnswer = NoticeList::create([
                 'from_user' => $room->author ,
                 'for_user' => $notice->from_user,
                 'notice_type' => 1, // 1 - Ответ на запрос на вступление в комнату
@@ -98,6 +108,7 @@ class RoomController extends Controller
 
             $playerListOfGameSession->update([
                 'invite_status' => 1,
+                'notice_for_user' => $noticeAnswer->notice_list_pk
             ]);
 
             DB::commit();

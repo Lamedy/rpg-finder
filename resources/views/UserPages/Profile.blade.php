@@ -99,7 +99,8 @@
                 @endif
 
                 <!-- Контактные данные -->
-                @if ($user->userContactsList && $user->userContactsList->count() > 0)
+                @if ($user->userContactsList && $user->userContactsList->count() > 0 &&
+                        ($user->show_contacts_others || (Auth::user() && Auth::user()->user_pk == $user->user_pk)))
                     <div>
                         <h2 class="text-xl lg:text-2xl font-alegreya_bold mt-4 mb-1">Контакты со мной:</h2>
 

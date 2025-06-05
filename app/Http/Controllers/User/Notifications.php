@@ -14,9 +14,17 @@ class Notifications extends Controller
         $notifications = NoticeList::where('for_user', Auth::user()->user_pk)
             ->with([
                 'sender',
-                'playerSession.gameSession'
+                'playerSessionAuthor.gameSession',
+                'playerSessionUser.gameSession'
             ])
-            ->get();
+            ->paginate(10);
+
+        $idsOnPage = $notifications->pluck('notice_list_pk')->toArray();
+
+        NoticeList::whereIn('notice_list_pk', $idsOnPage)
+            ->where('read_status', false)
+            ->update(['read_status' => true]);
+
         return view('UserPages.Notifications', compact('notifications'));
     }
 }
