@@ -45,8 +45,7 @@
                             @endif
                         </div>
                     </a>
-
-                    <a href="{{ route('account.my_advertisements') }}" class="p-2 rounded text-lg text-white bg-[#1a1a1a] text-center">Мои анкеты</a>
+                <a href="{{ route('account.my_advertisements') }}" class="p-2 rounded text-lg text-white bg-[#1a1a1a] text-center">Мои анкеты</a>
                 <a href="{{ route('profile', Auth::user()) }}" class="p-2 rounded text-lg text-white bg-[#1a1a1a] text-center">Профиль</a>
                 <a href="/account/settings" class="p-2 rounded text-lg text-white bg-[#1a1a1a] text-center">Настройки</a>
                 <form method="POST" action="{{ route('logout') }}">
