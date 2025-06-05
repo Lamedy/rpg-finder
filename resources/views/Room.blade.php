@@ -80,7 +80,9 @@
             </div>
         @endif
         <div>
-            @if ($room->user->show_contacts_others)
+            @if ($room->user->show_contacts_others ||
+                (Auth::check() && Auth::user()->user_pk == $room->author) ||
+                ($room->playerInviteForCurrentUser && $room->playerInviteForCurrentUser->invite_status == 1))
                 <div>
                     <h2 class="text-xl lg:text-xl font-alegreya_bold mt-4 mb-1">Контакты со мной:</h2>
 
@@ -101,6 +103,100 @@
                     </div>
                 </div>
             @endif
+
+                <div>
+                    <h2 class="text-xl lg:text-xl font-alegreya_bold mt-4 mb-1">Список участников:</h2>
+
+                    <div class="w-full divide-y divide-[#1a1a1a] border [#1a1a1a] rounded-md overflow-hidden">
+                        <!-- Заголовки -->
+                        <div class="grid grid-cols-{{ Auth::check() &&  Auth::user()->user_pk == $room->author ? '2' : '1' }} font-alegreya_bold text-white text-base lg:text-lg">
+                            <div class="px-4 py-2 border-r border-[#1a1a1a] bg-[#2D2D2D]">Имя пользователя:</div>
+                            @if(Auth::check() && Auth::user()->user_pk == $room->author)
+                                <div class="px-4 py-2 bg-[#2D2D2D]">Действия:</div>
+                            @endif
+                        </div>
+
+                        @if($room->userList->every(fn($user) => $user->invite_status != 1) && (Auth::check() && Auth::user()->user_pk != $room->author))
+                            <div class="flex justify-start gap-2 px-4 py-2 bg-white">
+                                Здесь пока никого нет
+                            </div>
+                        @elseif($room->userList->every(fn($user) => $user->invite_status == 2))
+                            <div class="flex justify-start gap-2 px-4 py-2 bg-white">
+                                Здесь пока никого нет
+                            </div>
+                        @endif
+                        <!-- Строки -->
+                        @foreach($room->userList as $user)
+                            @if($user->invite_status == 1 || Auth::check() && Auth::user()->user_pk == $room->author)
+                                @if($user->invite_status != 2)
+                                    <div class="grid grid-cols-{{ Auth::check() &&  Auth::user()->user_pk == $room->author ? '2' : '1' }} font-alegreya_bold text-base lg:text-lg">
+                                            <!-- Имя пользователя -->
+                                            <div class="px-4 py-2 border-r border-[#1a1a1a] bg-white">
+
+                                                    {{ $user->user->user_name }}
+
+                                            </div>
+                                        <!-- Кнопки -->
+                                        @if(Auth::check() && Auth::user()->user_pk == $room->author)
+                                            <div class="flex justify-start gap-2 px-4 py-2 bg-white">
+                                                @if($user->invite_status == 0)
+                                                    <!-- Кнопка "Принять" -->
+                                                    <form class="w-full sm:w-auto" action="{{ route('accept_invite', ['room' => $room, 'notice' => $user->noticeForAuthor]) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit"
+                                                           class="flex items-center justify-center bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-32">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                 class="h-5 w-5 block sm:hidden"
+                                                                 viewBox="0 0 20 20"
+                                                                 fill="currentColor">
+                                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                                            </svg>
+                                                            <span class="hidden sm:block">Принять</span>
+                                                        </button>
+                                                    </form>
+
+                                                    <!-- Кнопка "Отклонить" -->
+                                                    <form class="w-full sm:w-auto" action="{{ route('not_accept_invite', ['room' => $room, 'notice' => $user->noticeForAuthor]) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit"
+                                                           class="flex items-center justify-center bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-32">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                 class="h-5 w-5 block sm:hidden"
+                                                                 viewBox="0 0 20 20"
+                                                                 fill="currentColor">
+                                                                <path fill-rule="evenodd" d="M10 8.586l-3.293-3.293a1 1 0 00-1.414 1.414L8.586 10l-3.293 3.293a1 1 0 001.414 1.414L10 11.414l3.293 3.293a1 1 0 001.414-1.414L11.414 10l3.293-3.293a1 1 0 00-1.414-1.414L10 8.586z" clip-rule="evenodd" />
+                                                            </svg>
+                                                            <span class="hidden sm:block">Отклонить</span>
+                                                        </button>
+                                                    </form>
+                                                @elseif($user->invite_status == 1)
+{{--                                                    <!-- Кнопка "Выгнать" -->--}}
+{{--                                                    <form class="w-full sm:w-auto" action="{{ route('not_accept_invite', ['room' => $room, 'notice' => $user->noticeForAuthor]) }}" method="POST">--}}
+{{--                                                        @csrf--}}
+{{--                                                        @method('PUT')--}}
+{{--                                                        <button type="submit"--}}
+{{--                                                                class="flex items-center justify-center bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-32">--}}
+{{--                                                            <svg xmlns="http://www.w3.org/2000/svg"--}}
+{{--                                                                 class="h-5 w-5 block sm:hidden"--}}
+{{--                                                                 viewBox="0 0 20 20"--}}
+{{--                                                                 fill="currentColor">--}}
+{{--                                                                <path fill-rule="evenodd" d="M10 8.586l-3.293-3.293a1 1 0 00-1.414 1.414L8.586 10l-3.293 3.293a1 1 0 001.414 1.414L10 11.414l3.293 3.293a1 1 0 001.414-1.414L11.414 10l3.293-3.293a1 1 0 00-1.414-1.414L10 8.586z" clip-rule="evenodd" />--}}
+{{--                                                            </svg>--}}
+{{--                                                            <span class="hidden sm:block">Выгнать</span>--}}
+{{--                                                        </button>--}}
+{{--                                                    </form>--}}
+                                                @endif
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endif
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+
         </div>
         @if ($room['game_place'] != null || $room->game_date != null)
             <div class="text-lg lg:text-xl font-alegreya_bold w-full py-1 mt-2">
@@ -159,17 +255,7 @@
                        class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-60">
                         Откликнутся
                     </a>
-                @elseif($room->playerInviteForCurrentUser != null)
-                    <a class="sm:w-auto text-center w-full font-alegreya_bold">Статус приглашения:
-                        @if ($room->playerInviteForCurrentUser->invite_status == 0 )
-                            Расматривается
-                        @elseif($room->playerInviteForCurrentUser->invite_status == 1)
-                            Ваш запрос принят
-                        @else
-                            Ваш запрос отклонён
-                        @endif
-                    </a>
-                @else
+                @elseif($room->playerInviteForCurrentUser == null)
                     <div
                         x-data="{
                             successMessage: '',

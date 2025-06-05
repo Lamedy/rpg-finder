@@ -15,4 +15,14 @@ class PlayerListOfGameSession extends Model
     {
         return $this->belongsTo(GameSession::class, 'game_session_pk', 'game_session_pk');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_pk', 'user_pk');
+    }
+
+    public function noticeForAuthor()
+    {
+        return $this->belongsTo(NoticeList::class,  'notice_for_author', 'notice_list_pk');
+    }
 }

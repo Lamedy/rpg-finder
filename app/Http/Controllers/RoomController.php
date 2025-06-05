@@ -18,8 +18,10 @@ class RoomController extends Controller
         if (Auth::check()) {
             $userId = Auth::user()->user_pk;
             $room->playerInviteForCurrentUser = $room->playerInviteForUser($userId)->first();
-
         }
+
+        $room->load(['userList.user', 'userList.noticeForAuthor']);
+
         return view('Room', compact('room'));
     }
     public function join(GameSession $room): JsonResponse

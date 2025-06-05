@@ -56,4 +56,9 @@ class GameSession extends Model
         return $this->hasOne(PlayerListOfGameSession::class, 'game_session_pk', 'game_session_pk')
             ->where('user_pk', $userId);
     }
+
+    public function userList()
+    {
+        return $this->hasMany(PlayerListOfGameSession::class, 'game_session_pk', 'game_session_pk');
+    }
 }
