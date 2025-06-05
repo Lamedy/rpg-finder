@@ -45,7 +45,6 @@ class Registration extends Controller
 
     public function showConfirmForm(): View | RedirectResponse
     {
-        // Показываем форму только если есть данные
         if (!Session::has('pending_registration')) {
             return redirect()->route('registration');
         }

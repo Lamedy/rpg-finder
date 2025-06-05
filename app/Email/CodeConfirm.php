@@ -20,7 +20,7 @@ class CodeConfirm extends Mailable
     public function build()
     {
         return $this->subject('Код подтверждения')
-            ->view('Emails.CodeConfirm') // путь к Blade-шаблону
+            ->view('Emails.CodeConfirm')
             ->with(['code' => $this->code]);
     }
 }

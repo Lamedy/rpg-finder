@@ -257,10 +257,11 @@
         </div>
 
         <br>
-        <a href="{{ route('find.group', ['city_id' => '']) }}"
+        <a href="{{ route('find.group', ['load_city' => false, 'page' => request()->get('page', 1)]) }}"
            class="block w-full text-center bg-white text-[#a30d0d] font-bold px-5 py-2 rounded hover:bg-[#ababab] mb-2">
             Сбросить фильтры
         </a>
+        <input type="hidden" value="0" name="load_city">
         <button type="submit"
                 class="block w-full text-center bg-white text-black font-bold px-5 py-2 rounded hover:bg-[#ababab] cursor-pointer">
             Применить фильтры

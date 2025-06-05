@@ -73,7 +73,7 @@
                             </div>
                         <!-- Список действий -->
                         <nav class="flex flex-col space-y-1 px-2 py-1 font-alegreya_medium">
-                            <a href="" class="p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Уведомления</a>
+                            <a href="{{ route('account.notifications') }}" class="p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Уведомления</a>
                             <a href="{{ route('account.my_advertisements') }}" class="p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Мои анкеты</a>
                             <a href="{{ route('profile', Auth::user()) }}" class="p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Профиль</a>
                             <a href="/account/settings" class="p-2 rounded text-lg text-white hover:bg-[#1a1a1a]">Настройки</a>

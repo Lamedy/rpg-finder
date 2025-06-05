@@ -104,7 +104,7 @@ class CreateCard extends Controller
                 'game_date' => !$validated['player_type'] ? $datetime  : null,
                 'author' => Auth::user()->user_pk,
                 'city_pk' => (int)$validated['game_format'] !== 1 ? $validated['city_id'] : null,
-                'price' =>  !$validated['player_type'] ? $validated['price'] : null,
+                'price' =>  !$validated['player_type'] ? $validated['price'] : 0,
             ]);
 
             foreach ($validated['game_systems'] as $game_system => $game_system_pk) {
@@ -210,7 +210,6 @@ class CreateCard extends Controller
                 $datetime = $date;
             }
 
-            // Обновляем основную таблицу
             $card->update([
                 'player_type_needed' => $validated['player_type'],
                 'player_count' => !$validated['player_type'] ? $validated['player_count'] : null,
@@ -221,14 +220,12 @@ class CreateCard extends Controller
                 'game_date' => !$validated['player_type'] ? $datetime  : null,
                 'author' => Auth::user()->user_pk,
                 'city_pk' => (int)$validated['game_format'] !== 1 ? $validated['city_id'] : null,
-                'price' =>  !$validated['player_type'] ? $validated['price'] : null,
+                'price' =>  !$validated['player_type'] ? $validated['price'] : 0,
             ]);
 
-            // Очищаем старые связи
             GameSessionSystemList::where('game_session_pk', $card->game_session_pk)->delete();
             SessionTagsList::where('game_session_pk', $card->game_session_pk)->delete();
 
-            // Заносим новые
             foreach ($validated['game_systems'] as $game_system_pk) {
                 GameSessionSystemList::create([
                     'game_session_pk' => $card->game_session_pk,
@@ -264,12 +261,6 @@ class CreateCard extends Controller
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-    }
-
-
-    public function save(GameSession $card): RedirectResponse
-    {
-
     }
 
     public function clearEmptyRows(Request $request): array

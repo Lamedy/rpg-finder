@@ -21,7 +21,7 @@
             </aside>
             <!-- Правая колонка: Контент -->
             <main class="min-w-full p-1 sm:p-1 md:p-2 lg:p-4 ml-0 lg:max-w-4/6 lg:min-w-4/6 lg:ml-4 bg-[#3A3A3A]">
-                <h2 class="text-shadow text-white text-2xl font-alegreya_medium mb-4 border-b border-white pb-2">
+                <h2 class="text-shadow mt-2 text-white text-2xl font-alegreya_medium mb-4 border-b border-white pb-2">
                     @yield('content_title')
                 </h2>
                 @yield('content')

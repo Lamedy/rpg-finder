@@ -121,7 +121,7 @@ class Profile extends Controller
 
         try {
             if (!empty($validated['avatar'])) {
-                if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+                if ($user->avatar && $user->avatar != 'avatars/default_avatar.png' && Storage::disk('public')->exists($user->avatar)) {
                     Storage::disk('public')->delete($user->avatar);
                 }
                 $avatarPath = $validated['avatar']->store('avatars', 'public');
@@ -179,7 +179,6 @@ class Profile extends Controller
             return redirect()->route('profile', $user)->with('success', 'Профиль обновлён.');
         } catch (\Exception $e) {
             DB::rollBack();
-            //dd($e->getMessage());
             return redirect()->back()->withErrors(['error' => 'Ошибка при обновлении профиля: ' . $e->getMessage()]);
         }
     }

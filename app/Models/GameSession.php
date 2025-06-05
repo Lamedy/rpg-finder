@@ -6,6 +6,7 @@ use App\Enums\GameDuration;
 use App\Enums\GameFormat;
 use App\Enums\PlayerTypeNeeded;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class GameSession extends Model
 {
@@ -48,5 +49,11 @@ class GameSession extends Model
     public function contacts()
     {
         return $this->hasMany(SessionContactsList::class, 'game_session_pk');
+    }
+
+    public function playerInviteForUser($userId)
+    {
+        return $this->hasOne(PlayerListOfGameSession::class, 'game_session_pk', 'game_session_pk')
+            ->where('user_pk', $userId);
     }
 }

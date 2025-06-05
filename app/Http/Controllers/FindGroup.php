@@ -6,9 +6,7 @@ use App\Models\City;
 use App\Models\GameSession;
 use App\Models\GameStyleTag;
 use App\Models\GameSystems;
-use App\Models\SessionContactsList;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -36,11 +34,31 @@ class FindGroup extends Controller
             'game_tags.*' => 'int',
         ]);
 
-        $query = GameSession::with(['gameSystems.system', 'city', 'tags.tag', 'user', 'contacts']);
+        $query = GameSession::with([
+            'gameSystems.system',
+            'city',
+            'tags.tag',
+            'user',
+            'contacts'
+        ]);
 
-        // Фильтры поиска
+        if (!isset($request['load_city'])) {
+            $request->merge(['load_city' => true]);
+        }
+
         if (isset($validated['city_id']) && $validated['city_id'] !== '') {
-            $query->where('city_pk', $validated['city_id']);
+            $cityId = $validated['city_id'];
+        } elseif ($request['load_city'] && Auth::user() && Auth::user()->city_pk !== null) {
+            $cityId = Auth::user()->city_pk;
+        } else {
+            $cityId = null;
+        }
+
+        if ($cityId !== null) {
+            $query->where(function ($q) use ($cityId) {
+                $q->where('city_pk', $cityId)
+                    ->orWhereNull('city_pk');
+            });
         }
 
         if (isset($validated['price_min']) && $validated['price_min'] !== '') {
@@ -82,11 +100,19 @@ class FindGroup extends Controller
         }
 
         $games = $query->paginate($countCardsOnOnePage)->appends(request()->except('page'));
+
+        if (Auth::check()) {
+            $userId = Auth::user()->user_pk;
+            foreach ($games as $game) {
+                $game->playerInviteForCurrentUser = $game->playerInviteForUser($userId)->first();
+            }
+        }
+
         $cityList = City::select('city_pk', 'city')->get();
         $gameSystems = GameSystems::select('game_system_pk', 'game_system_name')->get();
         $gameTags = GameStyleTag::select('game_style_tag_pk', 'game_style_tag')->get();
         $city_id = $validated['city_id'] ?? null;
-        if (!$request->has('city_id')) {
+        if ($request['load_city']) {
             $city_id = Auth::user()->city_pk ?? null;
         }
 

@@ -148,11 +148,60 @@
                        class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-60">
                         Редактировать
                     </a>
+                @elseif(Auth::user() == null)
+                    <a href="{{ route('login') }}"
+                       class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-60">
+                        Откликнутся
+                    </a>
+                @elseif($game->playerInviteForCurrentUser != null)
+                    <a class="sm:w-auto text-center w-full font-alegreya_bold">Статус приглашения:
+                        @if ($game->playerInviteForCurrentUser->invite_status == 0 )
+                            Расматривается
+                        @elseif($game->playerInviteForCurrentUser->invite_status == 1)
+                            Ваш запрос принят
+                        @else
+                            Ваш запрос отклонён
+                        @endif
+                    </a>
                 @else
-                    <button
-                        class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-60">
-                        Откликнуться
-                    </button>
+                    <div
+                        x-data="{
+                            successMessage: '',
+                            submitForm() {
+                                fetch('{{ route('room.join', $game) }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({})
+                                })
+                                .then(response => {
+                                    if (!response.ok) throw new Error('Ошибка при отклике');
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    this.successMessage = data.message || 'Вы откликнулись!';
+                                })
+                                .catch(error => {
+                                    this.successMessage = 'Произошла ошибка';
+                                });
+                            }
+                        }"
+                        class="flex flex-col items-end gap-2 w-full"
+                    >
+                        <template x-if="!successMessage">
+                            <button @click="submitForm"
+                                    type="button"
+                                    class="sm:w-60 bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white rounded px-4 py-2 transition text-base sm:text-lg w-full">
+                                Откликнуться
+                            </button>
+                        </template>
+                        <template x-if="successMessage">
+                            <div class="sm:w-auto text-center sm:text-right w-full font-alegreya_bold" x-text="successMessage"></div>
+                        </template>
+                    </div>
                 @endif
             </div>
         </div>

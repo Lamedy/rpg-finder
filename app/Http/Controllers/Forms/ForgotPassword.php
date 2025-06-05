@@ -66,7 +66,6 @@ class ForgotPassword extends Controller
             'token' => 'required',
         ]);
 
-        // Пытаемся сбросить пароль через Password Broker
         $status = Password::broker('user_auths')->reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {

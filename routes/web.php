@@ -6,8 +6,10 @@ use App\Http\Controllers\Forms\CreateCard;
 use App\Http\Controllers\Forms\ForgotPassword;
 use App\Http\Controllers\Forms\Registration;
 use App\Http\Controllers\Main;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\User\Forms\ChangePassword;
 use App\Http\Controllers\User\Forms\Settings;
+use App\Http\Controllers\User\Notifications;
 use App\Http\Controllers\User\Profile;
 use App\Http\Controllers\User\UserAdvertisements;
 use Illuminate\Support\Facades\Route;
@@ -49,4 +51,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile/{user}/Edit', [Profile::class, 'edit'])->name('profile.edit');
     Route::put('/profile/{user}/Edit', [Profile::class, 'submit'])->name('profile.edit.submit');
+
+    Route::get('/account/notifications', [Notifications::class, 'show'])->name('account.notifications');
+
+    Route::put('/room/{room}/{notice}/accept', [RoomController::class, 'acceptInvite'])->name('accept_invite');
+    Route::put('/room/{room}/{notice}/decline', [RoomController::class, 'notAcceptInvite'])->name('not_accept_invite');
+    Route::post('/room/{room}', [RoomController::class, 'join'])->name('room.join');
 });
