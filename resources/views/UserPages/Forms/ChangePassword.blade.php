@@ -33,7 +33,7 @@
                                class="mt-1 block w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]" />
                     </div>
                     @if (session('status'))
-                        <div class="mb-4 p-3 rounded text-[#136e1f] font-semibold border">
+                        <div class="max-w-125 mx-auto mb-4 p-3 rounded text-[#136e1f] font-semibold border">
                             {{ session('status') }}
                         </div>
                     @endif

@@ -29,7 +29,7 @@
 
                 <!-- Кого ищу -->
                 <div>
-                    <label for="player_type" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Ищу:</label>
+                    <label for="player_type" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Ищу*:</label>
                     <select id="player_type" name="player_type"
                             x-model="playerType"
                             class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
@@ -43,7 +43,7 @@
 
                 <!-- Кол-во игроков -->
                 <div x-show="playerType === '0'">
-                    <label for="player_count" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Кол-во игроков:</label>
+                    <label for="player_count" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Кол-во игроков*:</label>
                     <input id="player_count" name="player_count" type="number" min="1"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                            placeholder="Введите количество игроков"
@@ -55,7 +55,7 @@
 
                 <!-- Формат игры -->
                 <div>
-                    <label for="game_format" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Формат игры:</label>
+                    <label for="game_format" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Формат игры*:</label>
                     <select id="game_format" name="game_format"
                             x-model="gameFormat"
                             class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
@@ -76,7 +76,7 @@
                         x-data="singleSelect(@js($gameSystems), 'game_system_pk', 'game_system_name',  {{ $selectedGameSystems[0] ?? null }})"
                         x-init="init()"
                         class="relative">
-                        <label class="block text-lg font-alegreya_bold text-gray-800 mb-1">Игровая система:</label>
+                        <label class="block text-lg font-alegreya_bold text-gray-800 mb-1">Игровая система*:</label>
 
                         <input
                             type="text"
@@ -123,7 +123,7 @@
                         x-init="init()"
                         class="relative"
                     >
-                        <label for="game_systems" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Игровые системы:</label>
+                        <label for="game_systems" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Игровые системы*:</label>
 
                         <input type="text"
                                x-model="search"
@@ -169,7 +169,7 @@
                 @enderror
                 <!-- Длительность игры -->
                 <div>
-                    <label for="game_duration" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Длительность игры:</label>
+                    <label for="game_duration" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Длительность игры*:</label>
                     @php
                         $selectedDuration = old('game_duration', isset($cardInfo) ? $cardInfo->game_duration?->value : null);
                     @endphp
@@ -240,7 +240,7 @@
                     <label for="description" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Описание:</label>
                     <textarea id="description" name="description" rows="4"
                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
-                              placeholder="Опишите вашу игру...">{{ $cardInfo->game_description ?? '' }}</textarea>
+                              placeholder="Расскажите подробнее чего вы ожидаете от игры...">{{ $cardInfo->game_description ?? '' }}</textarea>
                     @error('description')
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
@@ -252,7 +252,7 @@
                      x-init="init()"
                      class="relative"
                 >
-                    <label for="city" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Город:</label>
+                    <label for="city" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Город*:</label>
 
                     <input id="city"
                            x-model="search"
@@ -286,7 +286,7 @@
                 </div>
 
                 <!-- Место проведения игры -->
-                <div>
+                <div x-show="gameFormat != '1' && playerType != '1'">
                     <label for="game_place" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Место проведения игры:</label>
                     <input id="game_place" name="game_place"
                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
@@ -304,6 +304,7 @@
                 <div x-show="playerType === '0'">
                     <label for="date" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Дата проведения:</label>
                     <input id="date" name="date" type="date"
+                           min="{{ date('Y-m-d') }}"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                            value="{{ old('date', $gameDate?->format('Y-m-d')) }}">
                     @error('date')
@@ -336,7 +337,7 @@
 
                 <!-- Контактная информация -->
                 <div x-data="contactMethodsComponent(@js($contactTypes), @js($knownContacts))" x-init="init()">
-                    <h2 class="text-lg font-alegreya_bold mt-4 mb-2">Контактная информация:</h2>
+                    <h2 class="text-lg font-alegreya_bold mt-4 mb-2">Контактная информация*:</h2>
 
                     <div class="divide-y divide-[#1a1a1a] border border-[#1a1a1a] rounded-md overflow-visible bg-[#2D2D2D]">
 

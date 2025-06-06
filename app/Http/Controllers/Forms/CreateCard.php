@@ -62,19 +62,19 @@ class CreateCard extends Controller
 
         $validated = $request->validate([
             'player_type'       => 'required|in:0,1',
-            'player_count'      => 'required_if:player_type,0|nullable|integer|min:1',
+            'player_count'      => 'required_if:player_type,0|nullable|integer|min:1|max:16',
             'game_format'       => 'required|in:0,1,2',
             'game_systems'      => 'required|array|min:1',
             'game_systems.*'    => 'integer|exists:game_system,game_system_pk',
             'game_duration'     => 'required|in:0,1,2',
             'game_tags'         => 'nullable|array',
             'game_tags.*'       => 'integer|exists:game_style_tag,game_style_tag_pk',
-            'description'       => 'nullable|string|max:1000',
+            'description'       => 'nullable|string|max:3000',
             'city_id'           => 'required_unless:game_format,1|nullable|integer|exists:city,city_pk',
-            'game_place'        => 'nullable|string|max:255',
+            'game_place'        => 'nullable|string|max:512',
             'date'              => 'nullable|date|after_or_equal:today|required_with:time',
             'time'              => 'nullable|date_format:H:i',
-            'price'             => 'nullable|numeric|min:0',
+            'price'             => 'nullable|numeric|min:0|max:100000',
             'contacts'          => 'required|nullable|array',
             'contacts.*'        => 'nullable|exists:contact_methods,contact_methods_pk',
             'contact_values'    => 'required|nullable|array',
@@ -100,8 +100,8 @@ class CreateCard extends Controller
                 'game_format' => $validated['game_format'],
                 'game_duration' => $validated['game_duration'],
                 'game_description' => $validated['description'],
-                'game_place' => !$validated['player_type'] ? $validated['game_place'] : null,
-                'game_date' => !$validated['player_type'] ? $datetime  : null,
+                'game_place' => (!$validated['player_type'] && (int)$validated['game_format'] !== 1) ? $validated['game_place'] : null,
+                'game_date' => !$validated['player_type']  ? $datetime  : null,
                 'author' => Auth::user()->user_pk,
                 'city_pk' => (int)$validated['game_format'] !== 1 ? $validated['city_id'] : null,
                 'price' =>  !$validated['player_type'] ? $validated['price'] : 0,
@@ -140,7 +140,6 @@ class CreateCard extends Controller
         } catch (\Exception $e)
         {
             DB::rollBack();
-            dd($e->getMessage());
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
 
@@ -178,19 +177,19 @@ class CreateCard extends Controller
 
         $validated = $request->validate([
             'player_type'       => 'required|in:0,1',
-            'player_count'      => 'required_if:player_type,0|nullable|integer|min:1',
+            'player_count'      => 'required_if:player_type,0|nullable|integer|min:1|max:16',
             'game_format'       => 'required|in:0,1,2',
             'game_systems'      => 'required|array|min:1',
             'game_systems.*'    => 'integer|exists:game_system,game_system_pk',
             'game_duration'     => 'required|in:0,1,2',
             'game_tags'         => 'nullable|array',
             'game_tags.*'       => 'integer|exists:game_style_tag,game_style_tag_pk',
-            'description'       => 'nullable|string|max:1000',
+            'description'       => 'nullable|string|max:3000',
             'city_id'           => 'required_unless:game_format,1|nullable|integer|exists:city,city_pk',
-            'game_place'        => 'nullable|string|max:255',
+            'game_place'        => 'nullable|string|max:512',
             'date'              => 'nullable|date|after_or_equal:today|required_with:time',
             'time'              => 'nullable|date_format:H:i',
-            'price'             => 'nullable|numeric|min:0',
+            'price'             => 'nullable|numeric|min:0|max:100000',
             'contacts'          => 'required|nullable|array',
             'contacts.*'        => 'nullable|exists:contact_methods,contact_methods_pk',
             'contact_values'    => 'required|nullable|array',
@@ -216,7 +215,7 @@ class CreateCard extends Controller
                 'game_format' => $validated['game_format'],
                 'game_duration' => $validated['game_duration'],
                 'game_description' => $validated['description'],
-                'game_place' => !$validated['player_type'] ? $validated['game_place'] : null,
+                'game_place' => (!$validated['player_type'] && (int)$validated['game_format'] !== 1) ? $validated['game_place'] : null,
                 'game_date' => !$validated['player_type'] ? $datetime  : null,
                 'author' => Auth::user()->user_pk,
                 'city_pk' => (int)$validated['game_format'] !== 1 ? $validated['city_id'] : null,

@@ -25,11 +25,11 @@ class Registration extends Controller
     {
         $validator = $request->validate([
             'login' => 'required|string|max:50',
-            'name' => 'nullable|string|max:255',
+            'name' => 'nullable|string|max:50',
             'password' => 'required|string|confirmed|min:6',
             'email' => 'required|email|max:255|unique:user_authorization,email',
             'gender' => 'nullable|in:0,1',
-            'birthdate' => 'nullable|date',
+            'birthdate' => 'nullable|date|before_or_equal:today|after:1900-01-01',
         ]);
 
         $code = rand(100000, 999999);
@@ -54,7 +54,7 @@ class Registration extends Controller
 
     public function confirmCode(Request $request): RedirectResponse
     {
-        $request->validate(['code' => 'required|numeric']);
+        $request->validate(['code' => 'required|numeric|min:0|max:6']);
 
         if ($request->input('code') == Session::get('confirmation_code')) {
             $data = Session::get('pending_registration');

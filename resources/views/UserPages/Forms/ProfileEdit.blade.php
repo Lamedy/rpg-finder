@@ -61,6 +61,8 @@
                                 name="birthdate"
                                 class="w-full max-w-full min-w-0 px-2 py-1 rounded-md border border-[#1a1a1a] bg-white hover:bg-gray-100"
                                 value="{{ old('birthdate', $user->birthdate) }}"
+                                min="1900-01-01"
+                                max="{{ date('Y-m-d') }}"
                             />
                         </div>
 

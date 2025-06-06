@@ -20,8 +20,8 @@ class FindGroup extends Controller
 
         $validated = $request->validate([
             'city_id' => 'nullable|integer|exists:city,city_pk',
-            'price_min' => 'nullable|numeric|min:0',
-            'price_max' => 'nullable|numeric|min:0',
+            'price_min' => 'nullable|numeric|min:0|max:100000',
+            'price_max' => 'nullable|numeric|min:0|max:100000',
             'game_format' => 'nullable|array',
             'game_format.*' => 'in:0,1',            // 0 - live, 1 - online
             'my_game_role' => 'nullable|array',
@@ -99,7 +99,7 @@ class FindGroup extends Controller
             });
         }
 
-        $games = $query->paginate($countCardsOnOnePage)->appends(request()->except('page'));
+        $games = $query->orderBy('created_at', 'desc')->paginate($countCardsOnOnePage)->appends(request()->except('page'));
 
         if (Auth::check()) {
             $userId = Auth::user()->user_pk;
