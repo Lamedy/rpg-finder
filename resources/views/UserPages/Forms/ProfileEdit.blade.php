@@ -14,17 +14,20 @@
 
                     <!-- Левая часть: аватар и имя -->
                     <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start min-w-0 max-w-full 2xl:max-w-[65%]">
-                        <input type="file" name="avatar" class="hidden" id="avatar" />
-                        <label for="avatar" class="relative inline-block shrink-0">
-                            <img
-                                src="{{ asset('storage/' . ($user->avatar ?? 'default-avatar.png')) }}"
-                                alt="Аватар"
-                                class="w-32 h-32 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
-                            />
-                            <div class="absolute bottom-0 right-0 shadow-sm">
-                                <img src="{{ asset('storage/icons/pencil2.svg') }}" class="w-7 h-7 cursor-pointer" />
-                            </div>
-                        </label>
+                        <div x-data="avatarPreview()" class="relative inline-block shrink-0">
+                            <input type="file" name="avatar" class="hidden" id="avatar" @change="previewImage" />
+
+                            <label for="avatar">
+                                <img
+                                    :src="imageSrc"
+                                    alt="Аватар"
+                                    class="w-32 h-32 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
+                                />
+                                <div class="absolute bottom-0 right-0 shadow-sm">
+                                    <img src="{{ asset('storage/icons/pencil2.svg') }}" class="w-7 h-7 cursor-pointer" />
+                                </div>
+                            </label>
+                        </div>
                         <div class="relative w-full min-w-0">
                             <input
                                 type="text"
@@ -77,8 +80,8 @@
                             <input
                                 id="city"
                                 x-model="search"
-                                @focus="open = true"
-                                @keydown.escape="open = false"
+                                @click="open = true"
+                                @input="open = true"
                                 @input="updateSelection"
                                 type="text"
                                 placeholder="Начните ввод..."
@@ -88,7 +91,7 @@
 
                             <div
                                 x-show="open && filtered.length > 0"
-                                @mousedown.away="open = false"
+                                @click.outside="open = false"
                                 class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto shadow-lg w-full top-full"
                             >
                                 <template x-for="city in filtered" :key="city.city_pk">
@@ -238,8 +241,8 @@
                     <div class="relative w-full">
                         <input type="text"
                                x-model="search"
-                               @focus="open = true"
-                               @keydown.escape="open = false"
+                               @click="open = true"
+                               @input="open = true"
                                placeholder="Начните вводить название тега..."
                                class="w-full px-4 py-2 rounded-md border border-[#1a1a1a] bg-white font-alegreya_bold"
                         />
@@ -251,7 +254,7 @@
                     </div>
 
                     <div x-show="open"
-                         @mousedown.away="open = false"
+                         @click.outside="open = false"
                          class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto w-full shadow-lg font-alegreya_bold"
                          style="min-width: 100%;"
                     >
@@ -321,7 +324,7 @@
                                            placeholder="Выберите тип">
                                     <ul x-show="open" @click.outside="open = false"
                                         class="absolute z-50 w-full bg-white border border-black rounded mt-1 max-h-40 overflow-y-auto"
-                                        style="top: 100%; left: 0;">
+                                        style="bottom: 100%; left: 0;">
                                         <template x-for="item in filteredItems()" :key="item.contact_methods_pk">
                                             <li @click="choose(item)"
                                                 class="px-2 py-1 hover:bg-gray-200 cursor-pointer"
@@ -379,3 +382,18 @@
     </form>
 @endsection
 
+@section('scripts')
+    <script>
+        function avatarPreview() {
+            return {
+                imageSrc: '{{ asset('storage/' . ($user->avatar ?? 'default-avatar.png')) }}',
+                previewImage(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        this.imageSrc = URL.createObjectURL(file);
+                    }
+                }
+            }
+        }
+    </script>
+@endsection

@@ -33,10 +33,14 @@
                         <!-- Дата рождения -->
                         <div class="flex items-center space-x-2">
                             <span class="text-lg whitespace-nowrap">Дата рождения:</span>
-                            <span type="date" name="birthdate"
-                                   class="w-full px-2 py-1 rounded-md border border-[#1a1a1a]">
-                                {{ \Carbon\Carbon::parse($user->birthdate)->format('d.m.Y') }}
-                            </span>
+                            @if ($user->birthdate != null)
+                                <span type="date" name="birthdate"
+                                       class="w-full px-2 py-1 rounded-md border border-[#1a1a1a]">
+                                    {{ \Carbon\Carbon::parse($user->birthdate)->format('d.m.Y') }}
+                                </span>
+                            @else
+                                <span class="w-full px-2 py-1 rounded-md border border-[#1a1a1a]">Не указана</span>
+                            @endif
                         </div>
                         <!-- Город -->
                         <div class="flex items-center space-x-2">

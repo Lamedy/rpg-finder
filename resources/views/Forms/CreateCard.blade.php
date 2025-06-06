@@ -81,8 +81,8 @@
                         <input
                             type="text"
                             x-model="search"
-                            @focus="open = true"
-                            @keydown.escape="open = false"
+                            @click="open = true"
+                            @input="open = true"
                             placeholder="Введите название системы..."
                             class="w-full px-4 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                         >
@@ -90,7 +90,7 @@
                         <!-- Список с вариантами -->
                         <div
                             x-show="open"
-                            @mousedown.away="open = false"
+                            @click.outside="open = false"
                             class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto w-full shadow-lg"
                         >
                             <template x-for="item in filteredItems()" :key="item[idKey]">
@@ -127,15 +127,15 @@
 
                         <input type="text"
                                x-model="search"
-                               @focus="open = true"
-                               @keydown.escape="open = false"
+                               @click="open = true"
+                               @input="open = true"
                                placeholder="Начните вводить название системы..."
                                class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                         />
 
 
                         <div x-show="open"
-                             @mousedown.away="open = false"
+                             @click.outside="open = false"
                              class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto w-full shadow-lg"
                              style="min-width: 100%;"
                         >
@@ -195,14 +195,14 @@
 
                     <input type="text"
                            x-model="search"
-                           @focus="open = true"
-                           @keydown.escape="open = false"
+                           @click="open = true"
+                           @input="open = true"
                            placeholder="Начните вводить название тега..."
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                     />
 
                     <div x-show="open"
-                         @mousedown.away="open = false"
+                         @click.outside="open = false"
                          class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto w-full shadow-lg"
                          style="min-width: 100%;"
                     >
@@ -256,8 +256,8 @@
 
                     <input id="city"
                            x-model="search"
-                           @focus="open = true"
-                           @keydown.escape="open = false"
+                           @click="open = true"
+                           @input="open = true"
                            @input="updateSelection"
                            type="text"
                            placeholder="Введите город проведения (Выберете 'Другой' если города нет в списке)"
@@ -267,7 +267,7 @@
 
                     <!-- Выпадающий список -->
                     <div x-show="open && filtered.length > 0"
-                         @mousedown.away="open = false"
+                         @click.outside="open = false"
                          class="absolute z-10 bg-white border border-gray-300 rounded mt-1 max-h-48 overflow-auto shadow-lg w-full">
                         <template x-for="city in filtered" :key="city.city_pk">
                             <div @click="select(city)"

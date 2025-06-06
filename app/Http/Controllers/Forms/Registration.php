@@ -24,7 +24,7 @@ class Registration extends Controller
     public function submit(Request $request): RedirectResponse
     {
         $validator = $request->validate([
-            'login' => 'required|string|max:50',
+            'login' => 'required|string|max:50|unique:user_authorization,login',
             'name' => 'nullable|string|max:50',
             'password' => 'required|string|confirmed|min:6',
             'email' => 'required|email|max:255|unique:user_authorization,email',
@@ -62,7 +62,6 @@ class Registration extends Controller
             DB::beginTransaction();
 
             try {
-
                 $user = User::create([
                     'user_name' => $data['name'] ?? $data['login'],
                     'user_gender' => $data['gender'],
