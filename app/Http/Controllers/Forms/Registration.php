@@ -54,7 +54,7 @@ class Registration extends Controller
 
     public function confirmCode(Request $request): RedirectResponse
     {
-        $request->validate(['code' => 'required|numeric|min:0|max:999999']);
+        $request->validate(['code' => 'required|numeric|min:100000|max:999999']);
 
         if ($request->input('code') == Session::get('confirmation_code')) {
             $data = Session::get('pending_registration');
