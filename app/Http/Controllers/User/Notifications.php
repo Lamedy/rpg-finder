@@ -17,6 +17,7 @@ class Notifications extends Controller
                 'playerSessionAuthor.gameSession',
                 'playerSessionUser.gameSession'
             ])
+            ->orderBy('updated_at', 'desc')
             ->paginate(10);
 
         $idsOnPage = $notifications->pluck('notice_list_pk')->toArray();

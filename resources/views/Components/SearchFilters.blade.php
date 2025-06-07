@@ -158,7 +158,7 @@
                                    name="game_duration[]"
                                    value="1"
                                    class="mr-2" {{ in_array('1', (array) request()->get('game_duration', [])) ? 'checked' : '' }}>
-                            <span>Кампания</span>
+                            <span>Компания</span>
                         </label>
                     </div>
                 </div>
