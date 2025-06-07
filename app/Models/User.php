@@ -24,7 +24,7 @@ class User extends Authenticatable
 
     public function auth(): HasOne
     {
-        return $this->hasOne(UserAuthorization::class);
+        return $this->hasOne(UserAuthorization::class, 'user_pk', 'user_pk');
     }
 
     public static function getValueShowContactsOther($user_id): bool {

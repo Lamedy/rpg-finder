@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Email\NewNotification;
 use App\Models\GameSession;
 use App\Models\NoticeList;
 use App\Models\PlayerListOfGameSession;
@@ -9,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class RoomController extends Controller
@@ -52,6 +54,12 @@ class RoomController extends Controller
             ]);
 
             DB::commit();
+
+            Mail::to($room->user->auth->email)->send(new NewNotification(
+                $room->user,
+                Auth::user(),
+            ));
+
             return response()->json([
                 'message' => 'Статус приглашения: Расматривается'
             ], 200);
@@ -85,6 +93,12 @@ class RoomController extends Controller
             ]);
 
             DB::commit();
+
+            Mail::to($room->user->auth->email)->send(new NewNotification(
+                $room->user,
+                Auth::user(),
+            ));
+
             return redirect()->back();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -114,6 +128,12 @@ class RoomController extends Controller
             ]);
 
             DB::commit();
+
+            Mail::to($room->user->auth->email)->send(new NewNotification(
+                $room->user,
+                Auth::user(),
+            ));
+
             return redirect()->back();
         } catch (\Exception $e) {
             DB::rollBack();

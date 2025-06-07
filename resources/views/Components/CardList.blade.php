@@ -167,8 +167,13 @@
                 @else
                     <div
                         x-data="{
-                            successMessage: '',
+                            successMessage: null,
+                            loading: false,
                             submitForm() {
+                                if (this.loading) return;
+                                this.loading = true;
+                                this.successMessage = null;
+
                                 fetch('{{ route('room.join', $game) }}', {
                                     method: 'POST',
                                     headers: {
@@ -187,22 +192,36 @@
                                 })
                                 .catch(error => {
                                     this.successMessage = 'Произошла ошибка';
+                                })
+                                .finally(() => {
+                                    this.loading = false;
                                 });
                             }
                         }"
                         class="flex flex-col items-end gap-2 w-full"
                     >
-                        <template x-if="!successMessage">
-                            <button @click="submitForm"
-                                    type="button"
-                                    class="sm:w-60 bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white rounded px-4 py-2 transition text-base sm:text-lg w-full">
-                                Откликнуться
-                            </button>
-                        </template>
-                        <template x-if="successMessage">
-                            <div class="sm:w-auto text-center sm:text-right w-full font-alegreya_bold" x-text="successMessage"></div>
+                        <button @click="submitForm"
+                                type="button"
+                                x-show="successMessage === null"
+                                :disabled="loading || successMessage !== null"
+                                class="sm:w-60 bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white rounded px-4 py-2 transition text-base sm:text-lg w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                            <template x-if="loading">
+                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                     viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                </svg>
+                            </template>
+                            <span x-text="loading ? 'Отправка...' : 'Откликнуться'"></span>
+                        </button>
+
+                        <template x-if="successMessage !== null">
+                            <div class="sm:w-auto text-center sm:text-right w-full font-alegreya_bold text-black" x-text="successMessage"></div>
                         </template>
                     </div>
+
                 @endif
                     <a href="{{ route('room', $game) }}"
                        class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white w-full sm:w-60 text-center rounded px-4 py-2 transition text-base sm:text-lg">

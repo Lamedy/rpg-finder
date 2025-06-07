@@ -141,34 +141,50 @@
                                             <div class="flex justify-start gap-2 px-4 py-2 bg-white">
                                                 @if($user->invite_status == 0)
                                                     <!-- Кнопка "Принять" -->
-                                                    <form class="w-full sm:w-auto" action="{{ route('accept_invite', ['room' => $room, 'notice' => $user->noticeForAuthor]) }}" method="POST">
+                                                    <form x-data="{ loading: false }"
+                                                          @submit="loading = true"
+                                                          action="{{ route('accept_invite', ['room' => $room, 'notice' => $user->noticeForAuthor]) }}"
+                                                          method="POST"
+                                                          class="w-full sm:w-auto">
                                                         @csrf
                                                         @method('PUT')
                                                         <button type="submit"
-                                                           class="flex items-center justify-center bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-32">
+                                                                :disabled="loading"
+                                                                class="flex items-center justify-center bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-32 disabled:opacity-50 disabled:cursor-not-allowed">
                                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                                  class="h-5 w-5 block sm:hidden"
                                                                  viewBox="0 0 20 20"
                                                                  fill="currentColor">
-                                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                                                <path fill-rule="evenodd"
+                                                                      d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                                                      clip-rule="evenodd" />
                                                             </svg>
-                                                            <span class="hidden sm:block">Принять</span>
+                                                            <span class="hidden sm:block" x-show="!loading">Принять</span>
+                                                            <span class="hidden sm:block" x-show="loading">Отправка...</span>
                                                         </button>
                                                     </form>
 
                                                     <!-- Кнопка "Отклонить" -->
-                                                    <form class="w-full sm:w-auto" action="{{ route('not_accept_invite', ['room' => $room, 'notice' => $user->noticeForAuthor]) }}" method="POST">
+                                                    <form x-data="{ loading: false }"
+                                                          @submit="loading = true"
+                                                          action="{{ route('not_accept_invite', ['room' => $room, 'notice' => $user->noticeForAuthor]) }}"
+                                                          method="POST"
+                                                          class="w-full sm:w-auto">
                                                         @csrf
                                                         @method('PUT')
                                                         <button type="submit"
-                                                           class="flex items-center justify-center bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-32">
+                                                                :disabled="loading"
+                                                                class="flex items-center justify-center bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-32 disabled:opacity-50 disabled:cursor-not-allowed">
                                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                                  class="h-5 w-5 block sm:hidden"
                                                                  viewBox="0 0 20 20"
                                                                  fill="currentColor">
-                                                                <path fill-rule="evenodd" d="M10 8.586l-3.293-3.293a1 1 0 00-1.414 1.414L8.586 10l-3.293 3.293a1 1 0 001.414 1.414L10 11.414l3.293 3.293a1 1 0 001.414-1.414L11.414 10l3.293-3.293a1 1 0 00-1.414-1.414L10 8.586z" clip-rule="evenodd" />
+                                                                <path fill-rule="evenodd"
+                                                                      d="M10 8.586l-3.293-3.293a1 1 0 00-1.414 1.414L8.586 10l-3.293 3.293a1 1 0 001.414 1.414L10 11.414l3.293 3.293a1 1 0 001.414-1.414L11.414 10l3.293-3.293a1 1 0 00-1.414-1.414L10 8.586z"
+                                                                      clip-rule="evenodd" />
                                                             </svg>
-                                                            <span class="hidden sm:block">Отклонить</span>
+                                                            <span class="hidden sm:block" x-show="!loading">Отклонить</span>
+                                                            <span class="hidden sm:block" x-show="loading">Отправка...</span>
                                                         </button>
                                                     </form>
                                                 @elseif($user->invite_status == 1)

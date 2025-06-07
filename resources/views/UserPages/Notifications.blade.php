@@ -29,20 +29,27 @@
                     </p>
                 @else
                 <div class="flex flex-wrap justify-start px-2 gap-2 flex-1 min-w-[200px] mb-2">
-                    <form class="w-full sm:w-auto" action="{{ route('not_accept_invite', ['room' => $notice->playerSessionAuthor->gameSession, 'notice' => $notice]) }}" method="POST">
+                    <!-- Кнопка "Нет" -->
+                    <form x-data="{ loading: false }" @submit="loading = true" class="w-full sm:w-auto" action="{{ route('not_accept_invite', ['room' => $notice->playerSessionAuthor->gameSession, 'notice' => $notice]) }}" method="post">
                         @csrf
                         @method('PUT')
                         <button type="submit"
-                                class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-2 py-1 transition text-base sm:text-lg w-full sm:w-60">
-                            Нет
+                                :disabled="loading"
+                                class="w-full sm:w-60 text-center bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white rounded px-4 py-2 transition text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span x-show="!loading">Нет</span>
+                            <span x-show="loading">Отправка...</span>
                         </button>
                     </form>
-                    <form class="w-full sm:w-auto" action="{{ route('accept_invite', ['room' => $notice->playerSessionAuthor->gameSession, 'notice' => $notice]) }}" method="POST">
+
+                    <!-- Кнопка "Да" -->
+                    <form x-data="{ loading: false }" @submit="loading = true" class="w-full sm:w-auto" action="{{ route('accept_invite', ['room' => $notice->playerSessionAuthor->gameSession, 'notice' => $notice]) }}" method="post">
                         @csrf
                         @method('PUT')
                         <button type="submit"
-                                class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-2 py-1 transition text-base sm:text-lg w-full sm:w-60">
-                            Да
+                                :disabled="loading"
+                                class="w-full sm:w-60 text-center bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white rounded px-4 py-2 transition text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span x-show="!loading">Да</span>
+                            <span x-show="loading">Отправка...</span>
                         </button>
                     </form>
                 </div>

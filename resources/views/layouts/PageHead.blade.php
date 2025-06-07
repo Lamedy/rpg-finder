@@ -21,12 +21,12 @@
         <div class="mx-auto p-2 px-4 flex items-center justify-between">
             <!-- Название сайта -->
             <div class="relative">
-                <span class="text-white font-forum text-2xl sm:text-2xl md:text-2xl lg:text-6xl block text-shadow">
+                <a href="{{ route('main') }}" class="text-white font-forum text-2xl sm:text-2xl md:text-2xl lg:text-6xl block text-shadow">
                     НРИ-Файндер
                     <span class="hidden sm:inline">
                         | <span class="text-2xl sm:text-2xl md:text-2xl lg:text-4xl align-middle">@yield('page_name')</span>
                     </span>
-                </span>
+                </a>
             </div>
             <div class="flex items-center gap-4 lg:hidden">
                 @if(Auth::check())
