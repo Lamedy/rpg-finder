@@ -22,7 +22,10 @@ COPY . /var/www/html
 
 WORKDIR /var/www/html
 
+ENV COMPOSER_AUTH='{"github-oauth": {"github.com": "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"}}'
 RUN composer install --no-dev --optimize-autoloader --prefer-dist
 
 # Назначаем права на папку
 RUN chown -R www-data:www-data /var/www/html
+
+
