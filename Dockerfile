@@ -1,5 +1,18 @@
 FROM php:8.2-apache
 
+# Этап 1: сборка фронтенда
+FROM node:18 as node-builder
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY resources ./resources
+COPY vite.config.js ./
+
+RUN npm run build
+
 # Установим необходимые PHP-расширения
 RUN apt-get update && apt-get install -y \
     zip unzip curl git libzip-dev && \
@@ -16,9 +29,6 @@ COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Включаем mod_rewrite — Laravel его использует
 RUN a2enmod rewrite
-
-RUN npm install
-RUN npm run build
 
 # Копируем Laravel проект в контейнер
 COPY . /var/www/html
