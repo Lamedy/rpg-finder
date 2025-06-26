@@ -33,6 +33,7 @@ RUN a2enmod rewrite
 
 # Копируем Laravel проект в контейнер
 COPY . /var/www/html
+COPY storage/app/public/icons /var/www/html/storage/app/public/icons
 
 WORKDIR /var/www/html
 

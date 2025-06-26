@@ -21,3 +21,5 @@ services:
 networks:
   appnet:
 
+volumes:
+    rpg_storage:
