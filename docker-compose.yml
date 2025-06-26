@@ -14,6 +14,8 @@ services:
       DB_PASSWORD: 4004
     env_file:
       - /etc/rpg-finder/.env
+    volumes:
+      - rpg_storage:/var/www/html/storage/app/public/avatars
     networks:
       - appnet
 networks:
