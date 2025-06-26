@@ -38,4 +38,4 @@ jobs:
             docker pull lamedy/rpg-finder:latest
             docker-compose down
             docker-compose up -d --build
-            docker exec -it rpg-finder-container php artisan storage:link
+            docker exec rpg-finder-container php artisan storage:link
