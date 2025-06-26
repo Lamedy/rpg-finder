@@ -36,5 +36,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             docker pull lamedy/rpg-finder:latest
-            docker compose down
-            docker compose up -d --build
+            docker-compose down
+            docker-compose up -d --build
