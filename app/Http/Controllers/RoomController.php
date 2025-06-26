@@ -61,7 +61,7 @@ class RoomController extends Controller
             ));
 
             return response()->json([
-                'message' => 'Статус приглашения: Расматривается'
+                'message' => 'Статус приглашения: Рассматривается'
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();

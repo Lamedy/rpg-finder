@@ -21,7 +21,7 @@
 
         <!-- Правая часть: кнопка "Создать анкету" -->
         <a href="{{ route('create.card') }}"
-           class="w-full sm:w-auto p-1 lg:p-0 text-center no-shadow text-black bg-gray-200 px-2 font-alegreya_bold rounded hover:bg-[#ababab] text-base md:text-2xl">
+           class="w-full sm:w-auto p-1 lg:p-0 lg:px-2 text-center no-shadow text-black bg-gray-200 px-2 font-alegreya_bold rounded hover:bg-[#ababab] text-base md:text-2xl">
             Создать анкету
         </a>
     </div>

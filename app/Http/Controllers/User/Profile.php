@@ -100,7 +100,7 @@ class Profile extends Controller
     {
         $validated = $request->validate([
             'user_name'         => 'nullable|string|max:50',
-            'avatar'            => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'avatar'            => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:2048',
             'birthdate'         => 'nullable|date|before_or_equal:today|after:1900-01-01',
             'city_id'           => 'nullable|exists:city,city_pk',
             'gender'            => 'nullable|in:0,1',
