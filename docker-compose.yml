@@ -12,6 +12,8 @@ services:
       DB_DATABASE: diplom_db
       DB_USERNAME: kajos
       DB_PASSWORD: 4004
+    env_file:
+      - /etc/rpg-finder/.env
     networks:
       - appnet
 networks:
