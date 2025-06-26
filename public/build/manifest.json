@@ -1,0 +1,25 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-CmLOPsqT.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/fonts/AlegreyaSC/AlegreyaSC-Bold.ttf": {
+    "file": "assets/AlegreyaSC-Bold-ahvfE8up.ttf",
+    "src": "resources/fonts/AlegreyaSC/AlegreyaSC-Bold.ttf"
+  },
+  "resources/fonts/AlegreyaSC/AlegreyaSC-Medium.ttf": {
+    "file": "assets/AlegreyaSC-Medium-CM4zc6U_.ttf",
+    "src": "resources/fonts/AlegreyaSC/AlegreyaSC-Medium.ttf"
+  },
+  "resources/fonts/Forum-Regular.ttf": {
+    "file": "assets/Forum-Regular-B5EFkq5Q.ttf",
+    "src": "resources/fonts/Forum-Regular.ttf"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-C86_rmpX.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
