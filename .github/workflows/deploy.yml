@@ -35,7 +35,10 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "${{ secrets.DOT_ENV_CONTENT }}" > /var/www/html/.env
+            rm -rf /var/www/html/.env
+            cat << 'EOF' > /var/www/html/.env
+                ${{ secrets.DOT_ENV_CONTENT }}
+            EOF
 
       - name: Deploy to production via SSH
         uses: appleboy/ssh-action@v0.1.6
