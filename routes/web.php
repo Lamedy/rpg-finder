@@ -60,3 +60,5 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/room/{room}/{notice}/decline', [RoomController::class, 'notAcceptInvite'])->name('not_accept_invite');
     Route::post('/room/{room}', [RoomController::class, 'join'])->name('room.join');
 });
+
+// test ci/cd
