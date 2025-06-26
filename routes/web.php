@@ -61,3 +61,4 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/room/{room}', [RoomController::class, 'join'])->name('room.join');
 });
 
+//
