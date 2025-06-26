@@ -1,5 +1,3 @@
-FROM php:8.2-apache
-
 # Этап 1: сборка фронтенда
 FROM node:18 as node-builder
 
@@ -12,6 +10,9 @@ COPY resources ./resources
 COPY vite.config.js ./
 
 RUN npm run build
+
+# Этап 2: сборка бэкенда
+FROM php:8.2-apache
 
 # Установим необходимые PHP-расширения
 RUN apt-get update && apt-get install -y \
