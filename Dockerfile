@@ -17,6 +17,9 @@ COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 # Включаем mod_rewrite — Laravel его использует
 RUN a2enmod rewrite
 
+RUN npm install
+RUN npm run build
+
 # Копируем Laravel проект в контейнер
 COPY . /var/www/html
 
