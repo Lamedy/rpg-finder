@@ -20,5 +20,9 @@ RUN a2enmod rewrite
 # Копируем Laravel проект в контейнер
 COPY . /var/www/html
 
+WORKDIR /var/www/html
+
+RUN composer install --no-dev --optimize-autoloader
+
 # Назначаем права на папку
 RUN chown -R www-data:www-data /var/www/html
