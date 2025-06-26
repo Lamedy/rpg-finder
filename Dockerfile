@@ -19,6 +19,7 @@ RUN a2enmod rewrite
 
 # Копируем Laravel проект в контейнер
 COPY . /var/www/html
+COPY .env /var/www/html/.env
 
 WORKDIR /var/www/html
 
