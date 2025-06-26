@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: ".env"
-          target: "/var/www/html/.env"
+          target: "/var/www/html"
 
       - name: Deploy to production via SSH
         uses: appleboy/ssh-action@v0.1.6
