@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  app:
+    image: lamedy/rpg-finder:latest
+    container_name: rpg-finder-container
+    ports:
+      - "80:80"
+    environment:
+      DB_HOST: 62.60.217.31
+      DB_PORT: 3306
+      DB_DATABASE: diplom_db
+      DB_USERNAME: kajos
+      DB_PASSWORD: 4004
+    networks:
+      - appnet
+networks:
+  appnet:
+
