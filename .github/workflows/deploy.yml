@@ -28,6 +28,18 @@ jobs:
           docker build -t $IMAGE_NAME:$IMAGE_TAG .
           docker push $IMAGE_NAME:$IMAGE_TAG
 
+      - name: Create .env file from secret
+        run: |
+          echo "${{ secrets.DOT_ENV_CONTENT }}" > .env
+      - name: Copy .env to server
+        uses: appleboy/scp-action@v0.1.6
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: ".env"
+          target: "/var/www/html/.env"
+
       - name: Deploy to production via SSH
         uses: appleboy/ssh-action@v0.1.6
         with:
