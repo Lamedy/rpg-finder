@@ -35,7 +35,13 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull lamedy/rpg-finder:latest
-            docker stop rpg-finder-container || true
-            docker rm rpg-finder-container || true
-            docker run -d -p 80:80 --name rpg-finder-container lamedy/rpg-finder:latest
+            docker run -d \
+            --name rpg-finder-container \
+            --network appnet \
+            -p 80:80 \
+            -e DB_HOST=62.60.217.31 \
+            -e DB_PORT=3306 \
+            -e DB_DATABASE=diplom_db \
+            -e DB_USERNAME=kajos \
+            -e DB_PASSWORD=4004 \
+            lamedy/rpg-finder:latest
