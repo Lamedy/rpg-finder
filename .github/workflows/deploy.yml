@@ -28,6 +28,17 @@ jobs:
           docker build -t $IMAGE_NAME:$IMAGE_TAG .
           docker push $IMAGE_NAME:$IMAGE_TAG
 
+      - name: Deploy to production via SSH
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker pull lamedy/rpg-finder:latest
+            docker-compose down
+            docker-compose up -d --build
+
       - name: Create .env on server
         uses: appleboy/ssh-action@v0.1.6
         with:
@@ -39,14 +50,3 @@ jobs:
             cat << 'EOF' > /var/www/html/.env
                 ${{ secrets.DOT_ENV_CONTENT }}
             EOF
-
-      - name: Deploy to production via SSH
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker pull lamedy/rpg-finder:latest
-            docker-compose down
-            docker-compose up -d --build
