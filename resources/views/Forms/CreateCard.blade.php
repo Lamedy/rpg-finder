@@ -33,8 +33,8 @@
                     <select id="player_type" name="player_type"
                             x-model="playerType"
                             class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
-                        <option value="0">Игроков</option>
-                        <option value="1">Мастера</option>
+                        <option value="0" {{ old('player_type', $cardInfo->player_type_needed) == 0 ? 'selected' : '' }}>Игроков</option>
+                        <option value="1" {{ old('player_type', $cardInfo->player_type_needed) == 1 ? 'selected' : '' }}>Мастера</option>
                     </select>
                     @error('player_type')
                     <div class="text-red-500">{{ $message }}</div>
@@ -54,7 +54,7 @@
                 </div>
 
                 <!-- Формат игры -->
-                <div>
+                <div x-data="{ gameFormat: '{{ old('game_format', '') }}' }">
                     <label for="game_format" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Формат игры*:</label>
                     <select id="game_format" name="game_format"
                             x-model="gameFormat"
@@ -69,11 +69,15 @@
                 </div>
 
                 <!-- Игровые системы -->
-
                 <!-- Одинарный выбор системы -->
                 <template x-if="playerType === '0'">
                     <div
-                        x-data="singleSelect(@js($gameSystems), 'game_system_pk', 'game_system_name',  {{ $selectedGameSystems[0] ?? null }})"
+                        x-data="singleSelect(
+                            @js($gameSystems),
+                            'game_system_pk',
+                            'game_system_name',
+                            @js(isset(old('game_systems')[0]) ? (int)old('game_systems')[0] : ($selectedGameSystems[0] ?? null))
+                        )"
                         x-init="init()"
                         class="relative">
                         <label class="block text-lg font-alegreya_bold text-gray-800 mb-1">Игровая система*:</label>
@@ -118,8 +122,9 @@
                 </template>
                 <!-- Множественный выбор систем -->
                 <template x-if="playerType === '1'">
+
                     <div
-                        x-data="multiSelect(@js($gameSystems), 'game_system_pk', 'game_system_name', @js($selectedGameSystems ?? null) )"
+                        x-data="multiSelect(@js($gameSystems), 'game_system_pk', 'game_system_name', @js(old('game_systems', $selectedGameSystems ?? null)))"
                         x-init="init()"
                         class="relative"
                     >
@@ -168,13 +173,14 @@
                 <div class="text-red-500">{{ $message }}</div>
                 @enderror
                 <!-- Длительность игры -->
-                <div>
+                <div x-data="{ game_duration: '{{ old('game_duration', '') }}' }">
                     <label for="game_duration" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Длительность игры*:</label>
                     @php
                         $selectedDuration = old('game_duration', isset($cardInfo) ? $cardInfo->game_duration?->value : null);
                     @endphp
 
                     <select id="game_duration" name="game_duration"
+                            x-model="game_duration"
                             class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
                         <option value="0" {{ strval($selectedDuration) === '0' ? 'selected' : '' }}>Ваншот (Одна игра)</option>
                         <option value="1" {{ strval($selectedDuration) === '1' ? 'selected' : '' }}>Кампания (Больше одной игры)</option>
@@ -187,7 +193,7 @@
 
                 <!-- Теги -->
                 <div
-                    x-data="multiSelect(@js($gameTags), 'game_style_tag_pk', 'game_style_tag', @js($selectedGameTags ?? null))"
+                    x-data="multiSelect(@js($gameTags), 'game_style_tag_pk', 'game_style_tag',  @js(old('game_tags', $selectedGameTags ?? null)))"
                     x-init="init()"
                     class="relative"
                 >
@@ -240,7 +246,7 @@
                     <label for="description" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Описание:</label>
                     <textarea id="description" name="description" rows="4"
                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
-                              placeholder="Расскажите подробнее чего вы ожидаете от игры...">{{ $cardInfo->game_description ?? '' }}</textarea>
+                              placeholder="Расскажите подробнее чего вы ожидаете от игры...">{{ old('description', $cardInfo->game_description) ?? null }}</textarea>
                     @error('description')
                     <div class="text-red-500">{{ $message }}</div>
                     @enderror
@@ -248,7 +254,7 @@
 
                 <!-- Город -->
                 <div x-show="gameFormat != '1'"
-                     x-data="citySelect(@js($cityList), {{ $cardInfo->city_pk ?? null }} )"
+                     x-data="citySelect(@js($cityList),  {{ old('city_id', $cardInfo->city_pk ?? 'null') }})"
                      x-init="init()"
                      class="relative"
                 >
@@ -336,7 +342,7 @@
                 </div>
 
                 <!-- Контактная информация -->
-                <div x-data="contactMethodsComponent(@js($contactTypes), @js($knownContacts))" x-init="init()">
+                <div x-data="contactMethodsComponent(@js($contactTypes), @js(old('contacts_data', $knownContacts ?? [])))" x-init="init()">
                     <h2 class="text-lg font-alegreya_bold mt-4 mb-2">Контактная информация*:</h2>
 
                     <div class="divide-y divide-[#1a1a1a] border border-[#1a1a1a] rounded-md overflow-visible bg-[#2D2D2D]">

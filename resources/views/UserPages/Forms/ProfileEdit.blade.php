@@ -72,7 +72,7 @@
 
                         <!-- Город -->
                         <div
-                            x-data="citySelect(@js($cityList), {{ $user->city_pk ?? 'null' }})"
+                            x-data="citySelect(@js($cityList), {{ old('city_id', $user->city_pk ?? 'null') }})"
                             x-init="init()"
                             class="flex items-center relative"
                         >
@@ -141,7 +141,7 @@
                 @enderror
 
                 <!-- Игровые системы -->
-                <div x-data="gameSystemsComponent(@js($systems), @js($experiences), @js($user->gameSystemsList))">
+                <div x-data="gameSystemsComponent(@js($systems), @js($experiences), @js(old('systems_data', $user->gameSystemsList ?? [])))">
                     <h2 class="text-lg lg:text-2xl font-alegreya_bold mb-2">Знакомые мне игровые системы:</h2>
 
                     <div class="divide-y divide-[#1a1a1a] border border-[#1a1a1a] rounded-md overflow-visible bg-[#2D2D2D]">
@@ -233,7 +233,7 @@
 
                 <!-- Теги -->
                 <div
-                    x-data="multiSelect(@js($gameTags), 'game_style_tag_pk', 'game_style_tag', @js($tags ?? null))"
+                    x-data="multiSelect(@js($gameTags), 'game_style_tag_pk', 'game_style_tag', @js(old('game_tags', $tags ?? [])))"
                     x-init="init()"
                     class="relative"
                 >
@@ -289,7 +289,7 @@
                 </div>
 
                 <!-- Контактная информация -->
-                <div x-data="contactMethodsComponent(@js($contactTypes), @js($user->userContactsList))" x-init="init()">
+                <div x-data="contactMethodsComponent(@js($contactTypes), @js(old('contacts_data', $user->userContactsList ?? [])))" x-init="init()">
                     <h2 class="text-lg lg:text-2xl font-alegreya_bold mt-4 mb-2">Контактная информация:</h2>
 
                     <div class="divide-y divide-[#1a1a1a] border border-[#1a1a1a] rounded-md overflow-visible bg-[#2D2D2D]">

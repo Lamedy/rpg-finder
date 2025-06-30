@@ -14,7 +14,9 @@
                     <label class="block font-alegreya_bold text-lg text-black mb-1 text-center">Введите почту на которую зарегистрирован аккаунт</label>
                     <label for="email" class="block font-alegreya_bold text-lg text-black mb-1">Email:</label>
                     <input type="email" id="email" name="email" required
-                           class="font-alegreya_medium w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
+                           class="font-alegreya_medium w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
+                           value="{{ old('email') }}"
+                    >
                     @error('email')
                         <div class="text-red-500">{{ $message }}</div>
                     @enderror

@@ -15,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class CreateCard extends Controller
@@ -60,7 +61,7 @@ class CreateCard extends Controller
     {
         $request->replace($this->clearEmptyRows($request));
 
-        $validated = $request->validate([
+        $validated =Validator::make($request->all(), [
             'player_type'       => 'required|in:0,1',
             'player_count'      => 'required_if:player_type,0|nullable|integer|min:1|max:16',
             'game_format'       => 'required|in:0,1,2',
@@ -80,6 +81,26 @@ class CreateCard extends Controller
             'contact_values'    => 'required|nullable|array',
             'contact_values.*'  => 'nullable|string|max:255',
         ]);
+
+        if ($validated->fails()) {
+            $contacts = $request->input('contacts', []);
+            $contact_values = $request->input('contact_values', []);
+            $contactData = [];
+            foreach ($contacts as $index => $systemPk) {
+                $contactData[] = [
+                    'contact_methods_pk' => (int)$systemPk,
+                    'contact_value' => $contact_values[$index] ?? null,
+                ];
+            }
+            return redirect()->back()
+                ->withErrors($validated)
+                ->withInput(array_merge(
+                    $request->all(),
+                    [
+                        'contacts_data' => $contactData
+                    ]
+                ));
+        }
 
         DB::beginTransaction();
 
@@ -175,7 +196,7 @@ class CreateCard extends Controller
     {
         $request->replace($this->clearEmptyRows($request));
 
-        $validated = $request->validate([
+        $validated =Validator::make($request->all(), [
             'player_type'       => 'required|in:0,1',
             'player_count'      => 'required_if:player_type,0|nullable|integer|min:1|max:16',
             'game_format'       => 'required|in:0,1,2',
@@ -195,6 +216,26 @@ class CreateCard extends Controller
             'contact_values'    => 'required|nullable|array',
             'contact_values.*'  => 'nullable|string|max:255',
         ]);
+
+        if ($validated->fails()) {
+            $contacts = $request->input('contacts', []);
+            $contact_values = $request->input('contact_values', []);
+            $contactData = [];
+            foreach ($contacts as $index => $systemPk) {
+                $contactData[] = [
+                    'contact_methods_pk' => (int)$systemPk,
+                    'contact_value' => $contact_values[$index] ?? null,
+                ];
+            }
+            return redirect()->back()
+                ->withErrors($validated)
+                ->withInput(array_merge(
+                    $request->all(),
+                    [
+                        'contacts_data' => $contactData
+                    ]
+                ));
+        }
 
         DB::beginTransaction();
 

@@ -34,7 +34,7 @@ class ForgotPassword extends Controller
         $user = UserAuthorization::where('email', $validated['email'])->first();
 
         if (!$user) {
-            return back()->withErrors(['email' => 'Такой email не зарегистрирован.']);
+            return back()->withErrors(['email' => 'Такой email не зарегистрирован.'])->withInput();
         }
 
         $token = Password::createToken($user);

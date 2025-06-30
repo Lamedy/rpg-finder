@@ -14,7 +14,9 @@
                 <div class="max-w-125 mx-auto">
                     <label for="code" class="block font-alegreya_bold text-lg text-gray-800 mb-1">Код подтверждения:</label>
                     <input type="text" id="code" name="code" required
-                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
+                           class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
+                           value="{{ old('code') }}"
+                    >
                 </div>
             </div>
 

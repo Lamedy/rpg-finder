@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 
 class Profile extends Controller
@@ -59,7 +60,6 @@ class Profile extends Controller
             return redirect()->back();
         }
 
-
         $role = '';
         switch ($user->game_role) {
             case 0:
@@ -98,7 +98,7 @@ class Profile extends Controller
 
     public function submit(Request $request, User $user): RedirectResponse
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'user_name'         => 'nullable|string|max:50',
             'avatar'            => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:2048',
             'birthdate'         => 'nullable|date|before_or_equal:today|after:1900-01-01',
@@ -116,6 +116,42 @@ class Profile extends Controller
             'contact_values'    => 'nullable|array',
             'contact_values.*'  => 'nullable|string|max:255',
         ]);
+
+        if ($validator->fails()) {
+            $systems = $request->input('systems', []);
+            $experiences = $request->input('experience', []);
+
+            $systemsData = [];
+            foreach ($systems as $index => $systemPk) {
+                $systemsData[] = [
+                    'game_system_pk' => (int)$systemPk,
+                    'game_experience_pk' => isset($experiences[$index]) ? (int)$experiences[$index] : null,
+                ];
+            }
+
+            $contacts = $request->input('contacts', []);
+            $contact_values = $request->input('contact_values', []);
+            $contactData = [];
+            foreach ($contacts as $index => $systemPk) {
+                $contactData[] = [
+                    'contact_methods_pk' => (int)$systemPk,
+                    'contact_value' => $contact_values[$index] ?? null,
+                ];
+            }
+
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput(array_merge(
+                    $request->all(),
+                    [
+                        'systems_data' => $systemsData,
+                        'contacts_data' => $contactData
+                    ]
+                ));
+        }
+
+        // Валидация прошла успешно — дальше работа с $validated
+        $validated = $validator->validated();
 
         DB::beginTransaction();
 

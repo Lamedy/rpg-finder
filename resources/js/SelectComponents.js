@@ -112,17 +112,19 @@ function gameSystemsComponent(systemsData, experiencesData, initialData) {
         rows: [],
 
         init() {
-            this.rows = initialData.length
-                ? initialData.map(item => ({
+            if (initialData && initialData.length > 0) {
+                this.rows = initialData.map(item => ({
                     id: Date.now() + Math.random(),
-                    system: item.system.game_system_pk,
-                    experience: item.experience.game_experience_pk,
-                }))
-                : [{
+                    system: item.game_system_pk || '',
+                    experience: item.game_experience_pk || '',
+                }));
+            } else {
+                this.rows = [{
                     id: Date.now(),
                     system: '',
-                    experience: ''
+                    experience: '',
                 }];
+            }
         },
 
         addRow() {
