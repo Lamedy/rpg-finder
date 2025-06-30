@@ -10,6 +10,7 @@
                         src="{{ asset('storage/' . $game['user']->avatar) }}"
                         alt="Аватар"
                         class="w-24 h-24 rounded-full object-cover border-2 border-black shadow-md cursor-pointer shrink-0"
+                        onerror="this.onerror=null;this.src='{{ asset('storage/avatars/default_avatar.png') }}';"
                     />
 
                     <!-- Имя и рейтинг -->

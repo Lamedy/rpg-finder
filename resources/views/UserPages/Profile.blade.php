@@ -14,6 +14,7 @@
                             src="{{ asset('storage/' . $user->avatar) }}"
                             alt="Аватар"
                             class="w-32 h-32 rounded-full object-cover border-2 border-black shadow-md shrink-0"
+                            onerror="this.onerror=null;this.src='{{ asset('storage/avatars/default_avatar.png') }}';"
                         />
                         <label for="player_type"
                                class="text-5xl px-2 font-alegreya_medium min-w-0 max-w-full lg:max-w-[75%] truncate overflow-hidden whitespace-nowrap text-center sm:text-left">

@@ -74,6 +74,7 @@
                             src="{{ asset('storage/' . Auth::user()->avatar) }}"
                             alt="Аватар"
                             class="w-15 h-15 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
+                            onerror="this.onerror=null;this.src='{{ asset('storage/avatars/default_avatar.png') }}';"
                             @click="$store.ui.openMenu = true"
                         />
 
@@ -97,6 +98,7 @@
                                     src="{{ asset('storage/' . Auth::user()->avatar) }}"
                                     alt="Аватар"
                                     class="w-15 h-15 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
+                                    onerror="this.onerror=null;this.src='{{ asset('storage/avatars/default_avatar.png') }}';"
                                 />
                                 <a class="text-white font-alegreya_medium text-3xl p-2 text-shadow text-left truncate">
                                     {{ Auth::user()->user_name }}

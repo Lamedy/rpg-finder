@@ -22,6 +22,7 @@
                                     :src="imageSrc"
                                     alt="Аватар"
                                     class="w-32 h-32 rounded-full object-cover border-2 border-black shadow-md cursor-pointer"
+                                    onerror="this.onerror=null;this.src='{{ asset('storage/avatars/default_avatar.png') }}';"
                                 />
                                 <div class="absolute bottom-0 right-0 shadow-sm">
                                     <img src="{{ asset('storage/icons/pencil2.svg') }}" class="w-7 h-7 cursor-pointer" />
