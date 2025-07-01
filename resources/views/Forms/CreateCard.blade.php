@@ -26,27 +26,76 @@
                      gameFormat: '{{ strval(old('player_type', isset($cardInfo) && $cardInfo->game_format ? $cardInfo->game_format->value : '0')) }}'
                  }"
             >
-
                 <!-- Кого ищу -->
-                <div>
-                    <label for="player_type" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Ищу*:</label>
-                    <select id="player_type" name="player_type"
-                            x-model="playerType"
-                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
-                        <option value="0" {{ old('player_type', $cardInfo->player_type_needed) == 0 ? 'selected' : '' }}>Игроков</option>
-                        <option value="1" {{ old('player_type', $cardInfo->player_type_needed) == 1 ? 'selected' : '' }}>Мастера</option>
-                    </select>
-                    @error('player_type')
-                    <div class="text-red-500">{{ $message }}</div>
-                    @enderror
+                <div class="mb-1 flex items-center gap-2">
+                    <label for="player_type" class="block text-lg font-alegreya_bold text-gray-800">
+                        Ищу*:
+                    </label>
+                    <!-- Подсказка -->
+                    <div class="relative inline-block" x-data="tooltipComponent()">
+                        <div
+                            x-ref="button"
+                            class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                            @mouseenter="if (window.innerWidth >= 1024) open = true"
+                            @mouseleave="if (window.innerWidth >= 1024) open = false"
+                            @click="toggle()"
+                        >
+                            ?
+                        </div>
+                        <div
+                            x-show="open"
+                            x-transition
+                            :class="{
+                              'left-0 transform-none': !isNearRightEdge,
+                              'right-0 transform-none': isNearRightEdge
+                            }"
+                           class="absolute top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                        >
+                            Укажите тип игроков которых вы ищете, если вы мастер, то вам нужны игроки, а если вы игрок, то вам нужен мастер.
+                        </div>
+                    </div>
                 </div>
+                <select id="player_type" name="player_type"
+                        x-model="playerType"
+                        class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
+                    <option value="0" {{ old('player_type', $cardInfo->player_type_needed) == 0 ? 'selected' : '' }}>Игроков</option>
+                    <option value="1" {{ old('player_type', $cardInfo->player_type_needed) == 1 ? 'selected' : '' }}>Мастера</option>
+                </select>
 
                 <!-- Кол-во игроков -->
                 <div x-show="playerType === '0'">
-                    <label for="player_count" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Кол-во игроков*:</label>
+                    <div class="mb-1 flex items-center gap-2">
+                        <label for="player_count" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Кол-во игроков*:</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                :class="{
+                                  'left-0 transform-none': !isNearRightEdge,
+                                  'right-0 transform-none': isNearRightEdge
+                                }"
+                               class="absolute top-full mt-2 w-auto min-w-40 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Укажите кол-во игроков которое вы хотите собрать в диапазоне от 1 до 16 человек, не включая вас.
+                            </div>
+                        </div>
+                    </div>
+
                     <input id="player_count" name="player_count" type="number" min="1"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
-                           placeholder="Введите количество игроков"
+                           placeholder="Введите количество игроков от 1 до 16"
+                           min="1"
+                           max="16"
                            value="{{ old('player_count', $cardInfo->player_count ?? '') }}">
                     @error('player_count')
                     <div class="text-red-500">{{ $message }}</div>
@@ -55,7 +104,32 @@
 
                 <!-- Формат игры -->
                 <div x-data="{ gameFormat: '{{ old('game_format', '') }}' }">
-                    <label for="game_format" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Формат игры*:</label>
+                    <div class="mb-1 flex items-center gap-2">
+                        <label for="game_format" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Формат игры*:</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                :class="{
+                                  'left-0 transform-none': !isNearRightEdge,
+                                  'right-0 transform-none': isNearRightEdge
+                                }"
+                               class="absolute top-full mt-2 w-auto min-w-40 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Уточните где именно вы хотите собраться с другими игроками, в реальной жизни или быть может онлайн, а может вам не так важно?
+                            </div>
+                        </div>
+                    </div>
                     <select id="game_format" name="game_format"
                             x-model="gameFormat"
                             class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]">
@@ -80,8 +154,32 @@
                         )"
                         x-init="init()"
                         class="relative">
-                        <label class="block text-lg font-alegreya_bold text-gray-800 mb-1">Игровая система*:</label>
-
+                        <div class="mb-1 flex items-center gap-2">
+                            <label class="block text-lg font-alegreya_bold text-gray-800 mb-1">Игровая система*:</label>
+                            <!-- Подсказка -->
+                            <div class="relative inline-block" x-data="tooltipComponent()">
+                                <div
+                                    x-ref="button"
+                                    class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                    @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                    @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                    @click="toggle()"
+                                >
+                                    ?
+                                </div>
+                                <div
+                                    x-show="open"
+                                    x-transition
+                                    :class="{
+                                      'left-0 transform-none': !isNearRightEdge,
+                                      'right-0 transform-none': isNearRightEdge
+                                    }"
+                                   class="absolute top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                                >
+                                    Укажите игровую систему в которой вы хотите провести свою кампанию.
+                                </div>
+                            </div>
+                        </div>
                         <input
                             type="text"
                             x-model="search"
@@ -128,8 +226,32 @@
                         x-init="init()"
                         class="relative"
                     >
-                        <label for="game_systems" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Игровые системы*:</label>
-
+                        <div class="mb-1 flex items-center gap-2">
+                            <label for="game_systems" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Игровые системы*:</label>
+                            <!-- Подсказка -->
+                            <div class="relative inline-block" x-data="tooltipComponent()">
+                                <div
+                                    x-ref="button"
+                                    class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                    @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                    @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                    @click="toggle()"
+                                >
+                                    ?
+                                </div>
+                                <div
+                                    x-show="open"
+                                    x-transition
+                                    :class="{
+                                      'left-0 transform-none': !isNearRightEdge,
+                                      'right-0 transform-none': isNearRightEdge
+                                    }"
+                                    class="absolute top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                                >
+                                    Укажите игровые системы которые вам знакомы или в которые вы хотели бы сыграть.
+                                </div>
+                            </div>
+                        </div>
                         <input type="text"
                                x-model="search"
                                @click="open = true"
@@ -174,7 +296,34 @@
                 @enderror
                 <!-- Длительность игры -->
                 <div x-data="{ game_duration: '{{ old('game_duration', '') }}' }">
-                    <label for="game_duration" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Длительность игры*:</label>
+                    <div class="mb-1 flex items-center gap-2">
+                        <label for="game_duration" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Длительность игры*:</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                :class="{
+                                  'left-0 transform-none': !isNearRightEdge,
+                                  'right-0 transform-none': isNearRightEdge
+                                }"
+                                class="absolute top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Уточните, в насколько длинную игру вы хотели бы сыграть.<br>
+                                <strong>Ваншот</strong> — игра, которая длится одну встречу, в среднем около четырёх часов.<br>
+                                <strong>Кампания</strong> — длительное приключение, которое состоит из нескольких встреч.
+                            </div>
+                        </div>
+                    </div>
                     @php
                         $selectedDuration = old('game_duration', isset($cardInfo) ? $cardInfo->game_duration?->value : null);
                     @endphp
@@ -197,8 +346,33 @@
                     x-init="init()"
                     class="relative"
                 >
-                    <label for="game_tags" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Теги:</label>
-
+                    <div class="mb-1 flex items-center gap-2">
+                        <label for="game_tags" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Теги:</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                :class="{
+                                  'left-0 transform-none': !isNearRightEdge,
+                                  'right-0 transform-none': isNearRightEdge
+                                }"
+                                class="absolute top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Укажите теги, которые, как вы считаете, рассказали бы о стиле вашего приключения или его чертах.<br>
+                                <strong>Не является обязательным полем для заполнения.</strong>
+                            </div>
+                        </div>
+                    </div>
                     <input type="text"
                            x-model="search"
                            @click="open = true"
@@ -243,7 +417,30 @@
 
                 <!-- Описание -->
                 <div>
-                    <label for="description" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Описание:</label>
+                    <div class="mb-1 flex items-center gap-2">
+                        <label for="description" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Описание:</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                class="absolute top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Здесь вы можете описать всё что хотите, если вы игрок, то можете рассказать свои ожидания от игры,
+                                а если мастер, то можете разместить здесь раздаточный материал.<br>
+                                <strong>Не является обязательным полем для заполнения.</strong>
+                            </div>
+                        </div>
+                    </div>
                     <textarea id="description" name="description" rows="4"
                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                               placeholder="Расскажите подробнее чего вы ожидаете от игры...">{{ old('description', $cardInfo->game_description) ?? null }}</textarea>
@@ -258,8 +455,32 @@
                      x-init="init()"
                      class="relative"
                 >
-                    <label for="city" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Город*:</label>
-
+                    <div class="mb-1 flex items-center gap-2">
+                        <label for="city" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Город*:</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                :class="{
+                                  'left-0 transform-none': !isNearRightEdge,
+                                  'right-0 transform-none': isNearRightEdge
+                                }"
+                                class="absolute top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Укажите город в котором вы собираетесь играть.
+                            </div>
+                        </div>
+                    </div>
                     <input id="city"
                            x-model="search"
                            @click="open = true"
@@ -293,7 +514,34 @@
 
                 <!-- Место проведения игры -->
                 <div x-show="gameFormat != '1' && playerType != '1'">
-                    <label for="game_place" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Место проведения игры:</label>
+                    <div class="mb-1 flex items-center gap-2">
+                        <label for="game_place" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Место проведения игры:</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                :class="{
+                                  'left-0 transform-none': !isNearRightEdge,
+                                  'right-0 transform-none': isNearRightEdge
+                                }"
+                                class="absolute top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Если вы собираетесь в живую, то укажите адрес, если вы собираетесь онлайн,
+                                то укажите место в котором вы собираетесь провести свою игру.<br>
+                                <strong>Не является обязательным полем для заполнения.</strong>
+                            </div>
+                        </div>
+                    </div>
                     <input id="game_place" name="game_place"
                               class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                               placeholder="Адрес или место в онлайн формате где будет проводится игра"
@@ -308,7 +556,33 @@
                     $gameDate = isset($cardInfo->game_date) ? \Carbon\Carbon::parse($cardInfo->game_date) : null;
                 @endphp
                 <div x-show="playerType === '0'">
-                    <label for="date" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Дата проведения:</label>
+                    <div class="mb-1 flex items-center gap-2">
+                        <label for="date" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Дата проведения:</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                :class="{
+                                  'left-0 transform-none': !isNearRightEdge,
+                                  'right-0 transform-none': isNearRightEdge
+                                }"
+                                class="absolute top-full mt-2 w-auto min-w-45 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Если у вашей игры есть назначенная дата проведения, то укажите её здесь<br>
+                                <strong>Не является обязательным полем для заполнения.</strong>
+                            </div>
+                        </div>
+                    </div>
                     <input id="date" name="date" type="date"
                            min="{{ date('Y-m-d') }}"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
@@ -320,7 +594,35 @@
 
                 <!-- Время проведения -->
                 <div x-show="playerType === '0'">
-                    <label for="time" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Время проведения:</label>
+                    <div class="mb-1 flex items-center gap-2">
+                        <label for="time" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Время проведения:</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                :class="{
+                                  'left-0 transform-none': !isNearRightEdge,
+                                  'right-0 transform-none': isNearRightEdge
+                                }"
+                                class="absolute top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Если вы хотите собрать игру в определённое время, то укажите его здесь,
+                                используйте свой часовой пояс,
+                                для других пользователей время автоматически будет конвертировано под их часовой пояс.<br>
+                                <strong>Не является обязательным полем для заполнения.</strong>
+                            </div>
+                        </div>
+                    </div>
                     <input id="time" name="time" type="time"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                            value="{{ old('time', $gameDate?->format('H:i')) }}">
@@ -331,7 +633,33 @@
 
                 <!-- Цена -->
                 <div x-show="playerType === '0'">
-                    <label for="price" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Цена (₽):</label>
+                    <div class="mb-1 flex items-center gap-2">
+                        <label for="price" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Цена (₽):</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                :class="{
+                                  'left-0 transform-none': !isNearRightEdge,
+                                  'right-0 transform-none': isNearRightEdge
+                                }"
+                                class="absolute top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Если вы собираетесь провести игру платно, то укажите цену здесь, в ином случае оставьте поле пустым или укажите 0.<br>
+                                <strong>Не является обязательным полем для заполнения.</strong>
+                            </div>
+                        </div>
+                    </div>
                     <input id="price" name="price" type="number" min="0" max="100000" step="0.01"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                            placeholder="Введите цену"
@@ -343,7 +671,34 @@
 
                 <!-- Контактная информация -->
                 <div x-data="contactMethodsComponent(@js($contactTypes), @js(old('contacts_data', $knownContacts ?? [])))" x-init="init()">
-                    <h2 class="text-lg font-alegreya_bold mt-4 mb-2">Контактная информация*:</h2>
+                    <div class="mb-1 flex items-center gap-2">
+                        <label class="block text-lg font-alegreya_bold text-gray-800 mb-1">Контактная информация*:</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                :class="{
+                                  'left-0 transform-none': !isNearRightEdge,
+                                  'right-0 transform-none': isNearRightEdge
+                                }"
+                                class="absolute top-full mt-2 w-auto min-w-60 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Укажите контактную информацию с помощью которой другие пользователи смогут с вами связаться.
+                                По умолчанию другие пользователи не видят эти данные без вашего разрешения,
+                                вы можете изменить это в настройках аккаунта.
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="divide-y divide-[#1a1a1a] border border-[#1a1a1a] rounded-md overflow-visible bg-[#2D2D2D]">
 

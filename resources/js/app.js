@@ -1,5 +1,6 @@
 import './bootstrap';
 import './SelectComponents.js'
+import './TooltipsComponents.js'
 import Alpine from 'alpinejs'
 
 window.Alpine = Alpine
