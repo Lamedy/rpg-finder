@@ -52,13 +52,17 @@
                     placeholder="от: 0"
                     class="w-1/2 px-2 py-1 rounded bg-white border text-black"
                     value="{{ request('price_min') }}"
+                    min="0"
+                    max="100000"
                 />
                 <input
                     type="number"
                     name="price_max"
-                    placeholder="до: 99999"
+                    placeholder="до: 100000"
                     class="w-1/2 px-2 py-2 rounded bg-white border text-black"
                     value="{{ request('price_max') }}"
+                    min="0"
+                    max="100000"
                 />
             </div>
         </div>

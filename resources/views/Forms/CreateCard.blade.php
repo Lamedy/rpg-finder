@@ -332,7 +332,7 @@
                 <!-- Цена -->
                 <div x-show="playerType === '0'">
                     <label for="price" class="block text-lg font-alegreya_bold text-gray-800 mb-1">Цена (₽):</label>
-                    <input id="price" name="price" type="number" min="0" step="0.01"
+                    <input id="price" name="price" type="number" min="0" max="100000" step="0.01"
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                            placeholder="Введите цену"
                            value="{{ old('price', $cardInfo->price ?? '') }}">
