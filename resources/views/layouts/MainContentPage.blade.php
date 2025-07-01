@@ -2,7 +2,7 @@
 
 @section('main_content')
     <div class="md:p-4 lg:px-20">
-        <div class=" mx-auto rounded-md flex">
+        <div x-cloak class="mx-auto rounded-md flex">
             <!-- Левая колонка: Навигация + доп меню -->
             <aside
                    x-cloak

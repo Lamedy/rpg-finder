@@ -61,7 +61,7 @@ class CreateCard extends Controller
     {
         $request->replace($this->clearEmptyRows($request));
 
-        $validated =Validator::make($request->all(), [
+        $validated = Validator::make($request->all(), [
             'player_type'       => 'required|in:0,1',
             'player_count'      => 'required_if:player_type,0|nullable|integer|min:1|max:16',
             'game_format'       => 'required|in:0,1,2',
@@ -101,6 +101,8 @@ class CreateCard extends Controller
                     ]
                 ));
         }
+
+        $validated = $validated->validated();
 
         DB::beginTransaction();
 
@@ -196,7 +198,7 @@ class CreateCard extends Controller
     {
         $request->replace($this->clearEmptyRows($request));
 
-        $validated =Validator::make($request->all(), [
+        $validated = Validator::make($request->all(), [
             'player_type'       => 'required|in:0,1',
             'player_count'      => 'required_if:player_type,0|nullable|integer|min:1|max:16',
             'game_format'       => 'required|in:0,1,2',
@@ -236,6 +238,8 @@ class CreateCard extends Controller
                     ]
                 ));
         }
+
+        $validated = $validated->validated();
 
         DB::beginTransaction();
 

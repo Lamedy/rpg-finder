@@ -137,14 +137,39 @@
             <!-- Правая часть: Кнопки -->
             <div class="flex flex-wrap justify-end gap-2 flex-1 min-w-[200px] mt-2">
                 @if (Auth::user() != null && Auth::user()->user_pk == $game->author)
-                    <form class="w-full sm:w-auto text-right" action="{{ route('card.delete', $game->game_session_pk) }}" method="POST" onsubmit="return confirm('Удалить эту сессию?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                                class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-60">
-                            Удалить
-                        </button>
-                    </form>
+                    <div x-data="deleteModal()" class="relative w-full sm:w-auto">
+                        <form id="delete-form-{{ $game->game_session_pk }}" class="w-full sm:w-auto text-right" action="{{ route('card.delete', $game->game_session_pk) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button"
+                                    @click="openModal('delete-form-{{ $game->game_session_pk }}')"
+                                    class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-60">
+                                Удалить
+                            </button>
+                        </form>
+
+                        <!-- Модальное окно -->
+                        <div x-show="isOpen" x-transition class="fixed inset-0 flex items-center justify-center z-50">
+                            <!-- Чёрный прозрачный фон -->
+                            <div class="absolute inset-0 bg-black opacity-40"></div>
+                            <!-- Само модальное окно -->
+                            <div @click.outside="closeModal()"
+                                 class="relative z-10 bg-[#2D2D2D] border-2 border-black rounded-lg p-6 w-full max-w-md shadow-xl text-white">
+                                <h2 class="text-2xl mb-4 font-alegreya_bold">Подтверждение удаления</h2>
+                                <p class="mb-6">Вы уверены, что хотите удалить эту сессию? Это действие необратимо.</p>
+                                <div class="flex justify-center gap-4 w-full">
+                                    <button @click="closeModal()"
+                                            class="w-1/2 px-4 py-2 rounded bg-white hover:bg-[#8c8c8c] transition text-black border border-black">
+                                        Отмена
+                                    </button>
+                                    <button @click="confirmDelete()"
+                                            class="w-1/2 px-4 py-2 rounded bg-[#820909] text-white hover:bg-[#540505] transition border border-black">
+                                        Удалить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <a href="{{ route('card.edit', $game) }}"
                        class="bg-[#2D2D2D] hover:bg-[#1a1a1a] text-white text-center rounded px-4 py-2 transition text-base sm:text-lg w-full sm:w-60">
