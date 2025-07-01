@@ -15,7 +15,14 @@
                     <!-- Левая часть: аватар и имя -->
                     <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start min-w-0 max-w-full 2xl:max-w-[65%]">
                         <div x-data="avatarPreview()" class="relative inline-block shrink-0">
-                            <input type="file" name="avatar" class="hidden" id="avatar" @change="previewImage" />
+                            <input
+                                type="file"
+                                name="avatar"
+                                class="hidden"
+                                id="avatar"
+                                @change="previewImage"
+                                accept="image/jpeg, image/png, image/webp, image/gif"
+                            />
 
                             <label for="avatar">
                                 <img
