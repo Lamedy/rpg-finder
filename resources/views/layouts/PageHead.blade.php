@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>НРИ-Файндер | @yield('page_name')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="icon" href="{{ asset('storage/icons/rpg-finder-icon.png') }}" type="image/png">
 </head>
 <body x-data="{ open: false }"
       :class="{ 'overflow-hidden': $store.ui.anyPanelOpen }"
