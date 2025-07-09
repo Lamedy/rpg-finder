@@ -13,6 +13,7 @@ class UserAdvertisements extends Controller
         $countCardsOnOnePage = 5;
 
         $games = GameSession::with(['gameSystems.system', 'city', 'tags.tag', 'user'])
+            ->orderBy('created_at', 'desc')
             ->where('author', auth()->id())
             ->paginate($countCardsOnOnePage);
 
