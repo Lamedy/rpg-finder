@@ -180,7 +180,7 @@
                    x-model="search"
                    @click="open = true"
                    @input="open = true"
-                   placeholder="Начните ввод системы..."
+                   placeholder="Выберите системы..."
                    class="w-full px-2 py-2 rounded bg-white border text-black"
             />
 
@@ -226,7 +226,7 @@
                    x-model="search"
                    @click="open = true"
                    @input="open = true"
-                   placeholder="Начните ввод тега..."
+                   placeholder="Выберите теги..."
                    class="w-full px-2 py-2 rounded bg-white border text-black"
             />
 

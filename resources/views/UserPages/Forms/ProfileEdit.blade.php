@@ -244,15 +244,39 @@
                     x-init="init()"
                     class="relative"
                 >
-                    <label for="game_tags" class="text-lg lg:text-2xl block mb-2 font-alegreya_bold mt-4 mb-1">Теги моих интересов:</label>
-
+                    <div class="mb-1 flex items-center gap-2">
+                        <label for="game_tags" class="text-lg lg:text-2xl block mb-2 font-alegreya_bold mt-4 mb-1">Теги моих интересов:</label>
+                        <!-- Подсказка -->
+                        <div class="relative inline-block" x-data="tooltipComponent()">
+                            <div
+                                x-ref="button"
+                                class="flex items-center mt-2 justify-center w-5 h-5 text-xl rounded-full bg-[#2D2D2D] text-white font-bold cursor-pointer select-none"
+                                @mouseenter="if (window.innerWidth >= 1024) open = true"
+                                @mouseleave="if (window.innerWidth >= 1024) open = false"
+                                @click="toggle()"
+                            >
+                                ?
+                            </div>
+                            <div
+                                x-show="open"
+                                x-transition
+                                :class="{
+                                  'left-0 transform-none': !isNearRightEdge,
+                                  'right-0 transform-none': isNearRightEdge
+                                }"
+                                class="absolute font-alegreya_medium top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
+                            >
+                                Вы можете указать теги которые, как вы считаете, хорошо подходят чтобы описать ваш стиль игры или ваши интересы.<br>
+                            </div>
+                        </div>
+                    </div>
                     <div class="relative w-full">
                         <input type="text"
                                x-model="search"
                                @click="open = true"
                                @input="open = true"
-                               placeholder="Начните вводить название тега..."
-                               class="w-full px-4 py-2 rounded-md border border-[#1a1a1a] bg-white font-alegreya_bold"
+                               placeholder="Выберите теги..."
+                               class="w-full px-4 py-2 rounded-md border border-[#1a1a1a] bg-white font-alegreya_bold text-sm lg:text-lg"
                         />
 
                         <!-- Иконка внутри input -->

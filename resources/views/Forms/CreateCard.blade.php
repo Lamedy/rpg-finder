@@ -126,7 +126,7 @@
                                 }"
                                class="absolute top-full mt-2 w-auto min-w-40 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
                             >
-                                Уточните где именно вы хотите собраться с другими игроками, в реальной жизни или быть может онлайн, а может вам не так важно?
+                                Уточните как именно вы хотите собраться с другими игроками, в реальной жизни или быть может онлайн, а может вам не так важно?
                             </div>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                             x-model="search"
                             @click="open = true"
                             @input="open = true"
-                            placeholder="Введите название системы..."
+                            placeholder="Выберите систему..."
                             class="w-full px-4 py-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                         >
 
@@ -256,7 +256,7 @@
                                x-model="search"
                                @click="open = true"
                                @input="open = true"
-                               placeholder="Начните вводить название системы..."
+                               placeholder="Выберите системы..."
                                class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                         />
 
@@ -377,7 +377,7 @@
                            x-model="search"
                            @click="open = true"
                            @input="open = true"
-                           placeholder="Начните вводить название тега..."
+                           placeholder="Выберите теги..."
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                     />
 
@@ -477,7 +477,8 @@
                                 }"
                                 class="absolute top-full mt-2 w-auto min-w-50 sm:min-w-60 max-w-50 sm:max-w-xs p-2 bg-white text-black text-sm rounded z-50"
                             >
-                                Укажите город в котором вы собираетесь играть.
+                                Укажите город в котором вы собираетесь играть.<br>
+                                Выберете 'Другой' если по какой-то причине вашего города нет в списке.
                             </div>
                         </div>
                     </div>
@@ -487,7 +488,7 @@
                            @input="open = true"
                            @input="updateSelection"
                            type="text"
-                           placeholder="Введите город проведения (Выберете 'Другой' если города нет в списке)"
+                           placeholder="Выберете город проведения..."
                            class="w-full px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4f4f4f]"
                            autocomplete="off"
                     />
