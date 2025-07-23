@@ -6,6 +6,8 @@ use App\Email\NewNotification;
 use App\Models\GameSession;
 use App\Models\NoticeList;
 use App\Models\PlayerListOfGameSession;
+use App\Models\User;
+use App\Models\UserAuthorization;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -94,8 +96,10 @@ class RoomController extends Controller
 
             DB::commit();
 
-            Mail::to($room->user->auth->email)->send(new NewNotification(
-                $room->user,
+            $user = User::where('user_pk', $notice->from_user)->first();
+
+            Mail::to($user->auth->email)->send(new NewNotification(
+                $user,
                 Auth::user(),
             ));
 
@@ -129,8 +133,10 @@ class RoomController extends Controller
 
             DB::commit();
 
-            Mail::to($room->user->auth->email)->send(new NewNotification(
-                $room->user,
+            $user = User::where('user_pk', $notice->from_user)->first();
+
+            Mail::to($user->auth->email)->send(new NewNotification(
+                $user,
                 Auth::user(),
             ));
 
