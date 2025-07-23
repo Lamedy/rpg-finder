@@ -259,10 +259,12 @@
         <div class="flex flex-wrap items-center justify-between gap-2 py-1">
             <div class="text-base lg:text-xl text-[#808080] text-right">
                 <span class="inline">Объявление создано:</span>
-                <span class="inline whitespace-nowrap ml-1">
-            Дата: {{ \Carbon\Carbon::parse($game['created_at'])->format('d.m.Y') }}
-            Время: {{ \Carbon\Carbon::parse($game['created_at'])->format('H:i') }}
-        </span>
+                <span
+                    class="inline whitespace-nowrap ml-1"
+                    data-datetime="{{ \Carbon\Carbon::parse($game['created_at'])->toIso8601String() }}"
+                    data-format="long"
+                >
+                </span>
             </div>
         </div>
 

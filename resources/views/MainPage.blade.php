@@ -9,8 +9,9 @@
                     @foreach ($newsList as $news)
                         <div class="bg-gray-200 mb-4 rounded shadow border border-black font-alegreya_medium">
                             <p class="mb-2 p-2 break-words">{{ $news['news_text'] }}</p>
-                            <div class="bg-[#3A3A3A] text-white text-sm px-2 py-1 rounded border">
-                                {{ \Carbon\Carbon::parse($news['date'])->format('Дата: d.m.Y Время: H:i') }}
+                            <div class="bg-[#3A3A3A] text-white text-sm px-2 py-1 rounded border"
+                                 data-datetime="{{ \Carbon\Carbon::parse($news['date'])->toIso8601String() }}"
+                                 data-format="long">
                             </div>
                         </div>
                     @endforeach
