@@ -1,4 +1,4 @@
-function singleSelect(data, idKey, nameKey, selectedId = null) {
+function singleSelect(data, idKey, nameKey, selectedId = null, rows = [], currentRow = null) {
     return {
         open: false,
         search: '',
@@ -6,20 +6,30 @@ function singleSelect(data, idKey, nameKey, selectedId = null) {
         items: data,
         idKey,
         nameKey,
+        rows,
+        currentRow,
         filteredItems() {
-            if (this.search === '') return this.items;
-            return this.items.filter(i =>
-                i[this.nameKey].toLowerCase().includes(this.search.toLowerCase())
-            );
+            const selectedIds = this.rows
+                .filter(r => r !== this.currentRow) // исключаем текущую строку
+                .map(r => r.system)
+                .filter(Boolean); // убираем пустые значения
+
+            return this.items.filter(i => {
+                const isAlreadySelected = selectedIds.includes(i[this.idKey]);
+                const matchesSearch = this.search === '' || i[this.nameKey].toLowerCase().includes(this.search.toLowerCase());
+                return !isAlreadySelected && matchesSearch;
+            });
         },
         choose(item) {
             this.selected = item;
             this.search = item[this.nameKey];
             this.open = false;
+            this.currentRow.system = item[this.idKey]; // важно для реактивности
         },
         clear() {
             this.selected = null;
             this.search = '';
+            this.currentRow.system = null;
         },
         init() {
             if (selectedId !== null) {
@@ -31,6 +41,7 @@ function singleSelect(data, idKey, nameKey, selectedId = null) {
         }
     };
 }
+
 
 function multiSelect(data, idKey, nameKey, selectedIds = []) {
     return {
@@ -142,6 +153,10 @@ function gameSystemsComponent(systemsData, experiencesData, initialData) {
                 this.rows[0] = { id: Date.now(), system: '', experience: '' };
             }
         },
+
+        allSelectedSystems() {
+            return this.rows.map(r => r.system).filter(Boolean);
+        }
     }
 }
 

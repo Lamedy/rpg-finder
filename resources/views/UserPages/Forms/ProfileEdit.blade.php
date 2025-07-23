@@ -172,7 +172,7 @@
                             <div class="grid grid-cols-[1fr_1fr_auto] bg-white font-alegreya_bold text-xs lg:text-lg items-center">
                                 <!-- Игровая система -->
                                 <div class="px-2 lg:px-4 py-2 border-r border-[#1a1a1a] relative overflow-visible"
-                                     x-data="singleSelect(@js($systems), 'game_system_pk', 'game_system_name', row.system)"
+                                     x-data="singleSelect(@js($systems), 'game_system_pk', 'game_system_name', row.system, rows, row)"
                                      x-init="init(selectedValue = row.system)">
                                     <input type="text"
                                            x-model="search"
