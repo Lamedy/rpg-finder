@@ -34,7 +34,15 @@ RUN a2enmod rewrite
 # Копируем Laravel проект в контейнер
 COPY . /var/www/html
 COPY storage/app/public/icons /var/www/html/storage/app/public/icons
-COPY storage/app/public/avatars /var/www/html/storage/app/public/avatars
+
+# Копируем аватар в "временное" место
+COPY storage/app/public/avatars/default_avatar.png /var/www/html/default_assets/default_avatar.png
+
+# Копируем entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 
 WORKDIR /var/www/html
 
