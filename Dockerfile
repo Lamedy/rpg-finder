@@ -37,6 +37,9 @@ COPY storage/app/public/icons /var/www/html/storage/app/public/icons
 
 WORKDIR /var/www/html
 
+# Копируем собранные ассеты Vite из первого этапа
+COPY --from=node-builder /app/public /var/www/html/public
+
 ENV COMPOSER_AUTH='{"github-oauth": {"github.com": "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"}}'
 RUN composer install --no-dev --optimize-autoloader --prefer-dist
 
